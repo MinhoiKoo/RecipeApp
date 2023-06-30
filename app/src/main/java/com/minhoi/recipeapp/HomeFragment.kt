@@ -1,5 +1,6 @@
 package com.minhoi.recipeapp
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var viewModel : HomeViewModel
     private lateinit var binding : FragmentHomeBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -28,13 +30,32 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
 
-        viewModel.getRandomRcp(1,6)
+        val range = 1..100
+        val indexNum = range.random()
+        viewModel.getRandomRcp(indexNum,indexNum+4)
 
         val rv = binding.recipeRv
+
+
         viewModel.liveRcpList.observe(viewLifecycleOwner) {
             val adapter = RcpListAdapter(context!!, it as ArrayList<RecipeDto>)
             rv.adapter = adapter
             rv.layoutManager = LinearLayoutManager(context)
+
+            adapter.setItemClickListener(object : RcpListAdapter.OnItemClickListener {
+                override fun onClick(v: View, position: Int) {
+                    val intent = Intent(activity, RcpInfoActivity::class.java)
+                    intent.putExtra("name", it[position].RCP_NM)
+                    intent.putExtra("ingredient", it[position].RCP_PARTS_DTLS)
+                    intent.putExtra("manual01", it[position].MANUAL01)
+                    intent.putExtra("manual02", it[position].MANUAL02)
+                    intent.putExtra("manual03", it[position].MANUAL03)
+                    intent.putExtra("image01", it[position].MANUAL_IMG01)
+                    intent.putExtra("image02", it[position].MANUAL_IMG02)
+                    intent.putExtra("image03", it[position].MANUAL_IMG03)
+                    startActivity(intent)
+                }
+            })
         }
 
         return binding.root

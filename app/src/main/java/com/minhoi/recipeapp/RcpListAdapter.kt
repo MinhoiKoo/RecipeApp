@@ -2,6 +2,7 @@ package com.minhoi.recipeapp
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -12,6 +13,15 @@ import com.minhoi.recipeapp.databinding.RecipeRandomItemRowBinding
 import com.minhoi.recipeapp.model.RecipeDto
 
 class RcpListAdapter(val context: Context, private val dataSet: ArrayList<RecipeDto> ) : RecyclerView.Adapter<RcpListAdapter.ViewHolder>() {
+
+    interface OnItemClickListener {
+        fun onClick(v : View, position : Int)
+    }
+
+    fun setItemClickListener(onItemClickListener: OnItemClickListener) {
+        this.itemClickListener = onItemClickListener
+    }
+    private lateinit var itemClickListener : OnItemClickListener
 
     class ViewHolder(binding : RecipeRandomItemRowBinding ) : RecyclerView.ViewHolder(binding.root) {
         val rcpImage : ImageView
@@ -35,6 +45,9 @@ class RcpListAdapter(val context: Context, private val dataSet: ArrayList<Recipe
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.itemView.setOnClickListener {
+            itemClickListener.onClick(it, position)
+        }
         holder.rcpName.text = dataSet[position].RCP_NM
         Glide.with(context)
             .load(dataSet[position].ATT_FILE_NO_MK)
