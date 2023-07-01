@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.minhoi.recipeapp.databinding.FragmentHomeBinding
 import com.minhoi.recipeapp.model.RecipeDto
 
@@ -32,7 +34,7 @@ class HomeFragment : Fragment() {
 
         val range = 1..100
         val indexNum = range.random()
-        viewModel.getRandomRcp(indexNum,indexNum+4)
+        viewModel.getRandomRcp(1,5)
 
         val rv = binding.recipeRv
 
@@ -40,7 +42,7 @@ class HomeFragment : Fragment() {
         viewModel.liveRcpList.observe(viewLifecycleOwner) {
             val adapter = RcpListAdapter(context!!, it as ArrayList<RecipeDto>)
             rv.adapter = adapter
-            rv.layoutManager = LinearLayoutManager(context)
+            rv.layoutManager = GridLayoutManager(activity, 2)
 
             adapter.setItemClickListener(object : RcpListAdapter.OnItemClickListener {
                 override fun onClick(v: View, position: Int) {

@@ -3,6 +3,7 @@ package com.minhoi.recipeapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import android.widget.TextView
 
 class RcpInfoActivity : AppCompatActivity() {
@@ -21,13 +22,28 @@ class RcpInfoActivity : AppCompatActivity() {
         val image02 = intent.getStringExtra("image02")
         val image03 = intent.getStringExtra("image03")
 
-        val split = ingredient?.split(",")
-        val sb = StringBuilder()
-        for( i in 0 until split!!.size) {
-            sb.append(split[i] + "\n")
+        val menuName = findViewById<TextView>(R.id.menuName)
+        menuName.text = name
+        val ingredientText = findViewById<TextView>(R.id.menuIngredient)
+
+        if (ingredient != null) {
+            ingredientText.text = split(ingredient)
         }
-        Log.d("str", sb.toString())
-        val text = findViewById<TextView>(R.id.textView)
-        text.text = sb.toString()
+
+        val back = findViewById<ImageView>(R.id.menuBackBtn)
+        back.setOnClickListener {
+            finish()
+        }
+
+
+    }
+
+    private fun split(str : String) : String {
+        val strSplit = str.split(",")
+        val sb = StringBuilder()
+        for( i in strSplit.indices) {
+            sb.append(strSplit[i].trim() + "\n")
+        }
+        return sb.toString()
     }
 }

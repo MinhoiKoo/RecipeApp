@@ -29,7 +29,7 @@ class HomeViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<RcpResponse>, t: Throwable) {
-                TODO("Not yet implemented")
+                //서버와 연결 실패. 다시 접속해주세요
             }
         })
     }

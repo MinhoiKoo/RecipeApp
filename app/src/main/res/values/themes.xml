@@ -10,9 +10,22 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/white</item>
         <!-- Customize your theme here. -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="radius10" parent="">
+        <item name="cornerSize">10%</item>
+    </style>
+
+    <style name="radius20" parent="">
+        <item name="cornerSize">20%</item>
+
+    </style><style name="radius30" parent="">
+        <item name="cornerSize">30%</item>
     </style>
 </resources>
