@@ -12,4 +12,13 @@ interface MyApi {
         @Path("startidx") startidx: Int,
         @Path("endidx") endidx: Int
     ): Call<RcpResponse>
+
+    @GET("COOKRCP01/json/{startidx}/{endidx}/RCP_NM={rcpName}&RCP_PARTS_DTLS={rcpIngredient}")
+    fun searchRecipe(
+        @Path("startidx") startidx: Int,
+        @Path("endidx") endidx: Int,
+        @Path("rcpName") rcpName : String,
+        @Path("rcpIngredient") rcpIngredient : String
+    )
+
 }

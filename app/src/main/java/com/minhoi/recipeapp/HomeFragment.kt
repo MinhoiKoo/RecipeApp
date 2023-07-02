@@ -2,12 +2,14 @@ package com.minhoi.recipeapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,23 +20,31 @@ class HomeFragment : Fragment() {
 
     private lateinit var viewModel : HomeViewModel
     private lateinit var binding : FragmentHomeBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("onCreateView", "onCreateView")
         // Inflate the layout for this fragment
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
 
+        binding.searchBtn.setOnClickListener {
+            it.findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
+        }
+
         val range = 1..100
         val indexNum = range.random()
+
         viewModel.getRandomRcp(1,5)
+
+
 
         val rv = binding.recipeRv
 
