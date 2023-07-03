@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="searchVM"
+            type="com.minhoi.recipeapp.SearchViewModel" />
+    </data>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,6 +25,8 @@
                 android:layout_margin="20dp"
                 android:hint="레시피 검색"
                 android:background="#999999"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -74,6 +81,13 @@
                     android:src="@drawable/userbtn" />
 
             </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/searchRv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="100dp"
+                android:layout_marginBottom="50.3dp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>
