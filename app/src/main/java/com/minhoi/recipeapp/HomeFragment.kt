@@ -42,7 +42,7 @@ class HomeFragment : Fragment() {
         val range = 1..100
         val indexNum = range.random()
 
-        viewModel.getRandomRcp(1,5)
+        viewModel.getRandomRcp(indexNum,indexNum+4)
 
 
 

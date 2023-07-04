@@ -48,14 +48,31 @@ class SearchFragment : Fragment() {
         val rv = binding.searchRv
 
         viewModel.searchList.observe(viewLifecycleOwner) {
-            rv.adapter = RcpListAdapter(context!!, it as ArrayList<RecipeDto>)
-            rv.layoutManager = GridLayoutManager(activity, 2)
+            val adapter = RcpListAdapter(context!!, it as ArrayList<RecipeDto>)
+            rv.adapter = adapter
+            rv.layoutManager = GridLayoutManager(activity, 1)
+            adapter.setItemClickListener(object : RcpListAdapter.OnItemClickListener {
+                override fun onClick(v: View, position: Int) {
+                    Log.d("kcal", it[position].INFO_ENG?.toDouble().toString())
+                }
+
+            })
         }
+
         binding.homeBtn.setOnClickListener {
             it.findNavController().navigate(R.id.action_searchFragment_to_homeFragment)
+        }
+
+        binding.filterBtn.setOnClickListener {
+            val dialog = FilterDialog(context!!)
+            dialog.showDialog()
+
+
         }
 
 
         return binding.root
     }
+
+
 }

@@ -39,4 +39,11 @@ class SearchViewModel : ViewModel() {
             }
         })
     }
+
+    fun filterByKcal(minAmount : Double, maxAmount : Double) {
+        val filterdList = _mutableSearchList.value?.filter {
+            it.INFO_ENG?.toDouble()!! in minAmount..maxAmount
+        }
+        _mutableSearchList.value = filterdList!!
+    }
 }

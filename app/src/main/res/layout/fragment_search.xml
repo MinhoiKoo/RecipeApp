@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -11,7 +12,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".SearchFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -88,6 +88,18 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="100dp"
                 android:layout_marginBottom="50.3dp"/>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:src="@drawable/filter"
+                android:background="#999999"
+                android:id="@+id/filterBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:shapeAppearance="@style/radius50"
+                android:layout_marginBottom="60dp"
+                android:layout_marginRight="30dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>

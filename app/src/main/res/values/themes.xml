@@ -25,7 +25,15 @@
     <style name="radius20" parent="">
         <item name="cornerSize">20%</item>
 
-    </style><style name="radius30" parent="">
+    </style>
+
+    <style name="radius30" parent="">
+        <item name="cornerSize">30%</item>
+
+    </style>
+
+    <style name="radius50" parent="">
         <item name="cornerSize">30%</item>
     </style>
+
 </resources>
