@@ -23,5 +23,7 @@ data class RecipeDto(
     @SerializedName("MANUAL_IMG03")
     val MANUAL_IMG03 : String?,
     @SerializedName("INFO_ENG")
-    val INFO_ENG : String?
+    val INFO_ENG : String?,
+    @SerializedName("RCP_PAT2")
+    val RCP_PAT2 : String?
 )

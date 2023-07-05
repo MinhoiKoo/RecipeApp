@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -17,8 +18,8 @@ import com.minhoi.recipeapp.model.RecipeDto
 class SearchFragment : Fragment() {
 
     // 메뉴명, 재료명 으로 검색 가능하도록 구현 예정
-    private lateinit var binding : FragmentSearchBinding
-    private lateinit var viewModel : SearchViewModel
+    private lateinit var binding: FragmentSearchBinding
+    private lateinit var viewModel: SearchViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,21 +32,21 @@ class SearchFragment : Fragment() {
         // Inflate the layout for this fragment
         viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
 
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_search, container, false )
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
+
+        val rv = binding.searchRv
 
         binding.inputRecipe.setOnEditorActionListener { v, actionId, event ->
             var handled = false
-            if(actionId == EditorInfo.IME_ACTION_SEARCH) {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 // 수정 필요. EditText <-> liveData 오류로 인한 임시 코드
                 viewModel._mutableSearchInput.value = binding.inputRecipe.text.toString()
                 viewModel.searchRcp()
                 handled = true
-                Log.d("edit",viewModel._mutableSearchInput.value.toString())
+                Log.d("edit", viewModel._mutableSearchInput.value.toString())
             }
             handled
         }
-
-        val rv = binding.searchRv
 
         viewModel.searchList.observe(viewLifecycleOwner) {
             val adapter = RcpListAdapter(context!!, it as ArrayList<RecipeDto>)
@@ -64,15 +65,18 @@ class SearchFragment : Fragment() {
         }
 
         binding.filterBtn.setOnClickListener {
+
             val dialog = FilterDialog(context!!)
             dialog.showDialog()
 
-
+            dialog.setOnClickedListener(object : FilterDialog.FilterDialogListener {
+                override fun onApplyClicked(minRange: String, maxRange: String, foodType: String) {
+                    viewModel.filter(minRange, maxRange, foodType)
+                }
+            })
         }
-
 
         return binding.root
     }
-
-
 }
+
