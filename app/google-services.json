@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "945151494683",
+    "project_id": "recipeapplication-eb495",
+    "storage_bucket": "recipeapplication-eb495.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:945151494683:android:a4a452235f595fc4ffc6be",
+        "android_client_info": {
+          "package_name": "com.minhoi.recipeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "945151494683-jl3bgt78dbffj10n7k0g0394ebrsnq15.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.minhoi.recipeapp",
+            "certificate_hash": "2a7db00d507cdd585c7794182d09fa8b5fc6f751"
+          }
+        },
+        {
+          "client_id": "945151494683-jubg125fr2q6e4c0hl2beqc993kp10n3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHpRBJiWkVlWskislXSeCVMxA-Pc_SfPk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "945151494683-jubg125fr2q6e4c0hl2beqc993kp10n3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
