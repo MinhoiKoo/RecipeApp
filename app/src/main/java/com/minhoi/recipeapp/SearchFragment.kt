@@ -36,6 +36,14 @@ class SearchFragment : Fragment() {
 
         val rv = binding.searchRv
 
+        binding.homeBtn.setOnClickListener {
+            it.findNavController().navigate(R.id.action_searchFragment_to_homeFragment)
+        }
+
+        binding.mypageBtn.setOnClickListener {
+            it.findNavController().navigate(R.id.action_searchFragment_to_mypageFragment)
+        }
+
         binding.inputRecipe.setOnEditorActionListener { v, actionId, event ->
             var handled = false
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -58,10 +66,6 @@ class SearchFragment : Fragment() {
                 }
 
             })
-        }
-
-        binding.homeBtn.setOnClickListener {
-            it.findNavController().navigate(R.id.action_searchFragment_to_homeFragment)
         }
 
         binding.filterBtn.setOnClickListener {

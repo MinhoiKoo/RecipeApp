@@ -39,10 +39,16 @@ class HomeFragment : Fragment() {
             it.findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
         }
 
-        val range = 1..100
+        binding.mypageBtn.setOnClickListener {
+            it.findNavController().navigate(R.id.action_homeFragment_to_mypageFragment)
+        }
+
+
+
+        val range = 1..1100
         val indexNum = range.random()
 
-        viewModel.getRandomRcp(indexNum,indexNum+4)
+        viewModel.getRandomRcp(indexNum,indexNum+5)
 
 
 

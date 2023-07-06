@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_mypageFragment"
+            app:destination="@id/mypageFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -21,6 +24,21 @@
         tools:layout="@layout/fragment_search" >
         <action
             android:id="@+id/action_searchFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_mypageFragment"
+            app:destination="@id/mypageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mypageFragment"
+        android:name="com.minhoi.recipeapp.MypageFragment"
+        android:label="fragment_mypage"
+        tools:layout="@layout/fragment_mypage" >
+        <action
+            android:id="@+id/action_mypageFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_mypageFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
 </navigation>

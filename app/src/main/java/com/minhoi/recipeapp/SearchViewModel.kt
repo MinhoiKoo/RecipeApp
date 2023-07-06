@@ -29,7 +29,7 @@ class SearchViewModel : ViewModel() {
 
 
     fun searchRcp() {
-        val call = retrofitInstance.searchRecipe(1,200,_mutableSearchInput.value.toString())
+        val call = retrofitInstance.searchRecipe(1,1000,_mutableSearchInput.value.toString())
         call.enqueue(object : Callback<RcpResponse> {
             override fun onResponse(call: Call<RcpResponse>, response: Response<RcpResponse>) {
                 originaSearchList = response.body()?.COOKRCP01?.row
