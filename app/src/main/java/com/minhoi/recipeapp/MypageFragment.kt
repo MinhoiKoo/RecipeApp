@@ -1,5 +1,6 @@
 package com.minhoi.recipeapp
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -32,6 +33,12 @@ class MypageFragment : Fragment() {
         binding.searchBtn.setOnClickListener {
             it.findNavController().navigate(R.id.action_mypageFragment_to_searchFragment)
         }
+
+        binding.loginBtn.setOnClickListener {
+            startActivity(Intent(activity, LoginActivity::class.java))
+        }
+
+
 
         return binding.root
     }
