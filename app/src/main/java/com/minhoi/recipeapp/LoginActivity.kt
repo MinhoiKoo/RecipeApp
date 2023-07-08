@@ -29,6 +29,18 @@ class LoginActivity : AppCompatActivity() {
             } else if (token != null) {
                 //TODO: 최종적으로 카카오로그인 및 유저정보 가져온 결과
 
+                UserApiClient.instance.me{ user, error ->
+                    if (error != null) {
+                        // 에러 발생
+                    } else if (user != null) {
+                        val userId = user.id.toString()
+                        val nickname = user.kakaoAccount?.profile?.nickname
+                        val email = user.kakaoAccount?.email
+                        Log.d("user", "id :$userId\nnickname : $nickname\nemail : $email")
+                        nickname
+
+                    }
+                }
             }
         }
 

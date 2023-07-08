@@ -21,11 +21,10 @@ import java.security.MessageDigest
 
 
 class MainActivity : AppCompatActivity() {
-    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        KakaoSdk.init(this, "{NATIVE_APP_KEY}")
+
         // 기존 api 호출 방식에서 Firebase에 저장하여 호출하는 방식으로 변경.
 //        dataToFirebase()
 
