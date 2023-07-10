@@ -27,6 +27,7 @@
                 android:id="@+id/linearLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="0.3dp"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -46,13 +47,14 @@
                     android:id="@+id/notLoginLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:layout_marginTop="20dp"
+                        android:gravity="center"
                         android:text="아직 회원이 아니신가요?"
                         android:textSize="12sp" />
 
@@ -60,10 +62,10 @@
                         android:id="@+id/textView4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
                         android:gravity="center"
                         android:text="가입 후 나만의 레시피를 저장/등록해보세요!"
-                        android:textSize="12sp"
-                        android:layout_marginBottom="10dp" />
+                        android:textSize="12sp" />
 
                     <ImageView
                         android:id="@+id/loginBtn"
@@ -80,13 +82,27 @@
                     android:id="@+id/logined"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="gone"
                     android:orientation="vertical">
 
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:src="@drawable/defaultprofile2"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        app:shapeAppearance="@style/radius50"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="25dp"/>
+
                     <TextView
+                        android:id="@+id/userNickname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="로그인된상태"/>
+                        android:text="로그인된상태"
+                        android:gravity="center" />
+
+
+
+
+
 
                 </LinearLayout>
 
@@ -128,10 +144,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.3dp"
                 android:background="#999999"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:orientation="horizontal" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <LinearLayout
                 android:id="@+id/linearLayout"
@@ -149,7 +165,7 @@
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    android:src="@drawable/homebtn"/>
+                    android:src="@drawable/homebtn" />
 
                 <ImageView
                     android:layout_width="match_parent"
