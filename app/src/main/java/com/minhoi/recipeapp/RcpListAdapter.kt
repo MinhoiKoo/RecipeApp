@@ -48,9 +48,9 @@ class RcpListAdapter(val context: Context, private val dataSet: ArrayList<Recipe
         holder.itemView.setOnClickListener {
             itemClickListener.onClick(it, position)
         }
-        holder.rcpName.text = dataSet[position].RCP_NM
+        holder.rcpName.text = dataSet[position].rcp_NM
         Glide.with(context)
-            .load(dataSet[position].ATT_FILE_NO_MK)
+            .load(dataSet[position].att_FILE_NO_MK)
             .into(holder.rcpImage)
     }
 }

@@ -62,7 +62,7 @@ class SearchFragment : Fragment() {
             rv.layoutManager = GridLayoutManager(activity, 1)
             adapter.setItemClickListener(object : RcpListAdapter.OnItemClickListener {
                 override fun onClick(v: View, position: Int) {
-                    Log.d("kcal", it[position].INFO_ENG?.toDouble().toString())
+                    Log.d("kcal", it[position].info_ENG?.toDouble().toString())
                 }
 
             })

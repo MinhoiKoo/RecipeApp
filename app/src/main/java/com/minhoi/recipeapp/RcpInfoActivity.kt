@@ -5,13 +5,26 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.Glide
+import com.kakao.sdk.user.UserApiClient
+import com.minhoi.recipeapp.api.Ref
+import com.minhoi.recipeapp.databinding.ActivityRcpInfoBinding
 
 class RcpInfoActivity : AppCompatActivity() {
+    private lateinit var binding : ActivityRcpInfoBinding
+    private lateinit var userId : String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_rcp_info)
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_rcp_info)
+
+        UserApiClient.instance.me { user, error ->
+            userId = user?.id.toString()
+        }
+
         val intent = getIntent()
 
+        val rcpSeq = intent.getStringExtra("rcpSeq")
         val name = intent.getStringExtra("name")
         val ingredient = intent.getStringExtra("ingredient")
         val manual01 = intent.getStringExtra("manual01")
@@ -21,6 +34,8 @@ class RcpInfoActivity : AppCompatActivity() {
         val image01 = intent.getStringExtra("image01")
         val image02 = intent.getStringExtra("image02")
         val image03 = intent.getStringExtra("image03")
+
+        val imageSrc = intent.getStringExtra("imageSrc")
 
         val menuName = findViewById<TextView>(R.id.menuName)
         menuName.text = name
@@ -35,6 +50,13 @@ class RcpInfoActivity : AppCompatActivity() {
             finish()
         }
 
+        Glide.with(this)
+            .load(imageSrc)
+            .into(binding.menuImage)
+
+        binding.rcpBookmarkBtn.setOnClickListener {
+            Ref.userRef.child(userId).child("bookmarkedRecipe").child(rcpSeq!!).setValue("")
+        }
 
     }
 

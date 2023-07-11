@@ -4,111 +4,111 @@ import com.google.gson.annotations.SerializedName
 
 data class RecipeDto(
     @SerializedName("RCP_NM")
-    val RCP_NM : String = "",
+    val rcp_NM : String = "",
     @SerializedName("RCP_SEQ")
-    val RCP_SEQ : String = "",
+    val rcp_SEQ : String = "",
     // 이미지 경로
     @SerializedName("ATT_FILE_NO_MK")
-    val ATT_FILE_NO_MK : String? = "",
+    val att_FILE_NO_MK : String? = "",
     @SerializedName("ATT_FILE_NO_MAIN")
-    val ATT_FILE_NO_MAIN : String? = "",
+    val att_FILE_NO_MAIN: String? = "",
     @SerializedName("RCP_PARTS_DTLS")
-    val RCP_PARTS_DTLS : String? = "",
+    val rcp_PARTS_DTLS : String? = "",
     @SerializedName("MANUAL01")
-    val MANUAL01 : String? = "",
+    val manual01 : String? = "",
     @SerializedName("MANUAL02")
-    val MANUAL02 : String? = "",
+    val manual02 : String? = "",
     @SerializedName("MANUAL03")
-    val MANUAL03 : String? = "",
+    val manual03 : String? = "",
     @SerializedName("MANUAL04")
-    val MANUAL04 : String? = "",
+    val manual04 : String? = "",
     @SerializedName("MANUAL05")
-    val MANUAL05 : String? = "",
+    val manual05 : String? = "",
     @SerializedName("MANUAL06")
-    val MANUAL06 : String? = "",
+    val manual06 : String? = "",
     @SerializedName("MANUAL07")
-    val MANUAL07 : String? = "",
+    val manual07 : String? = "",
     @SerializedName("MANUAL08")
-    val MANUAL08 : String? = "",
+    val manual08 : String? = "",
     @SerializedName("MANUAL09")
-    val MANUAL09 : String? = "",
+    val manual09 : String? = "",
     @SerializedName("MANUAL10")
-    val MANUAL10 : String? = "",
+    val manual10 : String? = "",
     @SerializedName("MANUAL11")
-    val MANUAL11 : String? = "",
+    val manual11 : String? = "",
     @SerializedName("MANUAL12")
-    val MANUAL12 : String? = "",
+    val manual12 : String? = "",
     @SerializedName("MANUAL13")
-    val MANUAL13 : String? = "",
+    val manual13 : String? = "",
     @SerializedName("MANUAL14")
-    val MANUAL14 : String? = "",
+    val manual14 : String? = "",
     @SerializedName("MANUAL15")
-    val MANUAL15 : String? = "",
+    val manual15 : String? = "",
     @SerializedName("MANUAL16")
-    val MANUAL16 : String? = "",
+    val manual16 : String? = "",
     @SerializedName("MANUAL17")
-    val MANUAL17 : String? = "",
+    val manual17 : String? = "",
     @SerializedName("MANUAL18")
-    val MANUAL18 : String? = "",
+    val manual18 : String? = "",
     @SerializedName("MANUAL19")
-    val MANUAL19 : String? = "",
+    val manual19 : String? = "",
     @SerializedName("MANUAL20")
-    val MANUAL20 : String? = "",
+    val manual20 : String? = "",
     @SerializedName("MANUAL_IMG01")
-    val MANUAL_IMG01 : String? = "",
+    val manual_IMG01 : String? = "",
     @SerializedName("MANUAL_IMG02")
-    val MANUAL_IMG02 : String? = "",
+    val manual_IMG02 : String? = "",
     @SerializedName("MANUAL_IMG03")
-    val MANUAL_IMG03 : String? = "",
+    val manual_IMG03 : String? = "",
     @SerializedName("MANUAL_IMG04")
-    val MANUAL_IMG04 : String? = "",
+    val manual_IMG04 : String? = "",
     @SerializedName("MANUAL_IMG05")
-    val MANUAL_IMG05 : String? = "",
+    val manual_IMG05 : String? = "",
     @SerializedName("MANUAL_IMG06")
-    val MANUAL_IMG06 : String? = "",
+    val manual_IMG06 : String? = "",
     @SerializedName("MANUAL_IMG07")
-    val MANUAL_IMG07 : String? = "",
+    val manual_IMG07 : String? = "",
     @SerializedName("MANUAL_IMG08")
-    val MANUAL_IMG08 : String? = "",
+    val manual_IMG08 : String? = "",
     @SerializedName("MANUAL_IMG09")
-    val MANUAL_IMG09 : String? = "",
+    val manual_IMG09 : String? = "",
     @SerializedName("MANUAL_IMG10")
-    val MANUAL_IMG10 : String? = "",
+    val manual_IMG10 : String? = "",
     @SerializedName("MANUAL_IMG11")
-    val MANUAL_IMG11 : String? = "",
+    val manual_IMG11 : String? = "",
     @SerializedName("MANUAL_IMG12")
-    val MANUAL_IMG12 : String? = "",
+    val manual_IMG12 : String? = "",
     @SerializedName("MANUAL_IMG13")
-    val MANUAL_IMG13 : String? = "",
+    val manual_IMG13 : String? = "",
     @SerializedName("MANUAL_IMG14")
-    val MANUAL_IMG14 : String? = "",
+    val manual_IMG14 : String? = "",
     @SerializedName("MANUAL_IMG15")
-    val MANUAL_IMG15 : String? = "",
+    val manual_IMG15 : String? = "",
     @SerializedName("MANUAL_IMG16")
-    val MANUAL_IMG16 : String? = "",
+    val manual_IMG16 : String? = "",
     @SerializedName("MANUAL_IMG17")
-    val MANUAL_IMG17 : String? = "",
+    val manual_IMG17 : String? = "",
     @SerializedName("MANUAL_IMG18")
-    val MANUAL_IMG18 : String? = "",
+    val manual_IMG18 : String? = "",
     @SerializedName("MANUAL_IMG19")
-    val MANUAL_IMG19 : String? = "",
+    val manual_IMG19 : String? = "",
     @SerializedName("MANUAL_IMG20")
-    val MANUAL_IMG20 : String? = "",
+    val manual_IMG20 : String? = "",
     @SerializedName("RCP_NA_TIP")
-    val RCP_NA_TIP : String? = "",
+    val rcp_NA_TIP : String? = "",
     @SerializedName("INFO_ENG")
-    val INFO_ENG : String? = "",
+    val info_ENG : String? = "",
     @SerializedName("RCP_PAT2")
-    val RCP_PAT2 : String? = "",
+    val rcp_PAT2 : String? = "",
     @SerializedName("INFO_WGT")
-    val INFO_WGT : String? = "",
+    val info_WGT : String? = "",
     @SerializedName("INFO_CAR")
-    val INFO_CAR : String? = "",
+    val info_CAR : String? = "",
     @SerializedName("INFO_PRO")
-    val INFO_PRO : String? = "",
+    val info_PRO : String? = "",
     @SerializedName("INFO_FAT")
-    val INFO_FAT : String? = "",
+    val info_FAT : String? = "",
     @SerializedName("INFO_NA")
-    val INFO_NA : String? = ""
+    val info_NA : String? = ""
 
 )

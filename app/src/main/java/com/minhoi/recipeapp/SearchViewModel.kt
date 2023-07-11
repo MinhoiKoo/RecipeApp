@@ -58,7 +58,7 @@ class SearchViewModel : ViewModel() {
     private fun filterByKcal(list: List<RecipeDto>?, minAmount: String, maxAmount: String): List<RecipeDto>? {
         if (minAmount.isNotEmpty() && maxAmount.isNotEmpty()) {
             return list?.filter {
-                it.INFO_ENG?.toDoubleOrNull()!! in minAmount.toDouble()..maxAmount.toDouble()
+                it.info_ENG?.toDoubleOrNull()!! in minAmount.toDouble()..maxAmount.toDouble()
             }
         }
         return list
@@ -67,7 +67,7 @@ class SearchViewModel : ViewModel() {
     private fun filterByType(list: List<RecipeDto>?, type: String): List<RecipeDto>? {
         if (type.isNotEmpty()) {
             return list?.filter {
-                it.RCP_PAT2 == type
+                it.rcp_PAT2 == type
             }
         }
         return list
