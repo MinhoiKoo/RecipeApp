@@ -53,6 +53,11 @@ class MypageFragment : Fragment() {
             viewModel.kakaoLogin()
         }
 
+        binding.userBookmarkBtn.setOnClickListener {
+            val intent = Intent(requireActivity(), UserBookmarkActivity::class.java)
+            startActivity(intent)
+        }
+
         viewModel.isLogin.observe(viewLifecycleOwner) {
             if(it) {
                 binding.notLoginLayout.visibility = View.GONE

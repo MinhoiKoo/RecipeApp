@@ -7,12 +7,16 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.common.model.KakaoSdkError
 import com.kakao.sdk.user.UserApiClient
+import com.minhoi.recipeapp.api.Ref
 
 class MypageViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -47,8 +51,24 @@ class MypageViewModel(application: Application) : AndroidViewModel(application) 
                         val userId = user.id.toString()
                         val nickname = user.kakaoAccount?.profile?.nickname
                         val email = user.kakaoAccount?.email
-                        Log.d("user", "id :$userId\nnickname : $nickname\nemail : $email")
-                        Log.d("hasSignUp", user.hasSignedUp.toString())
+
+
+                        val postListener = object : ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                // 처음 가입한 사용자는 DB에 사용자 정보 저장, 이미 한번 로그인 한 사용자는 로그인만.
+                                if(!dataSnapshot.exists()) {
+                                    val user = User(userId, nickname.toString())
+                                    Ref.userRef.child(userId).setValue(user)
+                                }
+                            }
+
+                            override fun onCancelled(databaseError: DatabaseError) {
+                                // Getting Post failed, log a message
+
+                            }
+                        }
+                        Ref.userRef.child(userId).addValueEventListener(postListener)
+
                     }
                 }
             }

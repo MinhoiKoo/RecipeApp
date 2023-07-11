@@ -96,7 +96,7 @@
                         android:id="@+id/userNickname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="로그인된상태"
+                        android:text=""
                         android:gravity="center" />
 
 
@@ -122,6 +122,7 @@
 
 
                 <ImageView
+                    android:src="@drawable/bookmark"
                     android:id="@+id/userBookmarkBtn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
