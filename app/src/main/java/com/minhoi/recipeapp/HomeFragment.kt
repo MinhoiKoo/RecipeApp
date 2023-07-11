@@ -56,21 +56,23 @@ class HomeFragment : Fragment() {
 
 
         viewModel.liveRcpList.observe(viewLifecycleOwner) {
-            val adapter = RcpListAdapter(context!!, it as ArrayList<RecipeDto>)
+            val adapter = RcpListAdapter(requireContext(), it as ArrayList<RecipeDto>)
             rv.adapter = adapter
             rv.layoutManager = GridLayoutManager(activity, 2)
 
             adapter.setItemClickListener(object : RcpListAdapter.OnItemClickListener {
                 override fun onClick(v: View, position: Int) {
                     val intent = Intent(activity, RcpInfoActivity::class.java)
-                    intent.putExtra("name", it[position].RCP_NM)
-                    intent.putExtra("ingredient", it[position].RCP_PARTS_DTLS)
-                    intent.putExtra("manual01", it[position].MANUAL01)
-                    intent.putExtra("manual02", it[position].MANUAL02)
-                    intent.putExtra("manual03", it[position].MANUAL03)
-                    intent.putExtra("image01", it[position].MANUAL_IMG01)
-                    intent.putExtra("image02", it[position].MANUAL_IMG02)
-                    intent.putExtra("image03", it[position].MANUAL_IMG03)
+                    intent.putExtra("name", it[position].rcp_NM)
+                    intent.putExtra("ingredient", it[position].rcp_PARTS_DTLS)
+                    intent.putExtra("manual01", it[position].manual01)
+                    intent.putExtra("manual02", it[position].manual02)
+                    intent.putExtra("manual03", it[position].manual03)
+                    intent.putExtra("image01", it[position].manual_IMG01)
+                    intent.putExtra("image02", it[position].manual_IMG02)
+                    intent.putExtra("image03", it[position].manual_IMG03)
+                    intent.putExtra("imageSrc", it[position].att_FILE_NO_MK)
+                    intent.putExtra("rcpSeq", it[position].rcp_SEQ)
                     startActivity(intent)
                 }
             })

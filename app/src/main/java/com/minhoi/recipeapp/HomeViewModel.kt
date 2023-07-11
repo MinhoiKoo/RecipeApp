@@ -10,16 +10,18 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.minhoi.recipeapp.api.MyApi
+import com.minhoi.recipeapp.api.Ref
 import com.minhoi.recipeapp.api.RetrofitInstance
 import com.minhoi.recipeapp.model.RecipeDto
 
 class HomeViewModel : ViewModel() {
     private val retrofitInstance : MyApi = RetrofitInstance.getInstance().create(MyApi::class.java)
 
-    val myRef = Firebase.database.getReference("RecipeData")
     private var _mutableRcpList = MutableLiveData<List<RecipeDto>>()
     val liveRcpList : LiveData<List<RecipeDto>>
         get() = _mutableRcpList
+
+
 
     fun getRandomRcp() {
 
@@ -36,9 +38,10 @@ class HomeViewModel : ViewModel() {
 
                     count++
                     val recipeData = postSnapshot.getValue(RecipeDto::class.java)
+                    Log.d("recipeData",recipeData.toString())
+
                     if (recipeData != null) {
                         recipeList.add(recipeData)
-                        Log.d("recipeData",recipeData.toString())
                     }
 
 //                    val recipeData = postSnapshot.getValue(RecipeDto::class.java)
@@ -57,7 +60,7 @@ class HomeViewModel : ViewModel() {
 //                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
             }
         }
-        myRef.addListenerForSingleValueEvent(postListener)
+        Ref.recipeDataRef.addListenerForSingleValueEvent(postListener)
 
     }
 
