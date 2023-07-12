@@ -2,25 +2,22 @@ package com.minhoi.recipeapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.kakao.sdk.user.UserApiClient
-import com.minhoi.recipeapp.api.Ref
 import com.minhoi.recipeapp.databinding.ActivityRcpInfoBinding
 
 class RcpInfoActivity : AppCompatActivity() {
     private lateinit var binding : ActivityRcpInfoBinding
     private lateinit var userId : String
+    private lateinit var viewModel : RcpInfoViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_rcp_info)
-
-        UserApiClient.instance.me { user, error ->
-            userId = user?.id.toString()
-        }
+        viewModel = ViewModelProvider(this).get(RcpInfoViewModel::class.java)
 
         val intent = getIntent()
 
@@ -54,10 +51,30 @@ class RcpInfoActivity : AppCompatActivity() {
             .load(imageSrc)
             .into(binding.menuImage)
 
-        binding.rcpBookmarkBtn.setOnClickListener {
-            Ref.userRef.child(userId).child("bookmarkedRecipe").child(rcpSeq!!).setValue("")
+        UserApiClient.instance.me { user, error ->
+            userId = user?.id.toString()
+            viewModel.isBookmark(userId, rcpSeq!!)
         }
 
+
+        viewModel.isBookmarked.observe(this) {
+            if(it){
+                binding.rcpBookmarkBtn.setImageResource(R.drawable.bookmarked)
+            } else {
+                binding.rcpBookmarkBtn.setImageResource(R.drawable.bookmark)
+            }
+        }
+
+        binding.rcpBookmarkBtn.setOnClickListener {
+            UserApiClient.instance.me { user, error ->
+                if(viewModel.isBookmarked.value == false) {
+                    viewModel.setBookmark(user?.id.toString(), rcpSeq!!)
+                } else {
+                    viewModel.deleteBookmark(user?.id.toString(), rcpSeq!!)
+                }
+            }
+
+        }
     }
 
     private fun split(str : String) : String {
