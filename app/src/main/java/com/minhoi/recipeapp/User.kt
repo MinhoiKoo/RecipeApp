@@ -1,6 +1,7 @@
 package com.minhoi.recipeapp
 
-data class User(
+data class User (
+    val id : String,
     val nickName : String,
-    val bookmarkedRecipe : Int
+    val bookmarkedRecipe : Int? = null
 )
