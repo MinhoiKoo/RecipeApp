@@ -1,8 +1,10 @@
 package com.minhoi.recipeapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.DataSnapshot
@@ -43,6 +45,25 @@ class UserBookmarkActivity : AppCompatActivity() {
         val rv = binding.bookmarkRv
         rv.adapter = adapter
         rv.layoutManager = LinearLayoutManager(applicationContext)
+
+        adapter.setItemClickListener(object : UserBookmarkRcpAdapter.OnItemClickListener {
+            override fun onClick(v: View, item: RecipeDto) {
+                val intent = Intent(applicationContext, RcpInfoActivity::class.java)
+                intent.putExtra("name", item.rcp_NM)
+                intent.putExtra("ingredient", item.rcp_PARTS_DTLS)
+                intent.putExtra("manual01", item.manual01)
+                intent.putExtra("manual02", item.manual02)
+                intent.putExtra("manual03", item.manual03)
+                intent.putExtra("image01", item.manual_IMG01)
+                intent.putExtra("image02", item.manual_IMG02)
+                intent.putExtra("image03", item.manual_IMG03)
+                intent.putExtra("imageSrc", item.att_FILE_NO_MK)
+                intent.putExtra("rcpSeq", item.rcp_SEQ)
+                startActivity(intent)
+            }
+
+
+        })
 
     }
 

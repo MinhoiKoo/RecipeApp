@@ -2,6 +2,7 @@ package com.minhoi.recipeapp
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -14,6 +15,15 @@ import com.minhoi.recipeapp.databinding.RecipeRandomItemRowBinding
 import com.minhoi.recipeapp.model.RecipeDto
 
 class UserBookmarkRcpAdapter(private val context : Context, private val dataSet : ArrayList<RecipeDto>) : RecyclerView.Adapter<UserBookmarkRcpAdapter.ViewHolder>() {
+
+    interface OnItemClickListener {
+        fun onClick(v : View, item : RecipeDto)
+    }
+
+    fun setItemClickListener(onItemClickListener: OnItemClickListener) {
+        this.itemClickListener = onItemClickListener
+    }
+    private lateinit var itemClickListener : OnItemClickListener
 
     class ViewHolder(binding : RecipeBookmarkItemRowBinding) : RecyclerView.ViewHolder(binding.root) {
         val rcpName : TextView
@@ -41,6 +51,9 @@ class UserBookmarkRcpAdapter(private val context : Context, private val dataSet 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val ref = Ref()
+        holder.itemView.setOnClickListener {
+            itemClickListener.onClick(it, dataSet[position])
+        }
         holder.rcpName.text = dataSet[position].rcp_NM
         holder.whenBookmarked.text = ref.getDate()
         Glide.with(context)
