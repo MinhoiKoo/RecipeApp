@@ -33,6 +33,14 @@ class MypageViewModel(application: Application) : AndroidViewModel(application) 
         _isLogin.value = false
     }
 
+    fun nickNameChange(nickName : String) {
+        UserApiClient.instance.me { user, error ->
+            val userId = user?.id.toString()
+            Ref.userRef.child(userId).child("nickName").setValue(nickName)
+        }
+        userNickname.value = nickName
+    }
+
     fun kakaoLogin() {
         // 카카오계정으로 로그인 공통 callback 구성
         // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
@@ -115,11 +123,13 @@ class MypageViewModel(application: Application) : AndroidViewModel(application) 
                     _isLogin.value = true
                     UserApiClient.instance.me { user, error ->
                         if (user != null) {
-                            userNickname.value = user.kakaoAccount?.profile?.nickname ?: "닉네임 없음"
+                            Ref.userRef.child(user.id.toString()).child("nickName").get().addOnSuccessListener {
+                                userNickname.value = it.value.toString()
+                            }.addOnFailureListener {
+                                Log.e("firebase", "Error getting data", it)
+                            }
                         }
                     }
-
-
                 }
             }
         }
@@ -128,8 +138,9 @@ class MypageViewModel(application: Application) : AndroidViewModel(application) 
 //            binding.notLoginLayout.visibility = View.VISIBLE
             _isLogin.value = false
 
-
         }
     }
+
+
 
 }

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -54,8 +55,28 @@ class MypageFragment : Fragment() {
         }
 
         binding.userBookmarkBtn.setOnClickListener {
-            val intent = Intent(requireActivity(), UserBookmarkActivity::class.java)
-            startActivity(intent)
+            if(viewModel.isLogin.value == true) {
+                val intent = Intent(requireActivity(), UserBookmarkActivity::class.java)
+                startActivity(intent)
+            } else {
+                Toast.makeText(requireActivity(), "로그인 후 이용 가능합니다.", Toast.LENGTH_LONG).show()
+            }
+        }
+
+        binding.editNickName.setOnClickListener {
+            val dialog = NicknameChangeDialog(requireContext())
+            dialog.showDialog()
+
+            dialog.setOnClickedListener(object : NicknameChangeDialog.NicknameChangeDialogListener {
+                override fun onApplyClicked(nickName: String) {
+                    viewModel.nickNameChange(nickName)
+                }
+
+            })
+        }
+
+        binding.userProfileImage.setOnClickListener {
+
         }
 
         viewModel.isLogin.observe(viewLifecycleOwner) {

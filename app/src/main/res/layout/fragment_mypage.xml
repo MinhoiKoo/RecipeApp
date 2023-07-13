@@ -85,6 +85,7 @@
                     android:orientation="vertical">
 
                     <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/userProfileImage"
                         android:src="@drawable/defaultprofile2"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
@@ -92,12 +93,34 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="25dp"/>
 
-                    <TextView
-                        android:id="@+id/userNickname"
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:gravity="center" />
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/userNickname"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="name"
+                            android:textSize="17dp"
+                            android:layout_marginTop="10dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/editNickName"
+                            android:src="@drawable/edit"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="8dp"
+                            app:layout_constraintStart_toEndOf="@+id/userNickname"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 
@@ -121,12 +144,28 @@
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
 
-                <ImageView
-                    android:src="@drawable/bookmark"
-                    android:id="@+id/userBookmarkBtn"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:src="@drawable/bookmark"
+                        android:id="@+id/userBookmarkBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="20dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="북마크한 레시피"
+                        android:textSize="18dp"
+                        android:gravity="center"/>
+
+                </LinearLayout>
 
                 <ImageView
                     android:id="@+id/userRecipeAddBtn"
