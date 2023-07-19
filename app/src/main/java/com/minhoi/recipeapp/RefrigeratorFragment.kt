@@ -9,9 +9,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -56,6 +59,11 @@ class RefrigeratorFragment : Fragment() {
         val input = binding.inputIngredient
         val array = mutableListOf<String>()
 
+        val rv = binding.ingredientRv
+        val adapter = IngredientListAdapter()
+        rv.adapter = adapter
+        rv.layoutManager = LinearLayoutManager(requireContext())
+
         input.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -73,23 +81,33 @@ class RefrigeratorFragment : Fragment() {
                         input.text.clear()
                     } else {
                         array.add(ingredient)
+                        adapter.setIngredients(array)
                         input.text.clear()
                     }
-
                     Log.d("array", array.toString())
                 }
             }
-
         })
 
 
+        // 재료 추가 후 검색 버튼 누르면 재료 리스트를 Intent에 담아서 전달.
         binding.searchRefriBtn.setOnClickListener {
 
-            getRecipe(array) {
-                val intent = Intent(getActivity(), RecipeListActivity::class.java)
-                intent.putExtra("recipeList", it)
+            if(array.size != 0) {
+                val intent = Intent(activity, RecipeListActivity::class.java)
+                intent.putExtra("ingredientList", array as ArrayList<String>)
                 startActivity(intent)
             }
+
+//            getRecipe(array) {
+//                if(it.size != 0) {
+//                    val intent = Intent(getActivity(), RecipeListActivity::class.java)
+//                    intent.putExtra("recipeList", it)
+//                    startActivity(intent)
+//                } else {
+//                    Toast.makeText(requireContext(), "재료르 입력해주세요.", Toast.LENGTH_LONG).show()
+//                }
+//            }
 
         }
 
@@ -99,37 +117,6 @@ class RefrigeratorFragment : Fragment() {
 
     // 레시피 전체 정보를 받아와서 레시피의 재료가 사용자가 선택한 재료를 필터링하여 리스트에 추가.
 
-    private fun getRecipe(ingredients: List<String>, callback: (ArrayList<String>) -> Unit) {
-        val filterKeyList = arrayListOf<String>()
-        var remainingIngredients = ingredients.size
 
-        ingredients.forEach { ingredient ->
-            Ref.recipeDataRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    for (data in dataSnapshot.children) {
-                        val value = data.getValue(RecipeDto::class.java)
-                        val key = data.key.toString()
-                        if (value != null && value.rcp_PARTS_DTLS?.contains(ingredient) == true) {
-                            filterKeyList.add(key)
-                            Log.d("filter", key)
-                        }
-                    }
-                    remainingIngredients--
-                    if (remainingIngredients == 0) {
-                        // All ingredients have been processed, invoke the callback here.
-                        callback(filterKeyList)
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    remainingIngredients--
-                    if (remainingIngredients == 0) {
-                        // All ingredients have been processed, invoke the callback here.
-                        callback(filterKeyList)
-                    }
-                }
-            })
-        }
-    }
 
 }

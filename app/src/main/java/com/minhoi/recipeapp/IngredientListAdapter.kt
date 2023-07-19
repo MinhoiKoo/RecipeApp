@@ -7,15 +7,20 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class IngredientListAdapter(private val onDeleteClickListener: OnDeleteClickListener) :
+class IngredientListAdapter() :
     RecyclerView.Adapter<IngredientListAdapter.IngredientViewHolder>() {
 
     private val ingredientList = mutableListOf<String>()
+    private lateinit var onDeleteClickListener: OnDeleteClickListener
 
     fun setIngredients(ingredients: List<String>) {
         ingredientList.clear()
         ingredientList.addAll(ingredients)
         notifyDataSetChanged()
+    }
+
+    fun onDeleteClicked(onDeleteClickListener: OnDeleteClickListener) {
+        this.onDeleteClickListener = onDeleteClickListener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientViewHolder {
