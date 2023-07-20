@@ -93,30 +93,27 @@ class RefrigeratorFragment : Fragment() {
         // 재료 추가 후 검색 버튼 누르면 재료 리스트를 Intent에 담아서 전달.
         binding.searchRefriBtn.setOnClickListener {
 
-            if(array.size != 0) {
+            if (array.size != 0) {
                 val intent = Intent(activity, RecipeListActivity::class.java)
                 intent.putExtra("ingredientList", array as ArrayList<String>)
                 startActivity(intent)
+            } else {
+                Toast.makeText(requireContext(), "재료를 입력해주세요.", Toast.LENGTH_LONG).show()
             }
+        }
+
 
 //            getRecipe(array) {
 //                if(it.size != 0) {
 //                    val intent = Intent(getActivity(), RecipeListActivity::class.java)
 //                    intent.putExtra("recipeList", it)
 //                    startActivity(intent)
-//                } else {
-//                    Toast.makeText(requireContext(), "재료르 입력해주세요.", Toast.LENGTH_LONG).show()
 //                }
 //            }
 
-        }
+
 
         return binding.root
     }
-
-
-    // 레시피 전체 정보를 받아와서 레시피의 재료가 사용자가 선택한 재료를 필터링하여 리스트에 추가.
-
-
 
 }

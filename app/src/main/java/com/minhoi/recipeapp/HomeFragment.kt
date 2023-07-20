@@ -43,6 +43,10 @@ class HomeFragment : Fragment() {
             it.findNavController().navigate(R.id.action_homeFragment_to_mypageFragment)
         }
 
+        binding.refrigeratorBtn.setOnClickListener {
+            it.findNavController().navigate(R.id.action_homeFragment_to_refrigeratorFragment)
+        }
+
 
 
         val range = 1..1100

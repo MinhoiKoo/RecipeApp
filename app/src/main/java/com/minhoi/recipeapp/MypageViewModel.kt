@@ -67,6 +67,8 @@ class MypageViewModel(application: Application) : AndroidViewModel(application) 
                                 if(!dataSnapshot.exists()) {
                                     val user = User(userId, nickname.toString())
                                     Ref.userRef.child(userId).setValue(user)
+                                } else {
+                                    userNickname.value = nickname.toString()
                                 }
                             }
 
