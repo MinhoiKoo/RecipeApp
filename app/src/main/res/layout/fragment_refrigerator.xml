@@ -13,6 +13,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="냉장고에 있는 재료를 입력해보세요\n재료에 맞는 레시피를 추천해드립니다!"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
 
             <EditText
                 android:id="@+id/inputIngredient"
@@ -22,18 +32,17 @@
                 android:hint="띄어쓰기로 재료를 구분해주세요!"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/ingredientRv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
+                android:layout_marginTop="152dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/inputIngredient" />
-
-
 
             <Button
                 android:id="@+id/searchRefriBtn"
@@ -44,7 +53,7 @@
                 android:textSize="18dp"
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent" />
 
             <LinearLayout
                 android:id="@+id/linearLayout"
