@@ -9,27 +9,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.minhoi.recipeapp.api.Ref
+import com.minhoi.recipeapp.adapter.IngredientListAdapter
 import com.minhoi.recipeapp.databinding.FragmentRefrigeratorBinding
-import com.minhoi.recipeapp.model.RecipeDto
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class RefrigeratorFragment : Fragment() {
     private val TAG = RefrigeratorFragment::class.java.simpleName
 
     private lateinit var binding : FragmentRefrigeratorBinding
+    private lateinit var adapter : IngredientListAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -60,7 +52,15 @@ class RefrigeratorFragment : Fragment() {
         val array = mutableListOf<String>()
 
         val rv = binding.ingredientRv
-        val adapter = IngredientListAdapter()
+        adapter = IngredientListAdapter {
+            array.removeAt(it)
+            adapter.setIngredients(array)
+        }
+
+        //onDeleteListener
+
+
+
         rv.adapter = adapter
         rv.layoutManager = LinearLayoutManager(requireContext())
 
@@ -93,7 +93,7 @@ class RefrigeratorFragment : Fragment() {
         // 재료 추가 후 검색 버튼 누르면 재료 리스트를 Intent에 담아서 전달.
         binding.searchRefriBtn.setOnClickListener {
 
-            if (array.size != 0) {
+            if (array.isNotEmpty()) {
                 val intent = Intent(activity, RecipeListActivity::class.java)
                 intent.putExtra("ingredientList", array as ArrayList<String>)
                 startActivity(intent)
