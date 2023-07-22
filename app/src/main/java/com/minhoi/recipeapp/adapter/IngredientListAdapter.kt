@@ -1,4 +1,4 @@
-package com.minhoi.recipeapp
+package com.minhoi.recipeapp.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,22 +6,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.minhoi.recipeapp.R
 
-class IngredientListAdapter() :
+class IngredientListAdapter(private val onDeleteClickListener : (Int) -> Unit) :
     RecyclerView.Adapter<IngredientListAdapter.IngredientViewHolder>() {
 
     private val ingredientList = mutableListOf<String>()
-    private lateinit var onDeleteClickListener: OnDeleteClickListener
-
-    fun setIngredients(ingredients: List<String>) {
-        ingredientList.clear()
-        ingredientList.addAll(ingredients)
-        notifyDataSetChanged()
-    }
-
-    fun onDeleteClicked(onDeleteClickListener: OnDeleteClickListener) {
-        this.onDeleteClickListener = onDeleteClickListener
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -29,7 +19,7 @@ class IngredientListAdapter() :
         return IngredientViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: IngredientViewHolder, position: Int) {
+    override fun onBindViewHolder(holder : IngredientViewHolder, position : Int) {
         val ingredient = ingredientList[position]
         holder.bind(ingredient)
     }
@@ -45,12 +35,15 @@ class IngredientListAdapter() :
         fun bind(ingredient: String) {
             textViewIngredient.text = ingredient
             imageViewDelete.setOnClickListener {
-                onDeleteClickListener.onDeleteClick(adapterPosition)
+                onDeleteClickListener(adapterPosition)
             }
         }
     }
 
-    interface OnDeleteClickListener {
-        fun onDeleteClick(position: Int)
+    fun setIngredients(ingredients: List<String>) {
+        ingredientList.clear()
+        ingredientList.addAll(ingredients)
+        notifyDataSetChanged()
     }
+
 }

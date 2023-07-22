@@ -1,4 +1,4 @@
-package com.minhoi.recipeapp
+package com.minhoi.recipeapp.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,21 +9,21 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.minhoi.recipeapp.R
 import com.minhoi.recipeapp.databinding.RecipeRandomItemRowBinding
 import com.minhoi.recipeapp.model.RecipeDto
 
-class RcpListAdapter(val context: Context, private val dataSet: ArrayList<RecipeDto> ) : RecyclerView.Adapter<RcpListAdapter.ViewHolder>() {
+class RecipeListAdapter(val context: Context, private val itemClick : (RecipeDto) -> Unit)
+    : RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {
 
     interface OnItemClickListener {
         fun onClick(v : View, position : Int)
     }
 
-    fun setItemClickListener(onItemClickListener: OnItemClickListener) {
-        this.itemClickListener = onItemClickListener
-    }
     private lateinit var itemClickListener : OnItemClickListener
+    private val recipeList = mutableListOf<RecipeDto>()
 
-    class ViewHolder(binding : RecipeRandomItemRowBinding ) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(binding : RecipeRandomItemRowBinding ) : RecyclerView.ViewHolder(binding.root) {
         val rcpImage : ImageView
         val rcpName : TextView
 
@@ -31,6 +31,18 @@ class RcpListAdapter(val context: Context, private val dataSet: ArrayList<Recipe
             rcpImage = binding.rcpImage
             rcpName = binding.rcpName
         }
+
+        fun bind(items : RecipeDto) {
+            itemView.setOnClickListener {
+                itemClick(recipeList[adapterPosition])
+            }
+            rcpName.text = items.rcp_NM
+
+            Glide.with(context)
+                .load(items.att_FILE_NO_MK)
+                .into(rcpImage)
+        }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -41,16 +53,21 @@ class RcpListAdapter(val context: Context, private val dataSet: ArrayList<Recipe
     }
 
     override fun getItemCount(): Int {
-        return dataSet.size
+        return recipeList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.itemView.setOnClickListener {
-            itemClickListener.onClick(it, position)
-        }
-        holder.rcpName.text = dataSet[position].rcp_NM
-        Glide.with(context)
-            .load(dataSet[position].att_FILE_NO_MK)
-            .into(holder.rcpImage)
+        holder.bind(recipeList[position])
     }
+
+    fun setLists(items : List<RecipeDto>) {
+        recipeList.clear()
+        recipeList.addAll(items)
+        notifyDataSetChanged()
+    }
+
+
+
+
+
 }
