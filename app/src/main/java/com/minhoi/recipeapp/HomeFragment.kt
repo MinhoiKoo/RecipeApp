@@ -12,14 +12,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.kakao.sdk.user.UserApiClient
+import com.minhoi.recipeapp.adapter.RecipeListAdapter
 import com.minhoi.recipeapp.databinding.FragmentHomeBinding
-import com.minhoi.recipeapp.model.RecipeDto
 
 class HomeFragment : Fragment() {
 
     private lateinit var viewModel : HomeViewModel
     private lateinit var binding : FragmentHomeBinding
+    private var userId : String? = null
+    private lateinit var myAdapter : RecipeListAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,19 +34,33 @@ class HomeFragment : Fragment() {
     ): View? {
         Log.d("onCreateView", "onCreateView")
         // Inflate the layout for this fragment
+        UserApiClient.instance.me { user, error ->
+            if (user != null) {
+                userId = user.id.toString()
+            }
+        }
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
 
-        binding.searchBtn.setOnClickListener {
-            it.findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
+        binding.apply {
+            searchBtn.setOnClickListener {
+                it.findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
+            }
+
+            mypageBtn.setOnClickListener {
+                it.findNavController().navigate(R.id.action_homeFragment_to_mypageFragment)
+            }
+
+            refrigeratorBtn.setOnClickListener {
+                it.findNavController().navigate(R.id.action_homeFragment_to_refrigeratorFragment)
+            }
         }
 
-        binding.mypageBtn.setOnClickListener {
-            it.findNavController().navigate(R.id.action_homeFragment_to_mypageFragment)
-        }
-
-        binding.refrigeratorBtn.setOnClickListener {
-            it.findNavController().navigate(R.id.action_homeFragment_to_refrigeratorFragment)
+        binding.btnAddUserRecipe.setOnClickListener {
+            userId?.let{
+                startActivity(Intent(requireActivity(), UserRecipeAddActivity::class.java))
+            }
         }
 
 
@@ -54,32 +70,33 @@ class HomeFragment : Fragment() {
 
         viewModel.getRandomRcp()
 
-
-
-        val rv = binding.recipeRv
-
-
-        viewModel.liveRcpList.observe(viewLifecycleOwner) {
-            val adapter = RcpListAdapter(requireContext(), it as ArrayList<RecipeDto>)
-            rv.adapter = adapter
-            rv.layoutManager = GridLayoutManager(activity, 2)
-
-            adapter.setItemClickListener(object : RcpListAdapter.OnItemClickListener {
-                override fun onClick(v: View, position: Int) {
-                    val intent = Intent(activity, RcpInfoActivity::class.java)
-                    intent.putExtra("name", it[position].rcp_NM)
-                    intent.putExtra("ingredient", it[position].rcp_PARTS_DTLS)
-                    intent.putExtra("manual01", it[position].manual01)
-                    intent.putExtra("manual02", it[position].manual02)
-                    intent.putExtra("manual03", it[position].manual03)
-                    intent.putExtra("image01", it[position].manual_IMG01)
-                    intent.putExtra("image02", it[position].manual_IMG02)
-                    intent.putExtra("image03", it[position].manual_IMG03)
-                    intent.putExtra("imageSrc", it[position].att_FILE_NO_MK)
-                    intent.putExtra("rcpSeq", it[position].rcp_SEQ)
-                    startActivity(intent)
+        myAdapter = RecipeListAdapter(requireContext(),
+            {
+                val intent = Intent(requireActivity(), RcpInfoActivity::class.java)
+                intent.apply {
+                    putExtra("name", it.rcp_NM)
+                    putExtra("ingredient", it.rcp_PARTS_DTLS)
+                    putExtra("manual01", it.manual01)
+                    putExtra("manual02", it.manual02)
+                    putExtra("manual03", it.manual03)
+                    putExtra("image01", it.manual_IMG01)
+                    putExtra("image02", it.manual_IMG02)
+                    putExtra("image03", it.manual_IMG03)
+                    putExtra("imageSrc", it.att_FILE_NO_MK)
+                    putExtra("rcpSeq", it.rcp_SEQ)
                 }
-            })
+                startActivity(intent)
+            }
+        )
+
+        viewModel.liveRcpList.observe(this) {
+            myAdapter.setLists(it)
+        }
+
+        binding.recipeRv.apply {
+            adapter = myAdapter
+            layoutManager = GridLayoutManager(requireContext(), 2)
+
         }
 
         return binding.root
