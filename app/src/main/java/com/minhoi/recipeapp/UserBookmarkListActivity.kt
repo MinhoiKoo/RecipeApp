@@ -6,31 +6,33 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.kakao.sdk.user.UserApiClient
+import com.minhoi.recipeapp.adapter.UserBookmarkListAdapter
 import com.minhoi.recipeapp.api.Ref
 import com.minhoi.recipeapp.databinding.ActivityUserBookmarkBinding
 import com.minhoi.recipeapp.model.RecipeDto
 import kotlinx.coroutines.*
 
-class UserBookmarkActivity : AppCompatActivity() {
+class UserBookmarkListActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUserBookmarkBinding
     private lateinit var userId: String
     private val bookmarkRcpList = arrayListOf<RecipeDto>()
-    private val adapter = UserBookmarkRcpAdapter(this, bookmarkRcpList)
+    private val bookmarkdTimeList = arrayListOf<String>()
+    private val adapter = UserBookmarkListAdapter(this, bookmarkRcpList, bookmarkdTimeList)
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user_bookmark)
 
-        val coroutineScope = CoroutineScope(Dispatchers.Main)
 
-        coroutineScope.launch {
+        lifecycleScope.launch {
             try {
                 val userId = getUserId()
 
@@ -46,7 +48,7 @@ class UserBookmarkActivity : AppCompatActivity() {
         rv.adapter = adapter
         rv.layoutManager = LinearLayoutManager(applicationContext)
 
-        adapter.setItemClickListener(object : UserBookmarkRcpAdapter.OnItemClickListener {
+        adapter.setItemClickListener(object : UserBookmarkListAdapter.OnItemClickListener {
             override fun onClick(v: View, item: RecipeDto) {
                 val intent = Intent(applicationContext, RcpInfoActivity::class.java)
                 intent.putExtra("name", item.rcp_NM)
@@ -84,15 +86,20 @@ class UserBookmarkActivity : AppCompatActivity() {
         completableDeferred.await()
     }
 
-    private suspend fun getBookmarkedRecipeKeys(userId: String): List<String> =
+    private suspend fun getBookmarkedRecipeKeys(userId: String): HashMap<String, Any> =
         withContext(Dispatchers.IO) {
-            val completableDeferred = CompletableDeferred<List<String>>()
+            val completableDeferred = CompletableDeferred<HashMap<String, Any>>()
+            val bookmarkRecipeMap = HashMap<String, Any>()
 
             Ref.userRef.child(userId).child("bookmarkedRecipe")
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val keys = dataSnapshot.children.mapNotNull { it.key }
-                        completableDeferred.complete(keys)
+                        for (data in dataSnapshot.children) {
+                            val key = data.key
+                            val date = convertDateFormat(data.value.toString())
+                            key?.let { bookmarkRecipeMap.put(it, date) }
+                        }
+                        completableDeferred.complete(bookmarkRecipeMap)
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {
@@ -103,9 +110,10 @@ class UserBookmarkActivity : AppCompatActivity() {
             completableDeferred.await()
         }
 
-    private suspend fun getBookmarkedRecipes(keys: List<String>) = withContext(Dispatchers.IO) {
+    private suspend fun getBookmarkedRecipes(recipeMap : HashMap<String, Any>) = withContext(Dispatchers.IO) {
 
-        keys.forEach { recipeDataKey ->
+        recipeMap.forEach { (recipeDataKey, date) ->
+
             val completableDeferred = CompletableDeferred<RecipeDto>()
 
             Ref.recipeDataRef.child(recipeDataKey)
@@ -125,6 +133,7 @@ class UserBookmarkActivity : AppCompatActivity() {
             try {
                 val recipeData = completableDeferred.await()
                 bookmarkRcpList.add(recipeData)
+                bookmarkdTimeList.add(date.toString())
                 Log.d("bookmark", recipeData.toString())
             } catch (e: Exception) {
                 // 에러 처리
@@ -134,5 +143,14 @@ class UserBookmarkActivity : AppCompatActivity() {
         withContext(Dispatchers.Main) {
             adapter.notifyDataSetChanged()
         }
+    }
+
+    private fun convertDateFormat(rawDate: String): String {
+
+        // {whenBookmarked=yyyy/DD/MM} 에서 = 뒤에 날짜만 출력
+        val dateStartIndex = rawDate.indexOf("=") + 1
+
+        // 마지막 중괄호 제거
+        return rawDate.substring(dateStartIndex, rawDate.length-1)
     }
 }

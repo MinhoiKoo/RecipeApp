@@ -1,4 +1,4 @@
-package com.minhoi.recipeapp
+package com.minhoi.recipeapp.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,12 +9,12 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.minhoi.recipeapp.api.Ref
-import com.minhoi.recipeapp.databinding.RecipeBookmarkItemRowBinding
-import com.minhoi.recipeapp.databinding.RecipeRandomItemRowBinding
+import com.minhoi.recipeapp.R
+import com.minhoi.recipeapp.databinding.RecipeListItemRowBinding
 import com.minhoi.recipeapp.model.RecipeDto
 
-class UserBookmarkRcpAdapter(private val context : Context, private val dataSet : ArrayList<RecipeDto>) : RecyclerView.Adapter<UserBookmarkRcpAdapter.ViewHolder>() {
+class UserBookmarkListAdapter(private val context : Context, private val dataSet : ArrayList<RecipeDto>,
+                              private val bookmarkedTime : ArrayList<String>) : RecyclerView.Adapter<UserBookmarkListAdapter.ViewHolder>() {
 
     interface OnItemClickListener {
         fun onClick(v : View, item : RecipeDto)
@@ -25,22 +25,22 @@ class UserBookmarkRcpAdapter(private val context : Context, private val dataSet 
     }
     private lateinit var itemClickListener : OnItemClickListener
 
-    class ViewHolder(binding : RecipeBookmarkItemRowBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(binding : RecipeListItemRowBinding) : RecyclerView.ViewHolder(binding.root) {
         val rcpName : TextView
         val rcpImage : ImageView
-        val whenBookmarked : TextView
+        val whenEdited : TextView
 
         init {
             rcpName = binding.bookmarkRcpName
             rcpImage = binding.bookmarkRcpImage
-            whenBookmarked = binding.bookmarkRcpDate
+            whenEdited = binding.bookmarkRcpDate
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = DataBindingUtil.inflate<RecipeBookmarkItemRowBinding>(
+        val view = DataBindingUtil.inflate<RecipeListItemRowBinding>(
             LayoutInflater.from(parent.context),
-            R.layout.recipe_bookmark_item_row, parent, false)
+            R.layout.recipe_list_item_row, parent, false)
 
         return ViewHolder(view)
     }
@@ -50,12 +50,12 @@ class UserBookmarkRcpAdapter(private val context : Context, private val dataSet 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val ref = Ref()
+
         holder.itemView.setOnClickListener {
             itemClickListener.onClick(it, dataSet[position])
         }
         holder.rcpName.text = dataSet[position].rcp_NM
-        holder.whenBookmarked.text = ref.getDate()
+        holder.whenEdited.text = bookmarkedTime[position]
         Glide.with(context)
             .load(dataSet[position].att_FILE_NO_MK)
             .into(holder.rcpImage)
