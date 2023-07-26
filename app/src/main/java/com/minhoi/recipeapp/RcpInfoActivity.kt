@@ -4,16 +4,20 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.kakao.sdk.user.UserApiClient
+import com.minhoi.recipeapp.api.Ref
 import com.minhoi.recipeapp.databinding.ActivityRcpInfoBinding
+import com.minhoi.recipeapp.model.RecipeDto
 
 class RcpInfoActivity : AppCompatActivity() {
     private lateinit var binding : ActivityRcpInfoBinding
     private lateinit var userId : String
     private lateinit var viewModel : RcpInfoViewModel
+    private lateinit var recipeData : RecipeDto
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_rcp_info)
@@ -22,6 +26,13 @@ class RcpInfoActivity : AppCompatActivity() {
         val intent = getIntent()
 
         val rcpSeq = intent.getStringExtra("rcpSeq")
+
+        Ref.recipeDataRef.child(rcpSeq.toString()).get().addOnSuccessListener {
+            recipeData = it.getValue(RecipeDto::class.java)!!
+        }.addOnFailureListener{
+            Toast.makeText(this, "$it 오류가 발생하였습니다. 다시 시도해주세요.", Toast.LENGTH_LONG).show()
+        }
+
         val name = intent.getStringExtra("name")
         val ingredient = intent.getStringExtra("ingredient")
         val manual01 = intent.getStringExtra("manual01")

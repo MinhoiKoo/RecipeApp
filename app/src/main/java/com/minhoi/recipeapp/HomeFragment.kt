@@ -70,24 +70,13 @@ class HomeFragment : Fragment() {
 
         viewModel.getRandomRcp()
 
-        myAdapter = RecipeListAdapter(requireContext(),
-            {
-                val intent = Intent(requireActivity(), RcpInfoActivity::class.java)
-                intent.apply {
-                    putExtra("name", it.rcp_NM)
-                    putExtra("ingredient", it.rcp_PARTS_DTLS)
-                    putExtra("manual01", it.manual01)
-                    putExtra("manual02", it.manual02)
-                    putExtra("manual03", it.manual03)
-                    putExtra("image01", it.manual_IMG01)
-                    putExtra("image02", it.manual_IMG02)
-                    putExtra("image03", it.manual_IMG03)
-                    putExtra("imageSrc", it.att_FILE_NO_MK)
-                    putExtra("rcpSeq", it.rcp_SEQ)
-                }
-                startActivity(intent)
+        myAdapter = RecipeListAdapter(requireContext()) {
+            val intent = Intent(requireActivity(), RcpInfoActivity::class.java)
+            intent.apply {
+                putExtra("rcpSeq", it.rcp_SEQ)
             }
-        )
+            startActivity(intent)
+        }
 
         viewModel.liveRcpList.observe(this) {
             myAdapter.setLists(it)
