@@ -82,7 +82,6 @@ class UserBookmarkListActivity : AppCompatActivity() {
                 }
             }
         }
-
         completableDeferred.await()
     }
 
