@@ -12,16 +12,22 @@ import com.google.firebase.ktx.Firebase
 import com.minhoi.recipeapp.api.MyApi
 import com.minhoi.recipeapp.api.Ref
 import com.minhoi.recipeapp.api.RetrofitInstance
+import com.minhoi.recipeapp.model.KakaoUserAPIModel
 import com.minhoi.recipeapp.model.RecipeDto
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class HomeViewModel : ViewModel() {
     private val retrofitInstance : MyApi = RetrofitInstance.getInstance().create(MyApi::class.java)
+    private val kakaoUserAPIModel = KakaoUserAPIModel()
 
     private var _mutableRcpList = MutableLiveData<List<RecipeDto>>()
     val liveRcpList : LiveData<List<RecipeDto>>
         get() = _mutableRcpList
 
-
+    suspend fun getUser() : String {
+        return kakaoUserAPIModel.getUser()
+    }
 
     fun getRandomRcp() {
 
@@ -31,17 +37,13 @@ class HomeViewModel : ViewModel() {
                 // Get Post object and use the values to update the UI
                 val recipeList = mutableListOf<RecipeDto>()
                 for (postSnapshot in dataSnapshot.children) {
-
-                    if(count ==6) {
-                        break
-                    }
-
-                    count++
+                    if(count ==6) {break}
                     val recipeData = postSnapshot.getValue(RecipeDto::class.java)
                     Log.d("recipeData",recipeData.toString())
 
                     if (recipeData != null) {
                         recipeList.add(recipeData)
+                        count++
                     }
 
 //                    val recipeData = postSnapshot.getValue(RecipeDto::class.java)
@@ -63,6 +65,7 @@ class HomeViewModel : ViewModel() {
         Ref.recipeDataRef.addListenerForSingleValueEvent(postListener)
 
     }
+
 
 
 
