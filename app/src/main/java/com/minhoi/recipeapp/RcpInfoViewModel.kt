@@ -6,29 +6,40 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.kakao.sdk.user.UserApiClient
 import com.minhoi.recipeapp.api.Ref
+import com.minhoi.recipeapp.model.KakaoUserRepository
+import com.minhoi.recipeapp.model.RecipeDataRepository
+import com.minhoi.recipeapp.model.RecipeDto
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class RcpInfoViewModel : ViewModel() {
 
-    private var _isBookmarked = MutableLiveData<Boolean>()
+    private val kakaoUserRepository = KakaoUserRepository()
+    private val recipeDataRepository = RecipeDataRepository()
+    private var ref = Ref()
+    private var _isBookmarked = MutableLiveData<Boolean>(false)
     val isBookmarked : LiveData<Boolean>
         get() = _isBookmarked
 
+
+    suspend fun getRecipe(rcpSeq: String) : RecipeDto {
+        return recipeDataRepository.getRecipeInfo(rcpSeq)
+    }
+
+    suspend fun getUser(): String {
+        return withContext(Dispatchers.IO) {
+            kakaoUserRepository.getUser()
+        }
+    }
 
     fun isBookmark (userId : String, rcpSeq : String) {
 
         val postListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // 북마크 하지 않은 레시피이면 DB에 등록 후 색칠된 버튼
-                if(!dataSnapshot.exists()) {
-//                    Ref.userRef.child(userId).child("bookmarkedRecipe").child(rcpSeq).setValue("")
-                    _isBookmarked.value = false
-                }
-                // 이미 북마크 되어있는 레시피이면 DB에서 삭제. 색칠되지 않은 버튼
-                else {
-//                    Ref.userRef.child(userId).child("bookmarkedRecipe").child(rcpSeq).removeValue()
-                    _isBookmarked.value = true
-                }
+                _isBookmarked.value = dataSnapshot.exists()
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -39,7 +50,7 @@ class RcpInfoViewModel : ViewModel() {
     }
 
     fun setBookmark(userId : String, rcpSeq: String) {
-        Ref.userRef.child(userId).child("bookmarkedRecipe").child(rcpSeq).setValue("")
+        Ref.userRef.child(userId).child("bookmarkedRecipe").child(rcpSeq).child("whenBookmarked").setValue(ref.getDate())
     }
 
     fun deleteBookmark(userId : String, rcpSeq: String) {

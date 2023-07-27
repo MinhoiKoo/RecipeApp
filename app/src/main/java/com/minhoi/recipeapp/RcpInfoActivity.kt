@@ -7,11 +7,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.kakao.sdk.user.UserApiClient
 import com.minhoi.recipeapp.api.Ref
 import com.minhoi.recipeapp.databinding.ActivityRcpInfoBinding
 import com.minhoi.recipeapp.model.RecipeDto
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class RcpInfoActivity : AppCompatActivity() {
     private lateinit var binding : ActivityRcpInfoBinding
@@ -27,11 +30,21 @@ class RcpInfoActivity : AppCompatActivity() {
 
         val rcpSeq = intent.getStringExtra("rcpSeq")
 
-        Ref.recipeDataRef.child(rcpSeq.toString()).get().addOnSuccessListener {
-            recipeData = it.getValue(RecipeDto::class.java)!!
-        }.addOnFailureListener{
-            Toast.makeText(this, "$it 오류가 발생하였습니다. 다시 시도해주세요.", Toast.LENGTH_LONG).show()
+        lifecycleScope.launch(Dispatchers.IO) {
+            val recipeData = viewModel.getRecipe(rcpSeq!!)
+
+            binding.apply {
+                menuName.text = recipeData.rcp_NM
+                menuIngredient.text = split(recipeData.rcp_PARTS_DTLS!!)
+
+                Glide.with(this@RcpInfoActivity)
+                    .load(recipeData.att_FILE_NO_MAIN)
+                    .into(menuImage)
+
+            }
+
         }
+
 
         val name = intent.getStringExtra("name")
         val ingredient = intent.getStringExtra("ingredient")
@@ -58,16 +71,27 @@ class RcpInfoActivity : AppCompatActivity() {
             finish()
         }
 
-        Glide.with(this)
-            .load(imageSrc)
-            .into(binding.menuImage)
 
-        UserApiClient.instance.me { user, error ->
-            userId = user?.id.toString()
+
+        lifecycleScope.launch {
+            val userId = viewModel.getUser()
             viewModel.isBookmark(userId, rcpSeq!!)
+
+            binding.rcpBookmarkBtn.setOnClickListener {
+                if(userId == ""){
+                    Toast.makeText(this@RcpInfoActivity, "로그인 후 이용 가능합니다.", Toast.LENGTH_LONG).show()
+                }
+                else {
+                    if(viewModel.isBookmarked.value == true) {
+                        viewModel.deleteBookmark(userId, rcpSeq)
+                    } else {
+                        viewModel.setBookmark(userId, rcpSeq)
+                    }
+                }
+            }
         }
 
-
+        // isBookmarked 값 관찰하여 북마크 되어있으면 색칠, 아니면 색칠 안된 버튼으로 업데이트
         viewModel.isBookmarked.observe(this) {
             if(it){
                 binding.rcpBookmarkBtn.setImageResource(R.drawable.bookmarked)
@@ -76,16 +100,6 @@ class RcpInfoActivity : AppCompatActivity() {
             }
         }
 
-        binding.rcpBookmarkBtn.setOnClickListener {
-            UserApiClient.instance.me { user, error ->
-                if(viewModel.isBookmarked.value == false) {
-                    viewModel.setBookmark(user?.id.toString(), rcpSeq!!)
-                } else {
-                    viewModel.deleteBookmark(user?.id.toString(), rcpSeq!!)
-                }
-            }
-
-        }
     }
 
     private fun split(str : String) : String {
