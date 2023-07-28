@@ -2,23 +2,28 @@ package com.minhoi.recipeapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.kakao.sdk.user.UserApiClient
+import com.minhoi.recipeapp.adapter.CookingWayListAdapter
 import com.minhoi.recipeapp.api.Ref
 import com.minhoi.recipeapp.databinding.ActivityRcpInfoBinding
+import com.minhoi.recipeapp.model.RecipeCookingWayData
 import com.minhoi.recipeapp.model.RecipeDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RcpInfoActivity : AppCompatActivity() {
+    private val TAG = RcpInfoActivity::class.simpleName
     private lateinit var binding : ActivityRcpInfoBinding
-    private lateinit var userId : String
     private lateinit var viewModel : RcpInfoViewModel
     private lateinit var recipeData : RecipeDto
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,19 +35,37 @@ class RcpInfoActivity : AppCompatActivity() {
 
         val rcpSeq = intent.getStringExtra("rcpSeq")
 
+        val cookingWayAdapter = CookingWayListAdapter(this)
+        val cookingWayList = arrayListOf<RecipeCookingWayData>()
+
+        binding.cookingWayRv.apply {
+            adapter = cookingWayAdapter
+            layoutManager = LinearLayoutManager(this@RcpInfoActivity)
+        }
+
         lifecycleScope.launch(Dispatchers.IO) {
             val recipeData = viewModel.getRecipe(rcpSeq!!)
 
-            binding.apply {
-                menuName.text = recipeData.rcp_NM
-                menuIngredient.text = split(recipeData.rcp_PARTS_DTLS!!)
+            withContext(Dispatchers.Main) {
+                binding.apply {
+                    menuName.text = recipeData.rcp_NM
+                    menuIngredient.text = split(recipeData.rcp_PARTS_DTLS)
+                    Glide.with(this@RcpInfoActivity)
+                        .load(recipeData.att_FILE_NO_MAIN)
+                        .into(menuImage)
+                }
 
-                Glide.with(this@RcpInfoActivity)
-                    .load(recipeData.att_FILE_NO_MAIN)
-                    .into(menuImage)
+                val manualList = recipeData.manual.split("xx")
+                val imageList = recipeData.image.split(",")
+
+                for (i in manualList.indices) {
+                    cookingWayList.add(RecipeCookingWayData(manualList[i].trim(','), imageList[i].trim().trim(',')))
+                    Log.d(TAG, manualList[i].trim(',')+ " ")
+                    Log.d(TAG, imageList[i].trim().trim(',') + " ")
+                }
+                cookingWayAdapter.setWays(cookingWayList)
 
             }
-
         }
 
 
