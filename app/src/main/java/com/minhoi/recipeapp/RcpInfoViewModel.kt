@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.kakao.sdk.user.UserApiClient
 import com.minhoi.recipeapp.api.Ref
 import com.minhoi.recipeapp.model.KakaoUserRepository
+import com.minhoi.recipeapp.model.RecipeDataModel
 import com.minhoi.recipeapp.model.RecipeDataRepository
 import com.minhoi.recipeapp.model.RecipeDto
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +24,7 @@ class RcpInfoViewModel : ViewModel() {
         get() = _isBookmarked
 
 
-    suspend fun getRecipe(rcpSeq: String) : RecipeDto {
+    suspend fun getRecipe(rcpSeq: String) : RecipeDataModel {
         return recipeDataRepository.getRecipeInfo(rcpSeq)
     }
 

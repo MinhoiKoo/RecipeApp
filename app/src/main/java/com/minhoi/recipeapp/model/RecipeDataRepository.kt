@@ -10,12 +10,12 @@ import kotlin.coroutines.suspendCoroutine
 
 class RecipeDataRepository {
 
-    suspend fun getRecipeInfo(rcpSeq : String) : RecipeDto{
+    suspend fun getRecipeInfo(rcpSeq : String) : RecipeDataModel{
 
-        return suspendCoroutine<RecipeDto> { continuation ->
+        return suspendCoroutine<RecipeDataModel> { continuation ->
             val postListener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val data = dataSnapshot.getValue(RecipeDto::class.java)
+                    val data = dataSnapshot.getValue(RecipeDataModel::class.java)
                     if(data != null) {
                         continuation.resume(data)
                     }
