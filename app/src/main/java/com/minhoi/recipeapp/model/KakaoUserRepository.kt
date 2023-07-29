@@ -4,7 +4,7 @@ import com.kakao.sdk.user.UserApiClient
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class KakaoUserAPIModel {
+class KakaoUserRepository {
 
     suspend fun getUser() : String {
         return suspendCoroutine {
