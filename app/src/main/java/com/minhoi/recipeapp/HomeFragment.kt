@@ -13,22 +13,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.kakao.sdk.user.UserApiClient
 import com.minhoi.recipeapp.adapter.RecipeListAdapter
 import com.minhoi.recipeapp.databinding.FragmentHomeBinding
-import com.minhoi.recipeapp.model.KakaoUserAPIModel
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
     private lateinit var viewModel : HomeViewModel
     private lateinit var binding : FragmentHomeBinding
-    private var userId : String? = null
     private lateinit var myAdapter : RecipeListAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
 
@@ -37,12 +33,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         Log.d("onCreateView", "onCreateView")
-        // Inflate the layout for this fragment
-        UserApiClient.instance.me { user, error ->
-            if (user != null) {
-                userId = user.id.toString()
-            }
-        }
 
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
@@ -62,10 +52,10 @@ class HomeFragment : Fragment() {
             }
         }
 
-        // 나만의 레시피 추가 화면으로 이동, userId 는 비동기 방식으로 가져오기 때문에 코루틴 내부에서 실행.
-
+        // 나만의 레시피 추가 화면으로 이동, userId 는 비동기 방식으로 가져오기 때문에 코루틴 내부에서 순차적으로 실행.
         lifecycleScope.launch {
-            val userId = viewModel.getUser()
+            val userId = viewModel.getUser() // 코루틴 일시중지
+            // resume 후 아래 코드 실행
             binding.btnAddUserRecipe.setOnClickListener {
                 if(userId == "") {
                     Toast.makeText(requireContext(), "로그인 후 이용 가능합니다.", Toast.LENGTH_LONG).show()

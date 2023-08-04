@@ -7,26 +7,22 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import com.minhoi.recipeapp.api.MyApi
 import com.minhoi.recipeapp.api.Ref
 import com.minhoi.recipeapp.api.RetrofitInstance
-import com.minhoi.recipeapp.model.KakaoUserAPIModel
+import com.minhoi.recipeapp.model.KakaoUserRepository
 import com.minhoi.recipeapp.model.RecipeDto
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class HomeViewModel : ViewModel() {
     private val retrofitInstance : MyApi = RetrofitInstance.getInstance().create(MyApi::class.java)
-    private val kakaoUserAPIModel = KakaoUserAPIModel()
+    private val kakaoUserRepository = KakaoUserRepository()
 
     private var _mutableRcpList = MutableLiveData<List<RecipeDto>>()
     val liveRcpList : LiveData<List<RecipeDto>>
         get() = _mutableRcpList
 
     suspend fun getUser() : String {
-        return kakaoUserAPIModel.getUser()
+        return kakaoUserRepository.getUser()
     }
 
     fun getRandomRcp() {

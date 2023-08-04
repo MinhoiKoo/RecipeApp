@@ -11,6 +11,8 @@ class Ref {
         val database = Firebase.database
         val recipeDataRef = database.getReference("RecipeData")
         val userRef = database.getReference("User")
+        val userRecipeDataRef = database.getReference("UserRecipeData")
+        val myRecipeDataRef = database.getReference("MyRecipeData")
     }
 
     fun getDate() : String {

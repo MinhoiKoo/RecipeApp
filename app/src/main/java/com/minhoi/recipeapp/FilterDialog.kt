@@ -6,10 +6,7 @@ import android.view.WindowManager
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.DialogFragment
 import com.minhoi.recipeapp.databinding.FilterDialogBinding
 
 class FilterDialog(context : Context) : Dialog(context) {

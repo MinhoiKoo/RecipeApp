@@ -3,10 +3,7 @@ package com.minhoi.recipeapp
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -17,6 +14,7 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.common.model.KakaoSdkError
 import com.kakao.sdk.user.UserApiClient
 import com.minhoi.recipeapp.api.Ref
+import com.minhoi.recipeapp.model.User
 
 class MypageViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -28,6 +26,7 @@ class MypageViewModel(application: Application) : AndroidViewModel(application) 
     private var _isLogin = MutableLiveData<Boolean>()
     val isLogin : LiveData<Boolean>
         get() = _isLogin
+
 
     fun logOut() {
         _isLogin.value = false
@@ -48,7 +47,6 @@ class MypageViewModel(application: Application) : AndroidViewModel(application) 
             if (error != null) {
 
             } else if (token != null) {
-                //TODO: 최종적으로 카카오로그인 및 유저정보 가져온 결과
 
                 UserApiClient.instance.me{ user, error ->
                     if (error != null) {
@@ -60,7 +58,6 @@ class MypageViewModel(application: Application) : AndroidViewModel(application) 
                         val nickname = user.kakaoAccount?.profile?.nickname
                         val email = user.kakaoAccount?.email
 
-
                         val postListener = object : ValueEventListener {
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
                                 // 처음 가입한 사용자는 DB에 사용자 정보 저장, 이미 한번 로그인 한 사용자는 로그인만.
@@ -68,7 +65,8 @@ class MypageViewModel(application: Application) : AndroidViewModel(application) 
                                     val user = User(userId, nickname.toString())
                                     Ref.userRef.child(userId).setValue(user)
                                 } else {
-                                    userNickname.value = nickname.toString()
+                                    val user = dataSnapshot.getValue(User::class.java)
+                                    userNickname.value = user!!.nickName
                                 }
                             }
 

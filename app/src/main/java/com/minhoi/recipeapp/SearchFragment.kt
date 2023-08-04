@@ -15,7 +15,6 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.minhoi.recipeapp.adapter.RecipeListAdapter
 import com.minhoi.recipeapp.databinding.FragmentSearchBinding
-import com.minhoi.recipeapp.ui.Dialog.FilterDialog
 import com.minhoi.recipeapp.util.textChangesToFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

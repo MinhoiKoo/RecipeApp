@@ -12,7 +12,7 @@ class RecipeDataRepository {
 
     suspend fun getRecipeInfo(rcpSeq : String) : RecipeDataModel{
 
-        return suspendCoroutine<RecipeDataModel> { continuation ->
+        return suspendCoroutine { continuation ->
             val postListener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val data = dataSnapshot.getValue(RecipeDataModel::class.java)
