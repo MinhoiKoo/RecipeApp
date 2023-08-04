@@ -5,75 +5,95 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".RcpInfoActivity"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="10dp">
+            android:layout_height="match_parent"
+            tools:context=".RcpInfoActivity"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp">
+
+                <ImageView
+                    android:id="@+id/menuBackBtn"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:src="@drawable/back"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/rcpBookmarkBtn"
+                    android:layout_width="30dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/bookmark"
+                    android:layout_margin="15dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <TextView
+                android:id="@+id/menuName"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="30sp"
+                android:text="Name"/>
 
             <ImageView
-                android:id="@+id/menuBackBtn"
-                android:layout_width="30dp"
+                android:id="@+id/menuImage"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_margin="20dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="재료"
+                android:textSize="25sp"
+                android:layout_margin="10dp"/>
+
+            <TextView
+                android:id="@+id/menuIngredient"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:src="@drawable/back"
+                android:text="TextView"
+                android:textSize="18sp"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/rcpBookmarkBtn"
-                android:layout_width="30dp"
-                android:layout_height="25dp"
-                android:src="@drawable/bookmark"
-                android:layout_margin="15dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="조리 방법"
+                android:textSize="23dp"
+                android:layout_margin="10dp"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <TextView
-            android:id="@+id/menuName"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
-            android:textSize="30sp"
-            android:text="Name"/>
-
-        <ImageView
-            android:id="@+id/menuImage"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_margin="20dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="재료"
-            android:textSize="25sp"
-            android:layout_margin="10dp"/>
-
-        <TextView
-            android:id="@+id/menuIngredient"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textSize="18sp"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cookingWayRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:nestedScrollingEnabled="false"/>
 
 
-    </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
 </layout>

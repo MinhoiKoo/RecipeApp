@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_homeFragment_to_mypageFragment"
             app:destination="@id/mypageFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_refrigeratorFragment"
+            app:destination="@id/refrigeratorFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -28,6 +31,9 @@
         <action
             android:id="@+id/action_searchFragment_to_mypageFragment"
             app:destination="@id/mypageFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_refrigeratorFragment"
+            app:destination="@id/refrigeratorFragment" />
     </fragment>
     <fragment
         android:id="@+id/mypageFragment"
@@ -39,6 +45,24 @@
             app:destination="@id/searchFragment" />
         <action
             android:id="@+id/action_mypageFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_mypageFragment_to_refrigeratorFragment"
+            app:destination="@id/refrigeratorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/refrigeratorFragment"
+        android:name="com.minhoi.recipeapp.RefrigeratorFragment"
+        android:label="fragment_refrigerator"
+        tools:layout="@layout/fragment_refrigerator" >
+        <action
+            android:id="@+id/action_refrigeratorFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_refrigeratorFragment_to_mypageFragment"
+            app:destination="@id/mypageFragment" />
+        <action
+            android:id="@+id/action_refrigeratorFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
 </navigation>
