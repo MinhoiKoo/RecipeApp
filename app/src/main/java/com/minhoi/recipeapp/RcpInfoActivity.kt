@@ -68,33 +68,10 @@ class RcpInfoActivity : AppCompatActivity() {
             }
         }
 
-
-        val name = intent.getStringExtra("name")
-        val ingredient = intent.getStringExtra("ingredient")
-        val manual01 = intent.getStringExtra("manual01")
-        val manual02 = intent.getStringExtra("manual02")
-        val manual03 = intent.getStringExtra("manual03")
-
-        val image01 = intent.getStringExtra("image01")
-        val image02 = intent.getStringExtra("image02")
-        val image03 = intent.getStringExtra("image03")
-
-        val imageSrc = intent.getStringExtra("imageSrc")
-
-        val menuName = findViewById<TextView>(R.id.menuName)
-        menuName.text = name
-        val ingredientText = findViewById<TextView>(R.id.menuIngredient)
-
-        if (ingredient != null) {
-            ingredientText.text = split(ingredient)
-        }
-
         val back = findViewById<ImageView>(R.id.menuBackBtn)
         back.setOnClickListener {
             finish()
         }
-
-
 
         lifecycleScope.launch {
             val userId = viewModel.getUser()
