@@ -20,6 +20,7 @@ class UserRecipeAddActivity : AppCompatActivity() {
     private lateinit var imageUri : Uri
     private var key : String? = null
     private var userId : String? = null
+    private val ref = Ref()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -42,10 +43,11 @@ class UserRecipeAddActivity : AppCompatActivity() {
             val title = binding.inputUserRecipeTitle.text.toString()
             val ingredient = binding.innputUserRecipeIngredient.text.toString()
             val way = binding.inputUserRecipeWay.text.toString()
+            val date = ref.getDate()
 
             imageUpload()
 
-            userId?.let { id -> key?.let { key -> Ref.userRecipeDataRef.child(id).child(key).setValue(UserRecipeData(title,ingredient, way)) } }
+            userId?.let { id -> key?.let { key -> Ref.userRecipeDataRef.child(id).child(key).setValue(UserRecipeData(title,ingredient, way, date)) } }
             finish()
         }
 
