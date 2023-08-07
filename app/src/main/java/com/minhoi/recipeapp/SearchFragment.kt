@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.minhoi.recipeapp.adapter.RecipeListAdapter
+import com.minhoi.recipeapp.adapter.SearchAutoCompleteAdapter
 import com.minhoi.recipeapp.databinding.FragmentSearchBinding
 import com.minhoi.recipeapp.util.textChangesToFlow
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +30,8 @@ class SearchFragment : Fragment() {
     // 메뉴명, 재료명 으로 검색 가능하도록 구현 예정
     private lateinit var binding: FragmentSearchBinding
     private lateinit var viewModel: SearchViewModel
-    private lateinit var myAdapter : RecipeListAdapter
+    private lateinit var searchListAdapter : RecipeListAdapter
+    private val autoCompleteAdapter = SearchAutoCompleteAdapter()
     private var searchJob: Job? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +61,11 @@ class SearchFragment : Fragment() {
             }
         }
 
+        binding.autoCompleteRv.apply {
+            adapter = autoCompleteAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+
         binding.inputRecipe.textChangesToFlow()
             .debounce(300L)
             .onEach { query ->
@@ -67,7 +74,7 @@ class SearchFragment : Fragment() {
                 searchJob = lifecycleScope.launch(Dispatchers.IO) {
                     val list = viewModel.getRecipeName(query.toString())
                     withContext(Dispatchers.Main){
-//                        myAdapter.setLists(list)
+                        autoCompleteAdapter.setLists(list)
                     }
                 }
             }
@@ -86,7 +93,7 @@ class SearchFragment : Fragment() {
             handled
         }
 
-        myAdapter = RecipeListAdapter(requireContext()) {
+        searchListAdapter = RecipeListAdapter(requireContext()) {
             val intent = Intent(requireActivity(), RcpInfoActivity::class.java)
             intent.apply {
                 putExtra("rcpSeq", it.rcp_SEQ)
@@ -95,11 +102,11 @@ class SearchFragment : Fragment() {
         }
 
         viewModel.searchList.observe(viewLifecycleOwner) {
-            myAdapter.setLists(it)
+            searchListAdapter.setLists(it)
         }
 
         binding.searchRv.apply {
-            adapter = myAdapter
+            adapter = searchListAdapter
             layoutManager = LinearLayoutManager(requireActivity())
         }
 
