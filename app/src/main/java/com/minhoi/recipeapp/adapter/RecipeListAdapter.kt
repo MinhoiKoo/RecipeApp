@@ -16,11 +16,6 @@ import com.minhoi.recipeapp.model.RecipeDto
 class RecipeListAdapter(val context: Context, private val itemClick : (RecipeDto) -> Unit)
     : RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {
 
-    interface OnItemClickListener {
-        fun onClick(v : View, position : Int)
-    }
-
-    private lateinit var itemClickListener : OnItemClickListener
     private val recipeList = mutableListOf<RecipeDto>()
 
     inner class ViewHolder(binding : RecipeRandomItemRowBinding ) : RecyclerView.ViewHolder(binding.root) {
