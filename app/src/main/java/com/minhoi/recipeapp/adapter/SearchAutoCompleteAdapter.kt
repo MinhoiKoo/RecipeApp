@@ -27,7 +27,9 @@ class SearchAutoCompleteAdapter : RecyclerView.Adapter<SearchAutoCompleteAdapter
     }
 
     override fun getItemCount(): Int {
-        return recipeNameList.size
+        return if (recipeNameList.size <= 10) {
+            recipeNameList.size
+        } else { 10 }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -36,8 +38,10 @@ class SearchAutoCompleteAdapter : RecyclerView.Adapter<SearchAutoCompleteAdapter
 
 
     fun setLists(data : ArrayList<String>) {
+        // 검색된 데이터 랜덤으로 섞어서 10개만 표출
+        data.shuffle()
         recipeNameList.clear()
-        recipeNameList.addAll(data)
+        recipeNameList.addAll(data.take(10))
         notifyDataSetChanged()
     }
 
