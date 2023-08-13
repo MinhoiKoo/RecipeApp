@@ -43,7 +43,11 @@ class CookingWayListAdapter(val context : Context) : RecyclerView.Adapter<Cookin
 
     fun setWays(items : ArrayList<RecipeCookingWayData>) {
         cookingWayList.clear()
-        cookingWayList.addAll(items)
+        for(i in items) {
+            if(i.cookingWayText.length !=1) {
+                cookingWayList.add(i)
+            }
+        }
         notifyDataSetChanged()
     }
 }
