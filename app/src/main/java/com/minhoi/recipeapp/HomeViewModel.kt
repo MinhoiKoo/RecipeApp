@@ -11,7 +11,10 @@ import com.minhoi.recipeapp.api.MyApi
 import com.minhoi.recipeapp.api.Ref
 import com.minhoi.recipeapp.api.RetrofitInstance
 import com.minhoi.recipeapp.model.KakaoUserRepository
+import com.minhoi.recipeapp.model.RecipeDataModel
 import com.minhoi.recipeapp.model.RecipeDto
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class HomeViewModel : ViewModel() {
     private val retrofitInstance : MyApi = RetrofitInstance.getInstance().create(MyApi::class.java)
@@ -41,14 +44,6 @@ class HomeViewModel : ViewModel() {
                         recipeList.add(recipeData)
                         count++
                     }
-
-//                    val recipeData = postSnapshot.getValue(RecipeDto::class.java)
-//                    // 게시글의 정보와 게시글의 Key값 DB에 삽입
-//                    if (recipeData != null) {
-//                        recipeList.add(recipeData)
-//                        Log.d("recipelist",recipeData.RCP_NM.toString())
-//                        count++
-//                    }
                 }
                 _mutableRcpList.value = recipeList
             }
@@ -62,23 +57,28 @@ class HomeViewModel : ViewModel() {
 
     }
 
+    // bookmarkCount 순으로 오름차순 정렬하여 deque에 삽입 후 반환
+    suspend fun getPopularRcp() : ArrayList<RecipeDataModel> {
+        return suspendCoroutine {
+            val queue = arrayListOf<RecipeDataModel>()
+            val postListener = object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for(data in snapshot.children) {
+                        val recipeData = data.getValue(RecipeDataModel::class.java)
+                        if(recipeData != null) {
+                            queue.add(recipeData)
+                        }
+                    }
+                    it.resume(queue)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+
+            }
+            Ref.myRecipeDataRef.orderByChild("bookmarkCount").addListenerForSingleValueEvent(postListener)
+        }
+    }
 
 
-
-
-
-
-//    fun getRandomRcp(startIdx : Int, endIdx : Int) {
-//        val call = retrofitInstance.getRecipe(startIdx, endIdx)
-//        call.enqueue(object : Callback<RcpResponse> {
-//            override fun onResponse(call: Call<RcpResponse>, response: Response<RcpResponse>) {
-//                _mutableRcpList.value = response.body()?.COOKRCP01?.row
-//                Log.d("get", response.body()?.COOKRCP01?.row.toString())
-//            }
-//
-//            override fun onFailure(call: Call<RcpResponse>, t: Throwable) {
-//                //서버와 연결 실패. 다시 접속해주세요
-//            }
-//        })
-//    }
 }
