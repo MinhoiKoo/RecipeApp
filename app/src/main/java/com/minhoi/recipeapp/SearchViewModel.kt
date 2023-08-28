@@ -6,14 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.minhoi.recipeapp.api.MyApi
 import com.minhoi.recipeapp.api.RetrofitInstance
-import com.minhoi.recipeapp.model.RcpResponse
 import com.minhoi.recipeapp.model.RecipeDto
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class SearchViewModel : ViewModel() {
 
@@ -25,27 +20,43 @@ class SearchViewModel : ViewModel() {
 
     private var originaSearchList : List<RecipeDto>? = null
 
+    private var _mutableAutoCompleteList= MutableLiveData<ArrayList<Pair<String, String>>>()
+    val autoCompleteList : LiveData<ArrayList<Pair<String,String>>> = _mutableAutoCompleteList
+
     var _mutableSearchInput = MutableLiveData<String>()
 
     val searchInput : LiveData<String>
         get() = _mutableSearchInput
 
 
-    fun searchRcp() {
-        val call = retrofitInstance.searchRecipe(1,1000,_mutableSearchInput.value.toString())
-        call.enqueue(object : Callback<RcpResponse> {
-            override fun onResponse(call: Call<RcpResponse>, response: Response<RcpResponse>) {
+    suspend fun searchRcp() {
+        val response = retrofitInstance.searchRecipe(1,1000,_mutableSearchInput.value.toString())
+        withContext(Dispatchers.Main) {
+            if(response.isSuccessful) {
                 originaSearchList = response.body()?.COOKRCP01?.row
                 _mutableSearchList.value = originaSearchList.orEmpty()
                 Log.d("List", response.body()?.COOKRCP01?.row.toString())
-            }
-
-            override fun onFailure(call: Call<RcpResponse>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
-        })
+            } else { }
+        }
     }
 
+    suspend fun getRecipeName(name : String) {
+
+        val response = retrofitInstance.searchRecipe(1, 1000, name)
+        withContext(Dispatchers.Main) {
+            if (response.isSuccessful) {
+                Log.d("List", response.body()?.COOKRCP01?.row.toString())
+                val recipeList = response.body()?.COOKRCP01?.row
+                val keyNameList = arrayListOf<Pair<String, String>>()
+                if (recipeList != null) {
+                    for (data in recipeList) {
+                        keyNameList.add(Pair(data.rcp_SEQ, data.rcp_NM))
+                    }
+                    _mutableAutoCompleteList.value = keyNameList
+                }
+            }
+        }
+    }
 
     fun filter(minKcal: String, maxKcal: String, type: String) {
         // 필터링할 대상을 원본 검색 결과로 설정
@@ -55,31 +66,6 @@ class SearchViewModel : ViewModel() {
         filteredList = filterByType(filteredList, type)
 
         _mutableSearchList.value = filteredList.orEmpty()
-    }
-
-    suspend fun getRecipeName(name : String) : ArrayList<String> {
-
-        return suspendCoroutine {
-            val call = retrofitInstance.searchRecipe(1,1000, name)
-            call.enqueue(object : Callback<RcpResponse> {
-                override fun onResponse(call: Call<RcpResponse>, response: Response<RcpResponse>) {
-
-                    Log.d("List", response.body()?.COOKRCP01?.row.toString())
-                    val recipeList = response.body()?.COOKRCP01?.row
-                    val nameList = arrayListOf<String>()
-                    if (recipeList != null) {
-                        for(i in recipeList) {
-                            nameList.add(i.rcp_NM)
-                        }
-                    }
-                    it.resume(nameList)
-                }
-
-                override fun onFailure(call: Call<RcpResponse>, t: Throwable) {
-                    t.cause?.let { error -> it.resumeWithException(error) }
-                }
-            })
-        }
     }
 
     private fun filterByKcal(list: List<RecipeDto>?, minAmount: String, maxAmount: String): List<RecipeDto>? {
