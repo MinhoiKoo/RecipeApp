@@ -27,6 +27,10 @@ class MypageViewModel(application: Application) : AndroidViewModel(application) 
     val isLogin : LiveData<Boolean>
         get() = _isLogin
 
+    // 토큰이 유효한지 검사
+    init {
+        isValidToken()
+    }
 
     fun logOut() {
         _isLogin.value = false

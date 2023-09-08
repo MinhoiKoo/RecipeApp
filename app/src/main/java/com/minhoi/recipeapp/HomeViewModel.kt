@@ -28,6 +28,10 @@ class HomeViewModel : ViewModel() {
         return kakaoUserRepository.getUser()
     }
 
+    init {
+        getRandomRcp()
+    }
+
     fun getRandomRcp() {
 
         var count = 0
