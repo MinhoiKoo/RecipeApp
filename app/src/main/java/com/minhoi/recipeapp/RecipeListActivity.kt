@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.minhoi.recipeapp.adapter.RecipeListAdapter
 import com.minhoi.recipeapp.databinding.ActivityRecipeListBinding
-import com.minhoi.recipeapp.model.RecipeDto
 
 class RecipeListActivity : AppCompatActivity() {
 
