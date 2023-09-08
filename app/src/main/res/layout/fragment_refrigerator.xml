@@ -7,7 +7,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".RefrigeratorFragment">
+        tools:context=".ui.fragment.RefrigeratorFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -51,54 +51,11 @@
                 android:layout_margin="10dp"
                 android:text="검 색"
                 android:textSize="18dp"
-                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal"
-                android:weightSum="4"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
 
-                <ImageView
-                    android:id="@+id/homeBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/homebtn" />
-
-                <ImageView
-                    android:id="@+id/refrigeratorBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/refrigeratorbtn" />
-
-                <ImageView
-                    android:id="@+id/searchBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/searchbtn" />
-
-                <ImageView
-                    android:id="@+id/mypageBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/userbtn" />
-
-
-            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>
