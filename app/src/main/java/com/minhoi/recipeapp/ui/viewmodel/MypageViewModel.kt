@@ -1,4 +1,4 @@
-package com.minhoi.recipeapp
+package com.minhoi.recipeapp.ui.viewmodel
 
 import android.app.Application
 import android.content.Context

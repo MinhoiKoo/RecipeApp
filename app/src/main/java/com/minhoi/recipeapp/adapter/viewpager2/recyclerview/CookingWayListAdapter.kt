@@ -1,4 +1,4 @@
-package com.minhoi.recipeapp.adapter
+package com.minhoi.recipeapp.adapter.viewpager2.recyclerview
 
 import android.content.Context
 import android.view.LayoutInflater

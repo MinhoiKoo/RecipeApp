@@ -1,4 +1,4 @@
-package com.minhoi.recipeapp
+package com.minhoi.recipeapp.ui.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData

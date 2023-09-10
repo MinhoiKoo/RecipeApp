@@ -1,4 +1,4 @@
-package com.minhoi.recipeapp.adapter
+package com.minhoi.recipeapp.adapter.viewpager2.recyclerview
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -40,16 +40,20 @@ class PopularRecipeListAdapter(private val context : Context) : RecyclerView.Ada
         holder.bind(recipeList[position])
     }
 
-    fun setList(list : ArrayList<RecipeDataModel>) {
+    fun setList(items : ArrayList<RecipeDataModel>) {
         recipeList.clear()
         // data가 10개이상 존재/하지 않을때 구분
-        val endIndex = maxOf(0, list.size - 1)
+        val endIndex = maxOf(0, items.size - 1)
         val startIndex = maxOf(0, endIndex - 9)
 
         for (i in endIndex downTo startIndex) {
-            recipeList.add(list[i])
+            recipeList.add(items[i])
         }
         recipeList.shuffle()
         notifyDataSetChanged()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return R.layout.recipe_popular_item
     }
 }

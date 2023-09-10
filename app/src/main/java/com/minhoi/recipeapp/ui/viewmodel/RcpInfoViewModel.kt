@@ -1,4 +1,4 @@
-package com.minhoi.recipeapp
+package com.minhoi.recipeapp.ui.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -11,7 +11,6 @@ import com.minhoi.recipeapp.api.Ref
 import com.minhoi.recipeapp.model.KakaoUserRepository
 import com.minhoi.recipeapp.model.RecipeDataModel
 import com.minhoi.recipeapp.model.RecipeDataRepository
-import com.minhoi.recipeapp.model.RecipeDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

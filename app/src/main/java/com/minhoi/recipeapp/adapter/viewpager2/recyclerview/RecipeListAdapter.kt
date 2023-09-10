@@ -1,8 +1,7 @@
-package com.minhoi.recipeapp.adapter
+package com.minhoi.recipeapp.adapter.viewpager2.recyclerview
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -19,8 +18,8 @@ class RecipeListAdapter(val context: Context, private val itemClick : (RecipeDto
     private val recipeList = mutableListOf<RecipeDto>()
 
     inner class ViewHolder(binding : RecipeRandomItemRowBinding ) : RecyclerView.ViewHolder(binding.root) {
-        val rcpImage : ImageView
-        val rcpName : TextView
+        private val rcpImage : ImageView
+        private val rcpName : TextView
 
         init {
             rcpImage = binding.rcpImage
@@ -29,7 +28,7 @@ class RecipeListAdapter(val context: Context, private val itemClick : (RecipeDto
 
         fun bind(items : RecipeDto) {
             itemView.setOnClickListener {
-                itemClick(recipeList[adapterPosition])
+                itemClick(recipeList[bindingAdapterPosition])
             }
             rcpName.text = items.rcp_NM
 
@@ -59,6 +58,10 @@ class RecipeListAdapter(val context: Context, private val itemClick : (RecipeDto
         recipeList.clear()
         recipeList.addAll(items)
         notifyDataSetChanged()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return R.layout.recipe_random_item_row
     }
 
 

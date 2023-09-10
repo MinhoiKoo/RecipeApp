@@ -1,21 +1,31 @@
-package com.minhoi.recipeapp.adapter
+package com.minhoi.recipeapp.adapter.viewpager2.recyclerview
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.minhoi.recipeapp.R
-import com.minhoi.recipeapp.databinding.RecipeRandomItemRowBinding
 import com.minhoi.recipeapp.databinding.SearchAutocompleteItemRowBinding
 
-class SearchAutoCompleteAdapter : RecyclerView.Adapter<SearchAutoCompleteAdapter.ViewHolder>() {
+class SearchAutoCompleteAdapter(private val onCLickListener : (String) -> Unit) : RecyclerView.Adapter<SearchAutoCompleteAdapter.ViewHolder>() {
 
-    private val recipeNameList = mutableListOf<String>()
+    private val recipeNameList = mutableListOf<Pair<String, String>>()
 
     inner class ViewHolder(binding: SearchAutocompleteItemRowBinding) : RecyclerView.ViewHolder(binding.root){
-        val recipeTitle = binding.recipeTitle
-        fun bind(title : String) {
-            recipeTitle.text = title
+        private val recipeTitle = binding.recipeTitle
+
+        init {
+            itemView.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    onCLickListener(recipeNameList[position].first)
+                }
+            }
+        }
+
+        fun bind(data : Pair<String, String>) {
+            recipeTitle.text = data.second
         }
     }
 
@@ -34,10 +44,11 @@ class SearchAutoCompleteAdapter : RecyclerView.Adapter<SearchAutoCompleteAdapter
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(recipeNameList[position])
+        Log.d("seesesese", "onBindViewHolder: ${recipeNameList[position]}")
     }
 
 
-    fun setLists(data : ArrayList<String>) {
+    fun setLists(data : ArrayList<Pair<String, String>>) {
         // 검색된 데이터 랜덤으로 섞어서 10개만 표출
         data.shuffle()
         recipeNameList.clear()
