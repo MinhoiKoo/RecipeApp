@@ -11,14 +11,13 @@ import android.view.inputmethod.EditorInfo
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.minhoi.recipeapp.FilterDialog
 import com.minhoi.recipeapp.R
 import com.minhoi.recipeapp.RcpInfoActivity
-import com.minhoi.recipeapp.SearchViewModel
-import com.minhoi.recipeapp.adapter.RecipeListAdapter
-import com.minhoi.recipeapp.adapter.SearchAutoCompleteAdapter
+import com.minhoi.recipeapp.ui.viewmodel.SearchViewModel
+import com.minhoi.recipeapp.adapter.viewpager2.recyclerview.RecipeListAdapter
+import com.minhoi.recipeapp.adapter.viewpager2.recyclerview.SearchAutoCompleteAdapter
 import com.minhoi.recipeapp.databinding.FragmentSearchBinding
 import com.minhoi.recipeapp.util.textChangesToFlow
 import kotlinx.coroutines.Dispatchers

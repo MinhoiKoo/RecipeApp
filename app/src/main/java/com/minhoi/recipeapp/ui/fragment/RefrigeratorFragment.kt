@@ -12,12 +12,12 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.minhoi.recipeapp.R
 import com.minhoi.recipeapp.RecipeListActivity
-import com.minhoi.recipeapp.adapter.IngredientListAdapter
+import com.minhoi.recipeapp.adapter.viewpager2.recyclerview.IngredientListAdapter
 import com.minhoi.recipeapp.databinding.FragmentRefrigeratorBinding
+import com.minhoi.recipeapp.ui.ingredients.IngredientSelectActivity
 
 
 class RefrigeratorFragment : Fragment() {
@@ -49,6 +49,11 @@ class RefrigeratorFragment : Fragment() {
         binding.ingredientRv.apply {
             adapter = ingredientAdapter
             layoutManager = LinearLayoutManager(requireContext())
+        }
+
+        binding.selectIngredientBtn.setOnClickListener {
+            val intent = Intent(requireActivity(), IngredientSelectActivity::class.java)
+            startActivity(intent)
         }
 
         input = binding.inputIngredient

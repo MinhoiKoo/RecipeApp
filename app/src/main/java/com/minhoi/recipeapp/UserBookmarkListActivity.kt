@@ -12,7 +12,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.kakao.sdk.user.UserApiClient
-import com.minhoi.recipeapp.adapter.UserBookmarkListAdapter
+import com.minhoi.recipeapp.adapter.viewpager2.recyclerview.UserBookmarkListAdapter
 import com.minhoi.recipeapp.api.Ref
 import com.minhoi.recipeapp.databinding.ActivityUserBookmarkBinding
 import com.minhoi.recipeapp.model.RecipeDto

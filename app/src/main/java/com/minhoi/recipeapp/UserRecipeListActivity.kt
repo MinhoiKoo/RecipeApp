@@ -9,7 +9,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.kakao.sdk.user.UserApiClient
-import com.minhoi.recipeapp.adapter.UserRecipeListAdapter
+import com.minhoi.recipeapp.adapter.viewpager2.recyclerview.UserRecipeListAdapter
 import com.minhoi.recipeapp.api.Ref
 import com.minhoi.recipeapp.databinding.ActivityUserRecipeListBinding
 

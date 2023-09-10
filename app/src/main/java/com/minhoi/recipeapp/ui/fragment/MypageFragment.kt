@@ -9,9 +9,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import com.kakao.sdk.user.UserApiClient
-import com.minhoi.recipeapp.MypageViewModel
+import com.minhoi.recipeapp.ui.viewmodel.MypageViewModel
 import com.minhoi.recipeapp.NicknameChangeDialog
 import com.minhoi.recipeapp.R
 import com.minhoi.recipeapp.UserBookmarkListActivity

@@ -14,12 +14,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.minhoi.recipeapp.HomeViewModel
+import com.minhoi.recipeapp.ui.viewmodel.HomeViewModel
 import com.minhoi.recipeapp.R
 import com.minhoi.recipeapp.RcpInfoActivity
 import com.minhoi.recipeapp.UserRecipeAddActivity
-import com.minhoi.recipeapp.adapter.PopularRecipeListAdapter
-import com.minhoi.recipeapp.adapter.RecipeListAdapter
+import com.minhoi.recipeapp.adapter.viewpager2.recyclerview.PopularRecipeListAdapter
+import com.minhoi.recipeapp.adapter.viewpager2.recyclerview.RecipeListAdapter
 import com.minhoi.recipeapp.databinding.FragmentHomeBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

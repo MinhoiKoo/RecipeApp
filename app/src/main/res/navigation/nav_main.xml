@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.minhoi.recipeapp.HomeFragment"
+        android:name="com.minhoi.recipeapp.ui.fragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.minhoi.recipeapp.SearchFragment"
+        android:name="com.minhoi.recipeapp.ui.fragment.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
         <action
@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/mypageFragment"
-        android:name="com.minhoi.recipeapp.MypageFragment"
+        android:name="com.minhoi.recipeapp.ui.fragment.MypageFragment"
         android:label="fragment_mypage"
         tools:layout="@layout/fragment_mypage" >
         <action
@@ -52,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/refrigeratorFragment"
-        android:name="com.minhoi.recipeapp.RefrigeratorFragment"
+        android:name="com.minhoi.recipeapp.ui.fragment.RefrigeratorFragment"
         android:label="fragment_refrigerator"
         tools:layout="@layout/fragment_refrigerator" >
         <action

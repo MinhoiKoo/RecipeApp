@@ -2,21 +2,18 @@ package com.minhoi.recipeapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.kakao.sdk.user.UserApiClient
-import com.minhoi.recipeapp.adapter.CookingWayListAdapter
-import com.minhoi.recipeapp.api.Ref
+import com.minhoi.recipeapp.adapter.viewpager2.recyclerview.CookingWayListAdapter
 import com.minhoi.recipeapp.databinding.ActivityRcpInfoBinding
 import com.minhoi.recipeapp.model.RecipeCookingWayData
 import com.minhoi.recipeapp.model.RecipeDto
+import com.minhoi.recipeapp.ui.viewmodel.RcpInfoViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -37,6 +34,10 @@ class RcpInfoActivity : AppCompatActivity() {
 
         val cookingWayAdapter = CookingWayListAdapter(this)
         val cookingWayList = arrayListOf<RecipeCookingWayData>()
+
+        binding.menuBackBtn.setOnClickListener {
+            finish()
+        }
 
         binding.cookingWayRv.apply {
             adapter = cookingWayAdapter
@@ -60,8 +61,6 @@ class RcpInfoActivity : AppCompatActivity() {
 
                 for (i in manualList.indices) {
                     cookingWayList.add(RecipeCookingWayData(manualList[i].trim(','), imageList[i].trim().trim(',')))
-                    Log.d(TAG, manualList[i].trim(',')+ " ")
-                    Log.d(TAG, imageList[i].trim().trim(',') + " ")
                 }
                 cookingWayAdapter.setWays(cookingWayList)
 
@@ -78,14 +77,14 @@ class RcpInfoActivity : AppCompatActivity() {
             viewModel.isBookmark(userId, rcpSeq!!)
 
             binding.rcpBookmarkBtn.setOnClickListener {
-                if(userId == ""){
-                    Toast.makeText(this@RcpInfoActivity, "로그인 후 이용 가능합니다.", Toast.LENGTH_LONG).show()
-                }
-                else {
-                    if(viewModel.isBookmarked.value == true) {
-                        viewModel.deleteBookmark(userId, rcpSeq)
-                    } else {
-                        viewModel.setBookmark(userId, rcpSeq)
+                when(userId){
+                    "" -> Toast.makeText(this@RcpInfoActivity, "로그인 후 이용 가능합니다.", Toast.LENGTH_LONG).show()
+                    else -> {
+                        if(viewModel.isBookmarked.value == true) {
+                            viewModel.deleteBookmark(userId, rcpSeq)
+                        } else {
+                            viewModel.setBookmark(userId, rcpSeq)
+                        }
                     }
                 }
             }

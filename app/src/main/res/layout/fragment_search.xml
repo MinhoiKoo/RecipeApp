@@ -7,7 +7,7 @@
     <data>
         <variable
             name="searchVM"
-            type="com.minhoi.recipeapp.SearchViewModel" />
+            type="com.minhoi.recipeapp.ui.viewmodel.SearchViewModel" />
     </data>
     <FrameLayout
         android:layout_width="match_parent"
