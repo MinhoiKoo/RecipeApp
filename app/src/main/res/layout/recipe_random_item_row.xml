@@ -4,8 +4,8 @@
 
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
         android:layout_margin="15dp"
         app:cardCornerRadius="18dp">
 
@@ -14,12 +14,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.google.android.material.imageview.ShapeableImageView
+            <ImageView
                 android:id="@+id/rcpImage"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:scaleType="fitXY"
-                app:shapeAppearance="@style/radius20" />
+                android:layout_height="140dp"
+                android:scaleType="fitXY"/>
 
             <TextView
                 android:id="@+id/rcpName"
