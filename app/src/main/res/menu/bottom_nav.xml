@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/homeFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/homebtn"
+        android:title="Home" />
+    <item
+        android:id="@+id/refrigeratorFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/refrigeratorbtn"
+        android:title="Refrigerator" />
+    <item
+        android:id="@+id/searchFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/searchbtn"
+        android:title="Search" />
+    <item
+        android:id="@+id/mypageFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/userbtn"
+        android:title="Mypage" />
+</menu>
