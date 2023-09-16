@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.minhoi.recipeapp.adapter.viewpager2.recyclerview.RecipeListAdapter
+import com.minhoi.recipeapp.adapter.recyclerview.RecipeListAdapter
 import com.minhoi.recipeapp.databinding.ActivityRecipeListBinding
 import com.minhoi.recipeapp.ui.viewmodel.RecipeListViewModel
 
@@ -26,6 +26,10 @@ class RecipeListActivity : AppCompatActivity() {
             val intent = Intent(this, RcpInfoActivity::class.java)
             intent.putExtra("rcpSeq", it.rcp_SEQ)
             startActivity(intent)
+        }
+
+        binding.menuBackBtn.setOnClickListener {
+            finish()
         }
 
         binding.recipeListRv.apply {

@@ -43,7 +43,6 @@ class RcpInfoViewModel : ViewModel() {
             else -> {
                 val postListener = object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        // 북마크 하지 않은 레시피이면 DB에 등록 후 색칠된 버튼
                         _isBookmarked.value = dataSnapshot.exists()
                     }
 
