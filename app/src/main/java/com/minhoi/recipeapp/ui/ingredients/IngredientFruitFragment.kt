@@ -5,19 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import com.minhoi.recipeapp.R
+import com.minhoi.recipeapp.adapter.recyclerview.SelectIngredientAdapter
+import com.minhoi.recipeapp.databinding.FragmentIngredientFruitBinding
+import com.minhoi.recipeapp.model.SelectedIngredientDto
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [IngredientFruitFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class IngredientFruitFragment : Fragment() {
+    private lateinit var binding : FragmentIngredientFruitBinding
+    private lateinit var ingredientAdapter : SelectIngredientAdapter
+    private val viewModel : IngredientViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -28,7 +27,23 @@ class IngredientFruitFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ingredient_fruit, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ingredient_fruit, container, false)
+        ingredientAdapter = SelectIngredientAdapter(requireContext()) {
+            //onClickListener
+            val selectItem = SelectedIngredientDto(it.name, it.imagePath)
+            viewModel.addIngredient(selectItem)
+        }
+
+        binding.fruitRv.apply {
+            adapter = ingredientAdapter
+            layoutManager = GridLayoutManager(requireContext(), 4)
+        }
+
+        viewModel.fruitList.observe(viewLifecycleOwner) {
+            ingredientAdapter.setList(it)
+        }
+
+        return binding.root
     }
 
 }
