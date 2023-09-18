@@ -1,5 +1,7 @@
 package com.minhoi.recipeapp.ui.ingredients
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -44,9 +46,26 @@ class IngredientSelectActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@IngredientSelectActivity, LinearLayoutManager.HORIZONTAL, false)
         }
 
+        binding.addIngredientBtn.setOnClickListener {
+            val item = viewModel.ingredientList.value
+            val selectedItem = arrayListOf<String>()
+            if (item != null) {
+                for(i in item) {
+                    selectedItem.add(i.name)
+                }
+            }
+            val intent = Intent()
+            intent.putExtra("SelectedIngredientList", selectedItem)
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
         viewModel.ingredientList.observe(this) {
             selectedAdapter.setSelectedList(it)
         }
+
+    }
+
+    fun ingredientToString() {
 
     }
 

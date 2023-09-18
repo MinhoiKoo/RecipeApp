@@ -28,8 +28,8 @@ class IngredientViewModel : ViewModel() {
     private var _fruitList = MutableLiveData<List<IngredientDto>>()
         val fruitList : LiveData<List<IngredientDto>> = _fruitList
 
-    private var _ingredientList = MutableLiveData<List<SelectedIngredientDto>>()
-    val ingredientList : LiveData<List<SelectedIngredientDto>>
+    private var _ingredientList = MutableLiveData<ArrayList<SelectedIngredientDto>>()
+    val ingredientList : LiveData<ArrayList<SelectedIngredientDto>>
         get() = _ingredientList
 
     private val tempList = arrayListOf<SelectedIngredientDto>()
@@ -50,8 +50,10 @@ class IngredientViewModel : ViewModel() {
     }
 
     fun addIngredient(item : SelectedIngredientDto) {
-        tempList.add(item)
-        Log.d("IngredientViewModel", "$item")
+        when(tempList.contains(item)) {
+            true -> deleteIngredient(item)
+            else -> tempList.add(item)
+        }
         _ingredientList.value = tempList
     }
 
