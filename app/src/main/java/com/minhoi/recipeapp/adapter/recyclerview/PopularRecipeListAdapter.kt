@@ -10,7 +10,7 @@ import com.minhoi.recipeapp.R
 import com.minhoi.recipeapp.databinding.RecipePopularItemBinding
 import com.minhoi.recipeapp.model.RecipeDataModel
 
-class PopularRecipeListAdapter(private val context : Context) : RecyclerView.Adapter<PopularRecipeListAdapter.ViewHolder>() {
+class PopularRecipeListAdapter(private val context : Context, private val onClickListener : (String) -> Unit) : RecyclerView.Adapter<PopularRecipeListAdapter.ViewHolder>() {
 
     private val recipeList = arrayListOf<RecipeDataModel>()
     inner class ViewHolder(binding : RecipePopularItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -18,6 +18,10 @@ class PopularRecipeListAdapter(private val context : Context) : RecyclerView.Ada
         val name = binding.recipeName
 
         fun bind(items : RecipeDataModel) {
+            itemView.setOnClickListener {
+                val position = bindingAdapterPosition
+                onClickListener(recipeList[position].rcp_SEQ)
+            }
             Glide.with(context)
                 .load(items.att_FILE_NO_MAIN)
                 .into(image)
