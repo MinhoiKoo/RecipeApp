@@ -1,5 +1,6 @@
 package com.minhoi.recipeapp.ui.fragment
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -11,20 +12,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
+import com.minhoi.recipeapp.ui.ingredients.IngredientSelectActivity
 import com.minhoi.recipeapp.R
 import com.minhoi.recipeapp.RecipeListActivity
-import com.minhoi.recipeapp.adapter.viewpager2.recyclerview.IngredientListAdapter
+import com.minhoi.recipeapp.adapter.recyclerview.SearchIngredientListAdapter
 import com.minhoi.recipeapp.databinding.FragmentRefrigeratorBinding
-import com.minhoi.recipeapp.ui.ingredients.IngredientSelectActivity
 
 
 class RefrigeratorFragment : Fragment() {
     private val TAG = RefrigeratorFragment::class.java.simpleName
 
     private lateinit var binding : FragmentRefrigeratorBinding
-    private lateinit var ingredientAdapter : IngredientListAdapter
+    private lateinit var ingredientAdapter : SearchIngredientListAdapter
     private lateinit var input : EditText
     private val array = mutableListOf<String>()
 
@@ -40,7 +42,7 @@ class RefrigeratorFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_refrigerator, container, false )
 
-        ingredientAdapter = IngredientListAdapter {
+        ingredientAdapter = SearchIngredientListAdapter {
             // onDeleteClickListener
             array.removeAt(it)
             ingredientAdapter.setIngredients(array)
@@ -48,12 +50,13 @@ class RefrigeratorFragment : Fragment() {
 
         binding.ingredientRv.apply {
             adapter = ingredientAdapter
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = GridLayoutManager(requireContext(), 6)
         }
 
         binding.selectIngredientBtn.setOnClickListener {
+            // 재료 선택 버튼 누르면 결과값 받아올 콜백 실행?
             val intent = Intent(requireActivity(), IngredientSelectActivity::class.java)
-            startActivity(intent)
+            getSelectedContent.launch(intent)
         }
 
         input = binding.inputIngredient
@@ -107,4 +110,23 @@ class RefrigeratorFragment : Fragment() {
         }
     }
 
+    private val getSelectedContent = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { result ->
+        // 콜백 등록 후 엑티비티에서 받아온 데이터 처리
+        if (result.resultCode == Activity.RESULT_OK) {
+
+            val data: Intent? = result.data
+            data?.run {
+                // 결과를 처리합니다.
+                val resultList = data.getStringArrayListExtra("SelectedIngredientList")
+                // resultList를 사용하여 원하는 작업 수행
+                resultList?.let {
+                    for(i in it) {
+                        array.add(i)
+                    }
+                    ingredientAdapter.setIngredients(array)
+                }
+            }
+        }
+    }
 }
