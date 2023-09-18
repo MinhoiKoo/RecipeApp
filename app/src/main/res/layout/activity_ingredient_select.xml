@@ -36,6 +36,7 @@
             app:layout_constraintTop_toBottomOf="@+id/selectedRv"/>
 
         <Button
+            android:id="@+id/addIngredientBtn"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:text="담으러 가기"
