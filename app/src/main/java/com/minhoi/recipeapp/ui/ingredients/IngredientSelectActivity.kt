@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,16 +50,20 @@ class IngredientSelectActivity : AppCompatActivity() {
         binding.addIngredientBtn.setOnClickListener {
             val item = viewModel.ingredientList.value
             val selectedItem = arrayListOf<String>()
-            if (item != null) {
-                for(i in item) {
-                    selectedItem.add(i.name)
+            when(item) {
+                null -> Toast.makeText(this, "재료를 담아주세요", Toast.LENGTH_LONG).show()
+                else -> {
+                    for(i in item) {
+                        selectedItem.add(i.name)
+                    }
+                    val intent = Intent()
+                    intent.putExtra("SelectedIngredientList", selectedItem)
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
                 }
             }
-            val intent = Intent()
-            intent.putExtra("SelectedIngredientList", selectedItem)
-            setResult(Activity.RESULT_OK, intent)
-            finish()
         }
+
         viewModel.ingredientList.observe(this) {
             selectedAdapter.setSelectedList(it)
         }
