@@ -15,6 +15,11 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.minhoi.recipeapp.ui.ingredients.IngredientSelectActivity
 import com.minhoi.recipeapp.R
 import com.minhoi.recipeapp.RecipeListActivity
@@ -48,9 +53,18 @@ class RefrigeratorFragment : Fragment() {
             ingredientAdapter.setIngredients(array)
         }
 
+        val flexboxLayoutManager = FlexboxLayoutManager(requireContext()).apply {
+            //줄바꿈 설정
+            flexWrap = FlexWrap.WRAP
+            // item 정렬 기본 축
+            flexDirection = FlexDirection.ROW
+            // 정렬 기준
+            justifyContent = JustifyContent.FLEX_START
+        }
+
         binding.ingredientRv.apply {
             adapter = ingredientAdapter
-            layoutManager = GridLayoutManager(requireContext(), 6)
+            layoutManager = flexboxLayoutManager
         }
 
         binding.selectIngredientBtn.setOnClickListener {
@@ -66,6 +80,7 @@ class RefrigeratorFragment : Fragment() {
         binding.searchRefriBtn.setOnClickListener {
             if (array.isNotEmpty()) {
                 val intent = Intent(activity, RecipeListActivity::class.java)
+                intent.putExtra("type", "ingredient")
                 intent.putExtra("ingredientList", array as ArrayList<String>)
                 startActivity(intent)
             } else {
@@ -122,7 +137,9 @@ class RefrigeratorFragment : Fragment() {
                 // resultList를 사용하여 원하는 작업 수행
                 resultList?.let {
                     for(i in it) {
-                        array.add(i)
+                        if(!array.contains(i)) {
+                            array.add(i)
+                        }
                     }
                     ingredientAdapter.setIngredients(array)
                 }
