@@ -1,28 +1,37 @@
 package com.minhoi.recipeapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUI.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.database.*
-import com.minhoi.recipeapp.api.MyApi
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.minhoi.recipeapp.api.Ref
-import com.minhoi.recipeapp.api.RetrofitInstance
-import com.minhoi.recipeapp.model.RcpResponse
 import com.minhoi.recipeapp.model.RecipeDataModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 
 class MainActivity : AppCompatActivity() {
-    lateinit var navController : NavController
+    private lateinit var navController : NavController
     private val TAG = MainActivity::class.simpleName
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +40,56 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.mainContainer) as NavHostFragment
         navController = navHostFragment.navController
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        setupWithNavController(bottomNavigationView, navController)
+        val menuView = bottomNavigationView.getChildAt(0) as BottomNavigationMenuView
+        val menuItemView3 = menuView.getChildAt(2) as BottomNavigationItemView
+        val newMenuView = LayoutInflater.from(this).inflate(R.layout.bottom_menu_item3, bottomNavigationView, false)
+        menuItemView3.addView(newMenuView)
+        bottomNavigationView.setOnItemSelectedListener {
+            if (it.itemId == R.id.placeholder) {
+                startActivity(Intent(this, UserRecipeAddActivity::class.java))
+                false
+            }
+            else NavigationUI.onNavDestinationSelected(it, navController)
+        }
 
+//        lifecycleScope.launch(Dispatchers.Main) {
+////            gets()
+//        }
+
+        
+        
+        
+
+
+
+//        val storage: FirebaseStorage = FirebaseStorage.getInstance()
+//        val storageRef: StorageReference = storage.reference
+//
+//        val imageList = arrayOf<String>("apple", "avocado", "banana", "peach", "pear", "tomato", "watermelon")
+//        val nameList = arrayOf<String>("사과", "아보카도", "바나나", "복숭아", "배", "토마토", "수박")
+//        val database: FirebaseDatabase = FirebaseDatabase.getInstance()
+//        val databaseRef = database.reference
+//
+//        for(i in 0 until 7) {
+//            // 이미지가 저장된 경로 및 파일 이름 정의 (예: "images/image.jpg")
+//
+//            val imageRef: StorageReference = storageRef.child("ingredients/fruits/${imageList[i]}.png")
+//
+//// 이미지 다운로드 URL 가져오기
+//            imageRef.downloadUrl.addOnSuccessListener { uri ->
+//                val downloadUrl = uri.toString()
+//
+//                // Firebase Realtime Database에 URL 저장
+//
+//                val data = IngredientDto("${nameList[i]}", downloadUrl)
+//
+//                // 이미지 URL을 Firebase Realtime Database에 저장
+//                databaseRef.child("Ingredients").child("seafoods").child("${imageList[i]}").setValue(data)
+//            }.addOnFailureListener { exception ->
+//                // 이미지 다운로드 URL 가져오기 실패
+//                // 예외 처리 코드를 추가하세요.
+//            }
+//        }
 
 
         // 기존 api 호출 방식에서 Firebase에 저장하여 호출하는 방식으로 변경.
@@ -213,5 +270,50 @@ class MainActivity : AppCompatActivity() {
 //            }
 //
 //        })
+    }
+    
+    suspend fun gets() {
+        val list = arrayListOf<String>()
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for(s in dataSnapshot.children) {
+                    val data = s.getValue(RecipeDataModel::class.java)
+                    if (data != null) {
+                        val type = data.rcp_NM
+                        if (type.contains("우동")) {
+                            list.add(data.rcp_NM)
+
+                            val updateData = HashMap<String, Any>()
+                            updateData["rcp_PAT2"] = "국수&면"
+
+                            // 데이터베이스 참조 경로 설정 (여기에서는 s의 키 값을 사용합니다)
+                            val databaseReference = Ref.myRecipeDataRef.child(s.key.toString())
+
+                            // 업데이트
+                            databaseReference.updateChildren(updateData)
+                                .addOnSuccessListener {
+                                    // 업데이트 성공
+                                    Log.d(TAG, "onDataChange: 성공")
+                                }
+                                .addOnFailureListener {
+                                    // 업데이트 실패
+                                }
+                        }
+                    }
+                }
+
+            }
+
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+            }
+        }
+        Ref.myRecipeDataRef.addListenerForSingleValueEvent(postListener)
+
+        delay(10000L)
+        for(i in list) {
+            Log.d(TAG, "gets: $i\n")
+        }
     }
 }
