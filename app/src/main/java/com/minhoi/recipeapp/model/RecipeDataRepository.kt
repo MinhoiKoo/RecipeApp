@@ -11,13 +11,13 @@ import kotlin.coroutines.suspendCoroutine
 
 class RecipeDataRepository {
 
-    suspend fun getRecipeInfo(rcpSeq : String) : RecipeDataModel{
+    suspend fun getRecipeInfo(rcpSeq: String): RecipeDataModel {
 
         return suspendCoroutine { continuation ->
             val postListener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val data = dataSnapshot.getValue(RecipeDataModel::class.java)
-                    if(data != null) {
+                    if (data != null) {
                         continuation.resume(data)
                     }
                 }
@@ -31,22 +31,47 @@ class RecipeDataRepository {
         }
     }
 
-    suspend fun getRandomRcp() : ArrayList<RecipeDto> {
+    suspend fun getRandomRcp(): ArrayList<RecipeDataModel> {
 
         return suspendCoroutine {
             var count = 0
             val postListener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     // Get Post object and use the values to update the UI
-                    val recipeList = arrayListOf<RecipeDto>()
+                    val recipeList = arrayListOf<RecipeDataModel>()
                     for (postSnapshot in dataSnapshot.children) {
-                        if(count ==6) {break}
-                        val recipeData = postSnapshot.getValue(RecipeDto::class.java)
-                        Log.d("recipeData",recipeData.toString())
+                        val recipeData = postSnapshot.getValue(RecipeDataModel::class.java)
+                        Log.d("recipeData", recipeData.toString())
 
                         if (recipeData != null) {
                             recipeList.add(recipeData)
                             count++
+                        }
+                    }
+                    val shuffledList = recipeList.shuffled().take(6)
+                    it.resume(shuffledList as ArrayList<RecipeDataModel>)
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+//                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+                }
+            }
+            Ref.myRecipeDataRef.addListenerForSingleValueEvent(postListener)
+        }
+    }
+
+    suspend fun getRecipeByName(name: String): ArrayList<RecipeDataModel> {
+        return suspendCoroutine {
+            val postListener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    // Get Post object and use the values to update the UI
+                    val recipeList = arrayListOf<RecipeDataModel>()
+                    for (postSnapshot in dataSnapshot.children) {
+                        val recipeData = postSnapshot.getValue(RecipeDataModel::class.java)
+                        Log.d("recipeData", recipeData.toString())
+
+                        if (recipeData != null && recipeData.rcp_NM.contains(name)) {
+                            recipeList.add(recipeData)
                         }
                     }
                     it.resume(recipeList)
@@ -56,20 +81,19 @@ class RecipeDataRepository {
 //                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
                 }
             }
-            Ref.recipeDataRef.addListenerForSingleValueEvent(postListener)
+            Ref.myRecipeDataRef.addListenerForSingleValueEvent(postListener)
         }
-
 
     }
 
-    suspend fun getPopularRcp() : ArrayList<RecipeDataModel> {
+    suspend fun getPopularRcp(): ArrayList<RecipeDataModel> {
         return suspendCoroutine {
             val queue = arrayListOf<RecipeDataModel>()
             val postListener = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    for(data in snapshot.children) {
+                    for (data in snapshot.children) {
                         val recipeData = data.getValue(RecipeDataModel::class.java)
-                        if(recipeData != null) {
+                        if (recipeData != null) {
                             queue.add(recipeData)
                         }
                     }
@@ -80,7 +104,32 @@ class RecipeDataRepository {
                 }
 
             }
-            Ref.myRecipeDataRef.orderByChild("bookmarkCount").addListenerForSingleValueEvent(postListener)
+            Ref.myRecipeDataRef.orderByChild("bookmarkCount")
+                .addListenerForSingleValueEvent(postListener)
+        }
+    }
+
+    suspend fun getAllRecipe() : ArrayList<RecipeDataModel> {
+
+        return suspendCoroutine {
+            val list = arrayListOf<RecipeDataModel>()
+
+            val postListener = object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (item in snapshot.children) {
+                        val data = item.getValue(RecipeDataModel::class.java)
+                        if (data != null) {
+                            list.add(data)
+                        }
+                    }
+                    it.resume(list)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+            }
+            Ref.myRecipeDataRef
+                .addListenerForSingleValueEvent(postListener)
         }
     }
 }
