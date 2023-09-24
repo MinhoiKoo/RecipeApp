@@ -1,6 +1,9 @@
 package com.minhoi.recipeapp.ui.fragment
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -15,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.minhoi.recipeapp.FilterDialog
 import com.minhoi.recipeapp.R
 import com.minhoi.recipeapp.RcpInfoActivity
+import com.minhoi.recipeapp.RecipeListActivity
 import com.minhoi.recipeapp.ui.viewmodel.SearchViewModel
 import com.minhoi.recipeapp.adapter.recyclerview.RecipeListAdapter
 import com.minhoi.recipeapp.adapter.recyclerview.SearchAutoCompleteAdapter
@@ -26,6 +30,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SearchFragment : Fragment() {
 
@@ -47,7 +52,9 @@ class SearchFragment : Fragment() {
         // Inflate the layout for this fragment
         viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
-
+        binding.loadingSpinKit.apply {
+            visibility = View.GONE
+        }
 
         autoCompleteAdapter = SearchAutoCompleteAdapter { key ->
             //onClickListener
@@ -62,12 +69,20 @@ class SearchFragment : Fragment() {
         }
 
         binding.inputRecipe.textChangesToFlow()
-            .debounce(1000L)
+            .debounce(800L)
             .onEach { query ->
-                // 새로운 입력이 있을 때마다 이전 검색 Job을 취소하고 새로운 Job 시작
-                searchJob?.cancel()
-                searchJob = lifecycleScope.launch(Dispatchers.IO) {
-                    viewModel.getRecipeName(query.toString())
+                if(query != null) {
+                    // 새로운 입력이 있을 때마다 이전 검색 Job을 취소하고 새로운 Job 시작
+                    binding.autoCompleteRv.visibility = View.GONE
+                    binding.loadingSpinKit.visibility = View.VISIBLE
+                    searchJob?.cancel()
+                    searchJob = lifecycleScope.launch(Dispatchers.IO) {
+                        viewModel.getRecipeName(query.toString())
+                        withContext(Dispatchers.Main) {
+                            binding.loadingSpinKit.visibility = View.GONE
+                            binding.autoCompleteRv.visibility = View.VISIBLE
+                        }
+                    }
                 }
             }
             .launchIn(lifecycleScope)
@@ -78,10 +93,10 @@ class SearchFragment : Fragment() {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 // 수정 필요. EditText <-> liveData 오류로 인한 임시 코드
                 viewModel._mutableSearchInput.value = binding.inputRecipe.text.toString()
-                lifecycleScope.launch{
-                    viewModel.searchRcp()
-                    handled = true
-                }
+                val intent = Intent(requireContext(), RecipeListActivity::class.java)
+                intent.putExtra("recipeName", binding.inputRecipe.text.toString())
+                intent.putExtra("type", "name")
+                startActivity(intent)
                 Log.d("edit", viewModel._mutableSearchInput.value.toString())
             }
             handled
@@ -93,13 +108,6 @@ class SearchFragment : Fragment() {
                 putExtra("rcpSeq", it.rcp_SEQ)
             }
             startActivity(intent)
-        }
-
-
-        binding.searchRv.apply {
-            visibility = View.GONE
-            adapter = searchListAdapter
-            layoutManager = LinearLayoutManager(requireActivity())
         }
 
 
@@ -133,10 +141,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun setObserve() {
-        viewModel.searchList.observe(viewLifecycleOwner) {
-            searchListAdapter.setLists(it)
-        }
-
         viewModel.autoCompleteList.observe(viewLifecycleOwner) {
             autoCompleteAdapter.setLists(it)
         }
