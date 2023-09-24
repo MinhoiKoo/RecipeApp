@@ -14,8 +14,9 @@
 
 
             <ImageView
-                android:layout_width="17dp"
-                android:layout_height="17dp"
+                android:id="@+id/FoodType"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:src="@drawable/autosearch"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/recipeTitle"
@@ -25,8 +26,9 @@
                 android:id="@+id/recipeTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="23dp"
-                android:layout_marginLeft="38dp"
+                android:textSize="20dp"
+                android:layout_marginLeft="50dp"
+                android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

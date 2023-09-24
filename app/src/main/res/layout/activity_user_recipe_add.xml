@@ -46,12 +46,14 @@
             android:hint="조리 방법"
             android:layout_margin="15dp"/>
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btnUserRecipeAdd"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_margin="15dp"
+            android:background="@drawable/corner_round_btn"
             android:text="작성"
+            android:textColor="#FFFFFF"
             android:textSize="18dp"/>
 
 
