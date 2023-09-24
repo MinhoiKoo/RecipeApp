@@ -19,8 +19,8 @@ class HomeViewModel : ViewModel() {
     private val kakaoUserRepository = KakaoUserRepository()
     private val recipeDataRepository = RecipeDataRepository()
 
-    private var _mutableRcpList = MutableLiveData<List<RecipeDto>>()
-    val liveRcpList : LiveData<List<RecipeDto>>
+    private var _mutableRcpList = MutableLiveData<List<RecipeDataModel>>()
+    val liveRcpList : LiveData<List<RecipeDataModel>>
         get() = _mutableRcpList
 
     private var _mutablePopularList = MutableLiveData<ArrayList<RecipeDataModel>>()
@@ -32,28 +32,27 @@ class HomeViewModel : ViewModel() {
     }
 
     init {
+        viewModelScope.launch {
+            setPopularRecipe()
+            setRandomRecipe()
+        }
+    }
+
+    suspend fun setRandomRecipe() {
         viewModelScope.launch(Dispatchers.IO) {
-            val randomList = setRandomRecipe()
-            val popularList = setPopularRecipe()
+            val randomList = recipeDataRepository.getRandomRcp()
             withContext(Dispatchers.Main) {
                 _mutableRcpList.value = randomList
-                _mutablePopularList.value = popularList
-
             }
         }
     }
 
-    private suspend fun setRandomRecipe() : ArrayList<RecipeDto> {
-        return recipeDataRepository.getRandomRcp()
+    private suspend fun setPopularRecipe() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val popularList = recipeDataRepository.getPopularRcp()
+            withContext(Dispatchers.Main) {
+                _mutablePopularList.value = popularList
+            }
+        }
     }
-
-    private suspend fun setPopularRecipe() : ArrayList<RecipeDataModel> {
-        return recipeDataRepository.getPopularRcp()
-    }
-
-
-
-
-
-
 }
