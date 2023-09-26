@@ -27,11 +27,17 @@ class HomeViewModel : ViewModel() {
     val livePopularList : LiveData<ArrayList<RecipeDataModel>>
         get() = _mutablePopularList
 
+    private var _mutableIngredientList = MutableLiveData<ArrayList<String>>()
+    val liveIngredientList : LiveData<ArrayList<String>> = _mutableIngredientList
+    private var tempIngredientList = arrayListOf<String>()
+
     suspend fun getUser() : String {
         return kakaoUserRepository.getUser()
     }
 
     init {
+        _mutableIngredientList.value = tempIngredientList
+
         viewModelScope.launch {
             setPopularRecipe()
             setRandomRecipe()
@@ -54,5 +60,19 @@ class HomeViewModel : ViewModel() {
                 _mutablePopularList.value = popularList
             }
         }
+    }
+
+    fun addIngredient(item : String) {
+        tempIngredientList.add(item)
+        _mutableIngredientList.value = tempIngredientList
+    }
+
+    fun deleteIngredient(position : Int) {
+        tempIngredientList.removeAt(position)
+        _mutableIngredientList.value = tempIngredientList
+    }
+
+    fun isIngredientListEmpty() : Boolean {
+        return _mutableIngredientList.value!!.isEmpty()
     }
 }
