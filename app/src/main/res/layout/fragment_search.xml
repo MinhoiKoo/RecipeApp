@@ -9,28 +9,33 @@
             name="searchVM"
             type="com.minhoi.recipeapp.ui.viewmodel.SearchViewModel" />
     </data>
-    <FrameLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.fragment.SearchFragment">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <EditText
+            android:id="@+id/inputRecipe"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="40dp"
+            android:layout_margin="20dp"
+            android:hint="레시피 검색"
+            android:background="#E8E9E7"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
 
-            <EditText
-                android:id="@+id/inputRecipe"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_margin="20dp"
-                android:hint="레시피 검색"
-                android:background="#E8E9E7"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inputRecipe">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/autoCompleteRv"
@@ -41,25 +46,24 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/inputRecipe" />
 
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/searchRv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="100dp"
-                android:layout_marginBottom="50.3dp"/>
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/filterBtn"
+            <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/loading_spinKit"
+                style="@style/SpinKitView.FadingCircle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="30dp"
-                android:background="#999999"
-                android:src="@drawable/filter"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:shapeAppearance="@style/radius50" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_gravity="center"
+                app:SpinKit_Color="#999999" />
+        </FrameLayout>
 
-    </FrameLayout>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/filterBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:background="#999999"
+            android:src="@drawable/filter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:shapeAppearance="@style/radius50" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

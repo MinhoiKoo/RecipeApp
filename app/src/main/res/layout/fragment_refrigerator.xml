@@ -3,73 +3,99 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.fragment.RefrigeratorFragment">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <TextView
+            android:id="@+id/textView6"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:gravity="center"
+            android:text="냉장고비우기"
+            android:textSize="20dp"
+            android:textColor="#000000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textView6"
+
+        <EditText
+            android:id="@+id/inputIngredient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:hint="띄어쓰기로 재료를 구분해주세요!"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/searchRefriBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inputIngredient">
+
+            <LinearLayout
+                android:id="@+id/notSelectedLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:text="냉장고에 있는 재료를 입력해보세요\n재료에 맞는 레시피를 추천해드립니다!"
-                android:textSize="20dp"
-                android:textColor="#000000"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_gravity="center"
+                android:layout_marginBottom="25dp"
+                android:orientation="vertical">
 
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:src="@drawable/fridge" />
 
-            <EditText
-                android:id="@+id/inputIngredient"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:hint="띄어쓰기로 재료를 구분해주세요!"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="냉장고에 재료가 없어요\n재료를 추가해보세요!"
+                    android:textColor="#999999"
+                    android:textSize="20dp"
+                    android:gravity="center"/>
+
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/ingredientRv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:layout_marginTop="152dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/inputIngredient" />
-
-            <ImageButton
-                android:id="@+id/selectIngredientBtn"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_margin="15dp"
-                android:background="@drawable/round_button"
-                app:layout_constraintBottom_toTopOf="@+id/searchRefriBtn"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:visibility="gone"/>
+        </FrameLayout>
 
 
-            <android.widget.Button
-                android:id="@+id/searchRefriBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:text="검 색"
-                android:textSize="18dp"
-                android:textColor="#FFFFFF"
-                android:background="@drawable/corner_round_btn"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+        <ImageButton
+            android:id="@+id/selectIngredientBtn"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="15dp"
+            android:background="@drawable/round_button"
+            app:layout_constraintBottom_toTopOf="@+id/searchRefriBtn"
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <android.widget.Button
+            android:id="@+id/searchRefriBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="검 색"
+            android:textSize="18dp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/corner_round_btn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
