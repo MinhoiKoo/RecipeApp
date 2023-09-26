@@ -5,10 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.minhoi.recipeapp.adapter.recyclerview.RecipeListAdapter
 import com.minhoi.recipeapp.databinding.ActivityRecipeListBinding
 import com.minhoi.recipeapp.ui.viewmodel.RecipeListViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class RecipeListActivity : AppCompatActivity() {
 
@@ -38,9 +41,25 @@ class RecipeListActivity : AppCompatActivity() {
         }
 
         val intent = intent
-        val ingredientList = intent.getStringArrayListExtra("ingredientList")
+        val type = intent.getStringExtra("type")
 
-        viewModel.getRecipe(ingredientList!!)
+        when(type) {
+            "ingredient" -> {
+                val ingredientList = intent.getStringArrayListExtra("ingredientList")
+                viewModel.getRecipe(ingredientList!!)
+            }
+            else -> {
+                val recipeName = intent.getStringExtra("recipeName")
+                lifecycleScope.launch(Dispatchers.IO) {
+                    viewModel.getRecipeByName(recipeName!!)
+                }
+            }
+
+        }
+
+
+
+
 
         viewModel.recipeList.observe(this) { recipes ->
             recipeListAdapter.setLists(recipes)
