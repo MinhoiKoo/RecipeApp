@@ -37,9 +37,9 @@ class SearchAutoCompleteAdapter(private val onCLickListener : (String) -> Unit) 
     }
 
     override fun getItemCount(): Int {
-        return if (recipeNameList.size <= 10) {
+        return if (recipeNameList.size <= 20) {
             recipeNameList.size
-        } else { 10 }
+        } else { 20 }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -52,7 +52,7 @@ class SearchAutoCompleteAdapter(private val onCLickListener : (String) -> Unit) 
         // 검색된 데이터 랜덤으로 섞어서 10개만 표출
         data.shuffle()
         recipeNameList.clear()
-        recipeNameList.addAll(data.take(10))
+        recipeNameList.addAll(data.take(20))
         notifyDataSetChanged()
     }
 
