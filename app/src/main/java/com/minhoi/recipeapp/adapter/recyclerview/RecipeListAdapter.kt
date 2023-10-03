@@ -10,12 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.minhoi.recipeapp.R
 import com.minhoi.recipeapp.databinding.RecipeRandomItemRowBinding
+import com.minhoi.recipeapp.model.RecipeDataModel
 import com.minhoi.recipeapp.model.RecipeDto
 
-class RecipeListAdapter(val context: Context, private val itemClick : (RecipeDto) -> Unit)
+class RecipeListAdapter(val context: Context, private val itemClick : (RecipeDataModel) -> Unit)
     : RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {
 
-    private val recipeList = mutableListOf<RecipeDto>()
+    private val recipeList = mutableListOf<RecipeDataModel>()
 
     inner class ViewHolder(binding : RecipeRandomItemRowBinding ) : RecyclerView.ViewHolder(binding.root) {
         private val rcpImage : ImageView
@@ -26,7 +27,7 @@ class RecipeListAdapter(val context: Context, private val itemClick : (RecipeDto
             rcpName = binding.rcpName
         }
 
-        fun bind(items : RecipeDto) {
+        fun bind(items : RecipeDataModel) {
             itemView.setOnClickListener {
                 itemClick(recipeList[bindingAdapterPosition])
             }
@@ -54,7 +55,7 @@ class RecipeListAdapter(val context: Context, private val itemClick : (RecipeDto
         holder.bind(recipeList[position])
     }
 
-    fun setLists(items : List<RecipeDto>) {
+    fun setLists(items : List<RecipeDataModel>) {
         recipeList.clear()
         recipeList.addAll(items)
         notifyDataSetChanged()
@@ -63,9 +64,4 @@ class RecipeListAdapter(val context: Context, private val itemClick : (RecipeDto
     override fun getItemViewType(position: Int): Int {
         return R.layout.recipe_random_item_row
     }
-
-
-
-
-
 }

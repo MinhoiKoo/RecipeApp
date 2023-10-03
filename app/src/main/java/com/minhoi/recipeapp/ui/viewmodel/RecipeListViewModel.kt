@@ -8,25 +8,30 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.minhoi.recipeapp.api.Ref
+import com.minhoi.recipeapp.model.RecipeDataModel
+import com.minhoi.recipeapp.model.RecipeDataRepository
 import com.minhoi.recipeapp.model.RecipeDto
 
 class RecipeListViewModel : ViewModel() {
-
-    private var _recipeList = MutableLiveData<List<RecipeDto>>()
-    val recipeList : LiveData<List<RecipeDto>>
+    private val recipeDataRepository = RecipeDataRepository()
+    private var _recipeList = MutableLiveData<List<RecipeDataModel>>()
+    val recipeList : LiveData<List<RecipeDataModel>>
         get() = _recipeList
 
+    suspend fun getRecipeByName(name : String) {
+        _recipeList.value = recipeDataRepository.getRecipeByName(name)
+    }
 
 
     fun getRecipe(ingredients: List<String>) {
-        val filterKeyList = arrayListOf<RecipeDto>()
+        val filterKeyList = arrayListOf<RecipeDataModel>()
         var remainingIngredients = ingredients.size
 
         ingredients.forEach { ingredient ->
             Ref.recipeDataRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (data in dataSnapshot.children) {
-                        val value = data.getValue(RecipeDto::class.java)
+                        val value = data.getValue(RecipeDataModel::class.java)
                         val key = data.key.toString()
                         if (value != null && value.rcp_PARTS_DTLS?.contains(ingredient) == true) {
                             filterKeyList.add(value)
