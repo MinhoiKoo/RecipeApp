@@ -1,5 +1,6 @@
 package com.minhoi.recipeapp
 
+import android.graphics.drawable.ClipDrawable.VERTICAL
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
@@ -7,10 +8,12 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.minhoi.recipeapp.adapter.recyclerview.CookingWayListAdapter
+import com.minhoi.recipeapp.adapter.recyclerview.RecipeInfoListAdapter
 import com.minhoi.recipeapp.databinding.ActivityRcpInfoBinding
+import com.minhoi.recipeapp.model.InfoIngredientDto
 import com.minhoi.recipeapp.model.RecipeCookingWayData
 import com.minhoi.recipeapp.model.RecipeDto
 import com.minhoi.recipeapp.ui.viewmodel.RcpInfoViewModel
@@ -32,11 +35,19 @@ class RcpInfoActivity : AppCompatActivity() {
 
         val rcpSeq = intent.getStringExtra("rcpSeq")
 
-        val cookingWayAdapter = CookingWayListAdapter(this)
+        val ingredientAdapter = RecipeInfoListAdapter(this)
+        val cookingWayAdapter = RecipeInfoListAdapter(this)
         val cookingWayList = arrayListOf<RecipeCookingWayData>()
 
         binding.menuBackBtn.setOnClickListener {
             finish()
+        }
+
+        binding.infoIngredientRv.apply {
+            adapter = ingredientAdapter
+            layoutManager = LinearLayoutManager(this@RcpInfoActivity)
+            val decoration = DividerItemDecoration(this@RcpInfoActivity, 1)
+            addItemDecoration(decoration)
         }
 
         binding.cookingWayRv.apply {
@@ -50,10 +61,11 @@ class RcpInfoActivity : AppCompatActivity() {
             withContext(Dispatchers.Main) {
                 binding.apply {
                     menuName.text = recipeData.rcp_NM
-                    menuIngredient.text = split(recipeData.rcp_PARTS_DTLS)
                     Glide.with(this@RcpInfoActivity)
                         .load(recipeData.att_FILE_NO_MAIN)
                         .into(menuImage)
+                    val ingredientList = recipeData.rcp_PARTS_DTLS.split(",").map {InfoIngredientDto(it.trim())}
+                    ingredientAdapter.setIngredients(ingredientList)
                 }
 
                 val manualList = recipeData.manual.split("xx")
@@ -63,7 +75,6 @@ class RcpInfoActivity : AppCompatActivity() {
                     cookingWayList.add(RecipeCookingWayData(manualList[i].trim(','), imageList[i].trim().trim(',')))
                 }
                 cookingWayAdapter.setWays(cookingWayList)
-
             }
         }
 
@@ -101,12 +112,12 @@ class RcpInfoActivity : AppCompatActivity() {
 
     }
 
-    private fun split(str : String) : String {
-        val strSplit = str.split(",")
-        val sb = StringBuilder()
-        for( i in strSplit.indices) {
-            sb.append(strSplit[i].trim() + "\n")
-        }
-        return sb.toString()
-    }
+//    private fun split(str : String) : List<String> {
+//        val strSplit = str.split(",")
+//        val sb = StringBuilder()
+//        for( i in strSplit.indices) {
+//            sb.append(strSplit[i].trim() + "\n")
+//        }
+//        return sb.toString()
+//    }
 }
