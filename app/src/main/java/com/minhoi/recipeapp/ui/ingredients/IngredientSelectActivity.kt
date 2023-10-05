@@ -14,7 +14,9 @@ import com.minhoi.recipeapp.R
 import com.minhoi.recipeapp.adapter.recyclerview.SelectIngredientAdapter
 import com.minhoi.recipeapp.adapter.viewpager2.ViewpagerFragmentAdapter
 import com.minhoi.recipeapp.databinding.ActivityIngredientSelectBinding
+import com.minhoi.recipeapp.model.IngredientDto
 import com.minhoi.recipeapp.model.SelectedIngredientDto
+import java.util.ArrayList
 
 class IngredientSelectActivity : AppCompatActivity() {
     private lateinit var binding : ActivityIngredientSelectBinding
@@ -40,8 +42,8 @@ class IngredientSelectActivity : AppCompatActivity() {
             //onClickListener
             val select = SelectedIngredientDto(it.name, it.imagePath)
             viewModel.deleteIngredient(select)
-            selectedAdapter.deleteSelectedList(select)
         }
+
         binding.selectedRv.apply {
             adapter = selectedAdapter
             layoutManager = LinearLayoutManager(this@IngredientSelectActivity, LinearLayoutManager.HORIZONTAL, false)
@@ -49,15 +51,17 @@ class IngredientSelectActivity : AppCompatActivity() {
 
         binding.addIngredientBtn.setOnClickListener {
             val item = viewModel.ingredientList.value
-            val selectedItem = arrayListOf<String>()
+            // 선택된 재료 담긴 List
+            val selectedItemList = ArrayList<SelectedIngredientDto>()
             when(item) {
                 null -> Toast.makeText(this, "재료를 담아주세요", Toast.LENGTH_LONG).show()
                 else -> {
-                    for(i in item) {
-                        selectedItem.add(i.name)
+                    for(ingredient in item) {
+                        selectedItemList.add(ingredient)
                     }
+                    // Intent에 재료 리스트 추가
                     val intent = Intent()
-                    intent.putExtra("SelectedIngredientList", selectedItem)
+                    intent.putParcelableArrayListExtra("SelectedIngredientList", selectedItemList)
                     setResult(Activity.RESULT_OK, intent)
                     finish()
                 }

@@ -25,7 +25,10 @@ import com.minhoi.recipeapp.ui.ingredients.IngredientSelectActivity
 import com.minhoi.recipeapp.R
 import com.minhoi.recipeapp.RecipeListActivity
 import com.minhoi.recipeapp.adapter.recyclerview.SearchIngredientListAdapter
+import com.minhoi.recipeapp.adapter.recyclerview.SelectIngredientAdapter
 import com.minhoi.recipeapp.databinding.FragmentRefrigeratorBinding
+import com.minhoi.recipeapp.model.IngredientDto
+import com.minhoi.recipeapp.model.SelectedIngredientDto
 import com.minhoi.recipeapp.ui.viewmodel.HomeViewModel
 
 
@@ -34,7 +37,7 @@ class RefrigeratorFragment : Fragment() {
     // Fragment 전환해도 Data 유지하기 위해 부모 액티비티 lifeCycle 따르는 viewModel로 선언
     private val viewModel : HomeViewModel by activityViewModels()
     private lateinit var binding : FragmentRefrigeratorBinding
-    private lateinit var ingredientAdapter : SearchIngredientListAdapter
+    private lateinit var ingredientAdapter : SelectIngredientAdapter
     private lateinit var input : EditText
 //    private val array = mutableListOf<String>()
 
@@ -50,11 +53,9 @@ class RefrigeratorFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_refrigerator, container, false )
 
-        ingredientAdapter = SearchIngredientListAdapter {position ->
-            // onDeleteClickListener
-            viewModel.deleteIngredient(position)
-//            array.removeAt(it)
-//            ingredientAdapter.setIngredients(array)
+        ingredientAdapter = SelectIngredientAdapter(requireContext()) {
+            //onClickListener
+            viewModel.deleteSelectedIngredient(it as SelectedIngredientDto)
         }
 
         val flexboxLayoutManager = FlexboxLayoutManager(requireContext()).apply {
@@ -118,8 +119,8 @@ class RefrigeratorFragment : Fragment() {
     }
 
     private fun setObserve() {
-        viewModel.liveIngredientList.observe(viewLifecycleOwner) {list ->
-            ingredientAdapter.setIngredients(list)
+        viewModel.liveSelectIngredientList.observe(viewLifecycleOwner) {list ->
+            ingredientAdapter.setSelectedList(list)
 
             if(list.isNotEmpty()) {
                 binding.notSelectedLayout.visibility = View.GONE
@@ -154,6 +155,7 @@ class RefrigeratorFragment : Fragment() {
         }
     }
 
+    // 재료 선택 Activity 실행 후 결과 처리
     private val getSelectedContent = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) { result ->
         // 콜백 등록 후 엑티비티에서 받아온 데이터 처리
@@ -161,15 +163,11 @@ class RefrigeratorFragment : Fragment() {
 
             val data: Intent? = result.data
             data?.run {
-                // 결과를 처리합니다.
-                val resultList = data.getStringArrayListExtra("SelectedIngredientList")
-                // resultList를 사용하여 원하는 작업 수행
+                // 재료 선택 Activity에서 담은 재료 리스트 (SelectedIngredientDto)
+                val resultList = data.getParcelableArrayListExtra<SelectedIngredientDto>("SelectedIngredientList")
                 resultList?.let {
-                    for(i in it) {
-                        if(!viewModel.liveIngredientList.value!!.contains(i)) {
-                            viewModel.addIngredient(i)
-                        }
-                    }
+                    // ViewModel에 선택된 재료 주입
+                    viewModel.setSelectedIngredientList(resultList)
                 }
             }
         }

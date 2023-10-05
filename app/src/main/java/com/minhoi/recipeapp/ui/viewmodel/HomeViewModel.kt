@@ -6,10 +6,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.minhoi.recipeapp.api.MyApi
 import com.minhoi.recipeapp.api.RetrofitInstance
+import com.minhoi.recipeapp.model.IngredientDto
 import com.minhoi.recipeapp.model.KakaoUserRepository
 import com.minhoi.recipeapp.model.RecipeDataModel
 import com.minhoi.recipeapp.model.RecipeDataRepository
 import com.minhoi.recipeapp.model.RecipeDto
+import com.minhoi.recipeapp.model.SelectedIngredientDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,6 +32,10 @@ class HomeViewModel : ViewModel() {
     private var _mutableIngredientList = MutableLiveData<ArrayList<String>>()
     val liveIngredientList : LiveData<ArrayList<String>> = _mutableIngredientList
     private var tempIngredientList = arrayListOf<String>()
+
+    private var _mutableSelectIngredientList = MutableLiveData<ArrayList<SelectedIngredientDto>>()
+    val liveSelectIngredientList : LiveData<ArrayList<SelectedIngredientDto>> = _mutableSelectIngredientList
+
 
     suspend fun getUser() : String {
         return kakaoUserRepository.getUser()
@@ -74,5 +80,15 @@ class HomeViewModel : ViewModel() {
 
     fun isIngredientListEmpty() : Boolean {
         return _mutableIngredientList.value!!.isEmpty()
+    }
+
+    fun setSelectedIngredientList(items : ArrayList<SelectedIngredientDto>) {
+        _mutableSelectIngredientList.value = items
+    }
+
+    fun deleteSelectedIngredient(item : SelectedIngredientDto) {
+        val currentList = _mutableSelectIngredientList.value ?: ArrayList()
+        currentList.remove(item)
+        _mutableSelectIngredientList.value = currentList
     }
 }

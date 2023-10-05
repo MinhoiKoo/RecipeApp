@@ -8,18 +8,20 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragment.RefrigeratorFragment">
 
+
         <TextView
             android:id="@+id/textView6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
             android:gravity="center"
             android:text="냉장고비우기"
-            android:textSize="20dp"
             android:textColor="#000000"
+            android:textSize="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
 
         <EditText
             android:id="@+id/inputIngredient"
@@ -32,6 +34,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
         <FrameLayout
+            android:id="@+id/frameLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/searchRefriBtn"
@@ -56,10 +59,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:text="냉장고에 재료가 없어요\n재료를 추가해보세요!"
+                    android:gravity="center"
+                    android:text="냉장고에 재료가 없어요\n 재료를 직접 입력하거나\n+버튼을 눌러 추가해보세요!"
                     android:textColor="#999999"
-                    android:textSize="20dp"
-                    android:gravity="center"/>
+                    android:textSize="20dp" />
 
             </LinearLayout>
 
@@ -67,26 +70,28 @@
                 android:id="@+id/ingredientRv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:visibility="gone"/>
+                android:layout_marginTop="100dp" />
         </FrameLayout>
 
 
         <ImageButton
             android:id="@+id/selectIngredientBtn"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_margin="15dp"
-            android:background="@drawable/round_button"
-            app:layout_constraintBottom_toTopOf="@+id/searchRefriBtn"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/addgreen"
+            app:layout_constraintBottom_toBottomOf="@+id/textView6"
+            app:layout_constraintEnd_toEndOf="@+id/textView6"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <android.widget.Button
             android:id="@+id/searchRefriBtn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginBottom="25dp"
             android:text="검 색"
             android:textSize="18dp"
             android:textColor="#FFFFFF"
