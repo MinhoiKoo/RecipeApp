@@ -1,9 +1,12 @@
 package com.minhoi.recipeapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -12,27 +15,44 @@ import com.kakao.sdk.user.UserApiClient
 import com.minhoi.recipeapp.adapter.recyclerview.UserRecipeListAdapter
 import com.minhoi.recipeapp.api.Ref
 import com.minhoi.recipeapp.databinding.ActivityUserRecipeListBinding
+import com.minhoi.recipeapp.model.KakaoUserRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class UserRecipeListActivity : AppCompatActivity() {
     private lateinit var binding : ActivityUserRecipeListBinding
+    private var userRepository = KakaoUserRepository()
     private val recipeList = arrayListOf<UserRecipeData>()
-    private var myAdapter = UserRecipeListAdapter(this, recipeList)
-    private var userId : String? = null
+    private lateinit var myAdapter : UserRecipeListAdapter
+    private var userId : String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user_recipe_list)
 
-        UserApiClient.instance.me { user, error ->
-            if (user != null) {
-                userId = user.id.toString()
-                getRecipe(userId!!)
+        lifecycleScope.launch(Dispatchers.IO) {
+            when(val id = userRepository.getUser()) {
+                "" -> Toast.makeText(this@UserRecipeListActivity, "로그인 후 이용 가능합니다.", Toast.LENGTH_LONG).show()
+                else -> {
+                    getRecipe(id)
+                    withContext(Dispatchers.Main) {
+                        myAdapter = UserRecipeListAdapter(this@UserRecipeListActivity, recipeList) {
+                            //onClickListener
+                            val intent = Intent(this@UserRecipeListActivity, UserRecipeInfoActivity::class.java)
+                            intent.putExtra("title", it.title)
+                            intent.putExtra("imagePath", it.imagePath)
+                            intent.putExtra("ingredients", it.ingredient)
+                            intent.putExtra("way", it.way)
+                            startActivity(intent)
+                        }
+                        binding.userRecipeRv.apply {
+                            adapter = myAdapter
+                            layoutManager = LinearLayoutManager(this@UserRecipeListActivity)
+                        }
+                    }
+                }
             }
-        }
-
-        binding.userRecipeRv.apply {
-            adapter = myAdapter
-            layoutManager = LinearLayoutManager(this@UserRecipeListActivity)
         }
     }
 

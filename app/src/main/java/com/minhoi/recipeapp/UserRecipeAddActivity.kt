@@ -8,11 +8,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.storage.FirebaseStorage
 import com.kakao.sdk.user.UserApiClient
 import com.minhoi.recipeapp.api.Ref
 import com.minhoi.recipeapp.databinding.ActivityUserRecipeAddBinding
+import com.minhoi.recipeapp.model.KakaoUserRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class UserRecipeAddActivity : AppCompatActivity() {
     private lateinit var binding : ActivityUserRecipeAddBinding
@@ -40,15 +47,17 @@ class UserRecipeAddActivity : AppCompatActivity() {
         }
 
         binding.btnUserRecipeAdd.setOnClickListener {
-            val title = binding.inputUserRecipeTitle.text.toString()
-            val ingredient = binding.innputUserRecipeIngredient.text.toString()
-            val way = binding.inputUserRecipeWay.text.toString()
-            val date = ref.getDate()
-
-            imageUpload()
-
-            userId?.let { id -> key?.let { key -> Ref.userRecipeDataRef.child(id).child(key).setValue(UserRecipeData(title,ingredient, way, date)) } }
-            finish()
+            lifecycleScope.launch(Dispatchers.IO) {
+                val uri = imageUpload()
+                val title = binding.inputUserRecipeTitle.text.toString()
+                val ingredient = binding.innputUserRecipeIngredient.text.toString()
+                val way = binding.inputUserRecipeWay.text.toString()
+                val date = ref.getDate()
+                withContext(Dispatchers.Main) {
+                    userId?.let { id -> key?.let { key -> Ref.userRecipeDataRef.child(id).child(key).setValue(UserRecipeData(title,ingredient, way, date, uri)) } }
+                    finish()
+                }
+            }
         }
 
     }
@@ -61,26 +70,33 @@ class UserRecipeAddActivity : AppCompatActivity() {
         }
     }
 
-    private fun imageUpload() {
+    private suspend fun imageUpload() : String {
         // Get the data from an ImageView as bytes
-      
-        val userRecipeRef = key?.let { storage.reference.child(it) }
-        val imageView = binding.inputUserRecipeImage
-        imageView.isDrawingCacheEnabled = true
-        imageView.buildDrawingCache()
-        val bitmap = (imageView.drawable as BitmapDrawable).bitmap
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val data = baos.toByteArray()
 
-        var uploadTask = userRecipeRef?.putBytes(data)
+        return suspendCoroutine { continuation ->
+            val userRecipeRef = key?.let { storage.reference.child(it) }
+            val imageView = binding.inputUserRecipeImage
+            imageView.isDrawingCacheEnabled = true
+            imageView.buildDrawingCache()
+            val bitmap = (imageView.drawable as BitmapDrawable).bitmap
+            val baos = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val data = baos.toByteArray()
 
-        uploadTask?.addOnFailureListener {
-            // Handle unsuccessful uploads
-        }?.addOnSuccessListener {
-            // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-            // ...
+            var uploadTask = userRecipeRef?.putBytes(data)
+
+            uploadTask?.addOnFailureListener {
+                // Handle unsuccessful uploads
+            }?.addOnSuccessListener { taskSnapshot ->
+                // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+                // ...
+                taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri ->
+                    // Now, you can save the download URL to the Firebase Realtime Database
+                    val downloadUrl = uri.toString()
+                    continuation.resume(downloadUrl)
+                }
+            }
         }
-    }
 
+    }
 }

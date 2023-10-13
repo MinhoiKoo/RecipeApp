@@ -7,11 +7,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.minhoi.recipeapp.R
 import com.minhoi.recipeapp.UserRecipeData
 import com.minhoi.recipeapp.databinding.RecipeListItemRowBinding
 
-class UserRecipeListAdapter(private val context : Context, private val dataSet : ArrayList<UserRecipeData>) : RecyclerView.Adapter<UserRecipeListAdapter.ViewHolder>() {
+class UserRecipeListAdapter(private val context : Context, private val dataSet : ArrayList<UserRecipeData>, private val onClickListener : (UserRecipeData) -> Unit) : RecyclerView.Adapter<UserRecipeListAdapter.ViewHolder>() {
 
     inner class ViewHolder(binding : RecipeListItemRowBinding) : RecyclerView.ViewHolder(binding.root) {
         val rcpName : TextView
@@ -19,6 +20,10 @@ class UserRecipeListAdapter(private val context : Context, private val dataSet :
         val whenEdited : TextView
 
         init {
+            itemView.setOnClickListener {
+                val position = bindingAdapterPosition
+                onClickListener(dataSet[position])
+            }
             rcpName = binding.bookmarkRcpName
             rcpImage = binding.bookmarkRcpImage
             whenEdited = binding.bookmarkRcpDate
@@ -40,6 +45,8 @@ class UserRecipeListAdapter(private val context : Context, private val dataSet :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.rcpName.text = dataSet[position].title
         holder.whenEdited.text = dataSet[position].date
-
+        Glide.with(context)
+            .load(dataSet[position].imagePath)
+            .into(holder.rcpImage)
     }
 }
