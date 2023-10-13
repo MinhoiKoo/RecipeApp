@@ -34,7 +34,6 @@ class RcpInfoActivity : AppCompatActivity() {
         val intent = getIntent()
 
         val rcpSeq = intent.getStringExtra("rcpSeq")
-
         val ingredientAdapter = RecipeInfoListAdapter(this)
         val cookingWayAdapter = RecipeInfoListAdapter(this)
         val cookingWayList = arrayListOf<RecipeCookingWayData>()
