@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,8 +14,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -24,10 +21,8 @@ import com.google.android.flexbox.JustifyContent
 import com.minhoi.recipeapp.ui.ingredients.IngredientSelectActivity
 import com.minhoi.recipeapp.R
 import com.minhoi.recipeapp.RecipeListActivity
-import com.minhoi.recipeapp.adapter.recyclerview.SearchIngredientListAdapter
 import com.minhoi.recipeapp.adapter.recyclerview.SelectIngredientAdapter
 import com.minhoi.recipeapp.databinding.FragmentRefrigeratorBinding
-import com.minhoi.recipeapp.model.IngredientDto
 import com.minhoi.recipeapp.model.SelectedIngredientDto
 import com.minhoi.recipeapp.ui.viewmodel.HomeViewModel
 
@@ -83,15 +78,12 @@ class RefrigeratorFragment : Fragment() {
 
         // 재료 추가 후 검색 버튼 누르면 재료 리스트를 Intent에 담아서 전달.
         binding.searchRefriBtn.setOnClickListener {
-            when(viewModel.isIngredientListEmpty()) {
+            when(viewModel.isSelectIngredientListEmpty()) {
                 true -> {
-                    Toast.makeText(requireContext(), "재료를 입력해주세요.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "재료를 선택해주세요.", Toast.LENGTH_LONG).show()
                 }
                 else -> {
-                    val intent = Intent(activity, RecipeListActivity::class.java)
-                    intent.putExtra("type", "ingredient")
-                    intent.putExtra("ingredientList", viewModel.liveIngredientList.value)
-                    startActivity(intent)
+                    searchRecipeByIngredient()
                 }
             }
 //            if (array.isNotEmpty()) {
@@ -120,16 +112,16 @@ class RefrigeratorFragment : Fragment() {
 
     private fun setObserve() {
         viewModel.liveSelectIngredientList.observe(viewLifecycleOwner) {list ->
-            ingredientAdapter.setSelectedList(list)
-
             if(list.isNotEmpty()) {
                 binding.notSelectedLayout.visibility = View.GONE
-                binding.ingredientRv.visibility = View.VISIBLE
+                binding.selectedLayout.visibility = View.VISIBLE
             }
             else{
                 binding.notSelectedLayout.visibility = View.VISIBLE
-                binding.ingredientRv.visibility = View.GONE
+                binding.selectedLayout.visibility = View.GONE
             }
+
+            ingredientAdapter.setSelectedList(list)
         }
     }
     private val inputFormal = object : TextWatcher {
@@ -153,6 +145,14 @@ class RefrigeratorFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun searchRecipeByIngredient() {
+        val selectedIngredientName = viewModel.getSelectedIngredientName()
+        val intent = Intent(activity, RecipeListActivity::class.java)
+        intent.putExtra("type", "ingredient")
+        intent.putExtra("ingredientList", selectedIngredientName)
+        startActivity(intent)
     }
 
     // 재료 선택 Activity 실행 후 결과 처리
