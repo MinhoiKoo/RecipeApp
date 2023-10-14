@@ -23,9 +23,8 @@ import kotlinx.coroutines.withContext
 class UserRecipeListActivity : AppCompatActivity() {
     private lateinit var binding : ActivityUserRecipeListBinding
     private var userRepository = KakaoUserRepository()
-    private val recipeList = arrayListOf<UserRecipeData>()
+    private val recipeList = arrayListOf<Pair<String,UserRecipeData>>()
     private lateinit var myAdapter : UserRecipeListAdapter
-    private var userId : String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -40,10 +39,12 @@ class UserRecipeListActivity : AppCompatActivity() {
                         myAdapter = UserRecipeListAdapter(this@UserRecipeListActivity, recipeList) {
                             //onClickListener
                             val intent = Intent(this@UserRecipeListActivity, UserRecipeInfoActivity::class.java)
-                            intent.putExtra("title", it.title)
-                            intent.putExtra("imagePath", it.imagePath)
-                            intent.putExtra("ingredients", it.ingredient)
-                            intent.putExtra("way", it.way)
+                            intent.putExtra("uid", id)
+                            intent.putExtra("key", it.first)
+                            intent.putExtra("title", it.second.title)
+                            intent.putExtra("imagePath", it.second.imagePath)
+                            intent.putExtra("ingredients", it.second.ingredient)
+                            intent.putExtra("way", it.second.way)
                             startActivity(intent)
                         }
                         binding.userRecipeRv.apply {
@@ -62,9 +63,10 @@ class UserRecipeListActivity : AppCompatActivity() {
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (snapShot in dataSnapshot.children) {
+                        val key = snapShot.key
                         val data = snapShot.getValue(UserRecipeData::class.java)
-                        if (data != null) {
-                            recipeList.add(data)
+                        if (key!= null) {
+                            recipeList.add(Pair(key,data!!))
                             Log.d("hi", data.toString())
                         }
                         myAdapter.notifyDataSetChanged()

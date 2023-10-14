@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".UserRecipeEditActivity"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="나만의 레시피 수정"
+            android:textSize="20dp"
+            android:layout_margin="10dp"
+            android:layout_gravity="center" />
+
+        <EditText
+            android:id="@+id/editUserRecipeTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="제목"
+            android:layout_margin="15dp"/>
+
+        <ImageView
+            android:src="@drawable/add"
+            android:id="@+id/editUserRecipeImage"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_margin="15dp"/>
+
+        <EditText
+            android:id="@+id/editUserRecipeIngredient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="재료를 콤마(,) 기준으로 입력해주세요 !"
+            android:layout_margin="15dp"/>
+
+        <EditText
+            android:id="@+id/editUserRecipeWay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="조리 방법"
+            android:layout_margin="15dp"/>
+
+        <android.widget.Button
+            android:id="@+id/editBtnUserRecipe"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="15dp"
+            android:background="@drawable/corner_round_btn"
+            android:text="수정"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"/>
+
+
+    </LinearLayout>
+</layout>

@@ -31,6 +31,9 @@ class UserBookmarkListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user_bookmark)
 
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
 
         lifecycleScope.launch {
             try {
@@ -63,7 +66,6 @@ class UserBookmarkListActivity : AppCompatActivity() {
                 intent.putExtra("rcpSeq", item.rcp_SEQ)
                 startActivity(intent)
             }
-
 
         })
 

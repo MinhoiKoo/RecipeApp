@@ -19,6 +19,8 @@ class UserRecipeInfoActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user_recipe_info)
         ingredientAdapter = RecipeInfoListAdapter(this)
 
+        val uid = intent.getStringExtra("uid")
+        val key = intent.getStringExtra("key")
         val title = intent.getStringExtra("title")
         val imagePath = intent.getStringExtra("imagePath")
         val cookingWay = intent.getStringExtra("way")
@@ -31,7 +33,9 @@ class UserRecipeInfoActivity : AppCompatActivity() {
                 finish()
             }
             editRecipeBtn.setOnClickListener {
-                val intent = Intent(this@UserRecipeInfoActivity, UserRecipeAddActivity::class.java)
+                val intent = Intent(this@UserRecipeInfoActivity, UserRecipeEditActivity::class.java)
+                intent.putExtra("uid", uid)
+                intent.putExtra("key", key)
                 startActivity(intent)
             }
         }
