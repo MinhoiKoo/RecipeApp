@@ -7,19 +7,29 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUI.setupWithNavController
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.minhoi.recipeapp.api.Ref
+import com.minhoi.recipeapp.model.IngredientDto
 import com.minhoi.recipeapp.model.RecipeDataModel
+import com.minhoi.recipeapp.ui.viewmodel.HomeViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -35,11 +45,15 @@ class MainActivity : AppCompatActivity() {
     private val TAG = MainActivity::class.simpleName
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
+        setContentView(R.layout.activity_main)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.mainContainer) as NavHostFragment
-        navController = navHostFragment.navController
+        navController = navHostFragment.findNavController()
+
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.setupWithNavController(navController)
+
+        // 가운데 버튼 없애고 나만의 레시피 추가 액티비티로 가는 커스텀 버튼으로 대체
         val menuView = bottomNavigationView.getChildAt(0) as BottomNavigationMenuView
         val menuItemView3 = menuView.getChildAt(2) as BottomNavigationItemView
         val newMenuView = LayoutInflater.from(this).inflate(R.layout.bottom_menu_item3, bottomNavigationView, false)
@@ -51,6 +65,9 @@ class MainActivity : AppCompatActivity() {
             }
             else NavigationUI.onNavDestinationSelected(it, navController)
         }
+
+
+
 
 //        lifecycleScope.launch(Dispatchers.Main) {
 ////            gets()
@@ -65,32 +82,30 @@ class MainActivity : AppCompatActivity() {
 //        val storage: FirebaseStorage = FirebaseStorage.getInstance()
 //        val storageRef: StorageReference = storage.reference
 //
-//        val imageList = arrayOf<String>("apple", "avocado", "banana", "peach", "pear", "tomato", "watermelon")
-//        val nameList = arrayOf<String>("사과", "아보카도", "바나나", "복숭아", "배", "토마토", "수박")
+////        val imageList = arrayOf<String>("apple", "avocado", "banana", "peach", "pear", "tomato", "watermelon")
+////        val nameList = arrayOf<String>("사과", "아보카도", "바나나", "복숭아", "배", "토마토", "수박")
 //        val database: FirebaseDatabase = FirebaseDatabase.getInstance()
 //        val databaseRef = database.reference
 //
-//        for(i in 0 until 7) {
-//            // 이미지가 저장된 경로 및 파일 이름 정의 (예: "images/image.jpg")
+//        // 이미지가 저장된 경로 및 파일 이름 정의 (예: "images/image.jpg")
 //
-//            val imageRef: StorageReference = storageRef.child("ingredients/fruits/${imageList[i]}.png")
+//        val imageRef: StorageReference = storageRef.child("ingredients/vegetables/kimchi.png")
 //
 //// 이미지 다운로드 URL 가져오기
-//            imageRef.downloadUrl.addOnSuccessListener { uri ->
-//                val downloadUrl = uri.toString()
+//        imageRef.downloadUrl.addOnSuccessListener { uri ->
+//            val downloadUrl = uri.toString()
 //
-//                // Firebase Realtime Database에 URL 저장
+//            // Firebase Realtime Database에 URL 저장
 //
-//                val data = IngredientDto("${nameList[i]}", downloadUrl)
+//            val data = IngredientDto("김치", downloadUrl)
 //
-//                // 이미지 URL을 Firebase Realtime Database에 저장
-//                databaseRef.child("Ingredients").child("seafoods").child("${imageList[i]}").setValue(data)
-//            }.addOnFailureListener { exception ->
-//                // 이미지 다운로드 URL 가져오기 실패
-//                // 예외 처리 코드를 추가하세요.
-//            }
+//            // 이미지 URL을 Firebase Realtime Database에 저장
+//            databaseRef.child("Ingredients").child("vegetables").child("kimchi").setValue(data)
+//        }.addOnFailureListener { exception ->
+//            // 이미지 다운로드 URL 가져오기 실패
+//            // 예외 처리 코드를 추가하세요.
 //        }
-
+//
 
         // 기존 api 호출 방식에서 Firebase에 저장하여 호출하는 방식으로 변경.
 
