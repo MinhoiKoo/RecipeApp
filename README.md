@@ -10,11 +10,6 @@
 ## ⚙️ Architecture
 * MVVM
 ## 🏙 Result
-![KakaoTalk_20231016_183542523]()
-![ezgif com-video-to-gif]()
-![KakaoTalk_20231016_183534027]()
-![KakaoTalk_20231016_183537447]()
-![KakaoTalk_20231016_183540332]()
 <p align="center">
   <img src="https://github.com/MinhoiKoo/YumFinder/assets/128913867/c0a08da2-20d7-4592-90e2-d2281ffc47ae">
 </p>
