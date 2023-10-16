@@ -1,4 +1,4 @@
-# RecipeApp
+# YumFinder(얌파인더)
 
 ## 💡 Introduce
 냉장고 속 재료들로 만들 수 있는 레시피를 추천해주는 Application
