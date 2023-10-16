@@ -10,28 +10,33 @@
 ## ⚙️ Architecture
 * MVVM
 ## 🏙 Result
+![KakaoTalk_20231016_183542523]()
+![ezgif com-video-to-gif]()
+![KakaoTalk_20231016_183534027]()
+![KakaoTalk_20231016_183537447]()
+![KakaoTalk_20231016_183540332]()
 <p align="center">
-  <img src="https://github.com/MinhoiKoo/YumFinder/assets/128913867/f1032067-e447-4810-8636-11ffe32ec7e0">
+  <img src="https://github.com/MinhoiKoo/YumFinder/assets/128913867/c0a08da2-20d7-4592-90e2-d2281ffc47ae">
 </p>
 
 
 <p align="center">
-  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/128913867/275465464-36445042-07d2-4759-9064-35a0192689c0.gif">
+  <img src="https://github.com/MinhoiKoo/YumFinder/assets/128913867/2e8b8846-3c6c-4ce0-bab4-a5be6e226b1b">
 </p>
 
 
 <p align="center">
-  <img src="https://github.com/MinhoiKoo/YumFinder/assets/128913867/bcfe7111-5acb-449d-83e5-678c3a25c11e">
+  <img src="https://github.com/MinhoiKoo/YumFinder/assets/128913867/8ffe46be-a265-491a-944c-b2b80f29e0be">
 </p>
 
 
 <p align="center">
-  <img src="https://github.com/MinhoiKoo/YumFinder/assets/128913867/e1a8d2c5-7aed-462b-a205-15db6b39e0e7">
+  <img src="https://github.com/MinhoiKoo/YumFinder/assets/128913867/f25032dc-34b2-4bc9-bc93-6df48848427b">
 </p>
 
 
 <p align="center">
-  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/128913867/275465474-525ca8b6-4613-4dc5-8b43-fd789f488c12.gif">
+  <img src="https://github.com/MinhoiKoo/YumFinder/assets/128913867/2c5ffb9a-d908-4922-abf5-4e8b737feb38">
 </p>
 
 
