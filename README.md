@@ -10,7 +10,9 @@
 ## ⚙️ Architecture
 * MVVM
 ## 🏙 Result
-https://github.com/MinhoiKoo/YumFinder/assets/128913867/a5ef1c7b-2a54-4d91-8f29-77f63a10e8c2
+<p align="center">
+  <img src="https://github.com/MinhoiKoo/YumFinder/assets/128913867/a5ef1c7b-2a54-4d91-8f29-77f63a10e8c2">
+</p>
 
 
 https://github.com/MinhoiKoo/YumFinder/assets/128913867/ad04bca7-2de6-4a0a-bd1d-92eac62c6173
