@@ -10,20 +10,18 @@
 ## ⚙️ Architecture
 * MVVM
 ## 🏙 Result
-
-
 <p align="center">
-  <img src="https://github.com/MinhoiKoo/YumFinder/assets/128913867/a5ef1c7b-2a54-4d91-8f29-77f63a10e8c2">
+  <img src="https://github.com/MinhoiKoo/YumFinder/assets/128913867/f1032067-e447-4810-8636-11ffe32ec7e0">
 </p>
 
 
 <p align="center">
-  <img src="https://github.com/MinhoiKoo/YumFinder/assets/128913867/ad04bca7-2de6-4a0a-bd1d-92eac62c6173">
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/128913867/275465464-36445042-07d2-4759-9064-35a0192689c0.gif">
 </p>
 
 
 <p align="center">
-  <img src="https://github.com/MinhoiKoo/YumFinder/assets/128913867/368b2169-77d6-49ea-ac08-03114f769c6d">
+  <img src="https://github.com/MinhoiKoo/YumFinder/assets/128913867/bcfe7111-5acb-449d-83e5-678c3a25c11e">
 </p>
 
 
@@ -33,7 +31,7 @@
 
 
 <p align="center">
-  <img src="https://github.com/MinhoiKoo/YumFinder/assets/128913867/a22c3f4c-043a-421e-a1f2-416bcd197a1b">
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/128913867/275465474-525ca8b6-4613-4dc5-8b43-fd789f488c12.gif">
 </p>
 
 
