@@ -10,9 +10,6 @@
 ## ⚙️ Architecture
 * MVVM
 ## 🏙 Result
-<p align="center">
-  <img src="https://github.com/MinhoiKoo/YumFinder/assets/128913867/c0a08da2-20d7-4592-90e2-d2281ffc47ae">
-</p>
 
 
 <p align="center">
@@ -26,13 +23,18 @@
 
 
 <p align="center">
-  <img src="https://github.com/MinhoiKoo/YumFinder/assets/128913867/f25032dc-34b2-4bc9-bc93-6df48848427b">
+  <img src="https://github.com/MinhoiKoo/YumFinder/assets/128913867/005cb8bc-5a0c-4157-a937-de43245b7a55">
 </p>
 
 
 <p align="center">
   <img src="https://github.com/MinhoiKoo/YumFinder/assets/128913867/2c5ffb9a-d908-4922-abf5-4e8b737feb38">
 </p>
+
+<p align="center">
+  <img src="https://github.com/MinhoiKoo/YumFinder/assets/128913867/c0a08da2-20d7-4592-90e2-d2281ffc47ae">
+</p>
+
 
 
 
