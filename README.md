@@ -12,6 +12,7 @@
 * MVVM
 ## 🏙 Result
 랜덤으로 레시피 추천 -> 스와이프를 통해 변경 가능
+
 하단에는 북마크가 가장 많이 된 레시피 10개 추천
 <p>
   <img src="https://github.com/MinhoiKoo/YumFinder/assets/128913867/2e8b8846-3c6c-4ce0-bab4-a5be6e226b1b">
