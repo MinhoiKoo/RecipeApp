@@ -15,6 +15,7 @@ import com.kakao.sdk.common.model.KakaoSdkError
 import com.kakao.sdk.user.UserApiClient
 import com.minhoi.recipeapp.api.Ref
 import com.minhoi.recipeapp.model.User
+import java.lang.Exception
 
 class MypageViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -49,7 +50,7 @@ class MypageViewModel(application: Application) : AndroidViewModel(application) 
         // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
-
+                Log.d("kakaokakaokakao", "kakaoLogin: $error")
             } else if (token != null) {
 
                 UserApiClient.instance.me{ user, error ->
@@ -69,8 +70,12 @@ class MypageViewModel(application: Application) : AndroidViewModel(application) 
                                     val user = User(userId, nickname.toString())
                                     Ref.userRef.child(userId).setValue(user)
                                 } else {
-                                    val user = dataSnapshot.getValue(User::class.java)
-                                    userNickname.value = user!!.nickName
+                                    try {
+                                        val user = dataSnapshot.getValue(User::class.java)
+                                        userNickname.value = user!!.nickName
+                                    } catch(e:Exception) {
+
+                                    }
                                 }
                             }
 
@@ -91,6 +96,7 @@ class MypageViewModel(application: Application) : AndroidViewModel(application) 
             UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
                 if (error != null) {
 //                    TextMsg(this, "카카오톡으로 로그인 실패 : ${error}")
+                    Log.d("kakaokakaokakao", "kakaoLogin: $error")
 
                     // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
                     // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)

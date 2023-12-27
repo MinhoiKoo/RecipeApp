@@ -1,12 +1,10 @@
 package com.minhoi.recipeapp.ui.ingredients
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.minhoi.recipeapp.adapter.recyclerview.IngredientListItem
-import com.minhoi.recipeapp.model.IngredientDataRepository
+import com.minhoi.recipeapp.model.IngredientRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -15,7 +13,7 @@ import com.minhoi.recipeapp.model.SelectedIngredientDto
 
 class IngredientViewModel : ViewModel() {
 
-    private val ingredientDataRepository = IngredientDataRepository()
+    private val ingredientRepository = IngredientRepository()
     private var _vegetableList = MutableLiveData<List<IngredientDto>>()
     val vegetableList : LiveData<List<IngredientDto>> = _vegetableList
 
@@ -28,6 +26,7 @@ class IngredientViewModel : ViewModel() {
     private var _fruitList = MutableLiveData<List<IngredientDto>>()
         val fruitList : LiveData<List<IngredientDto>> = _fruitList
 
+    // 선택된 재료와 재료는 Dto 클래스가 다름 (RecyclerView에서 구분하기 위해)
     private var _ingredientList = MutableLiveData<ArrayList<SelectedIngredientDto>>()
     val ingredientList : LiveData<ArrayList<SelectedIngredientDto>>
         get() = _ingredientList
@@ -36,10 +35,10 @@ class IngredientViewModel : ViewModel() {
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            val vegetableList = ingredientDataRepository.getVegetable()
-            val meatList = ingredientDataRepository.getMeat()
-            val seafoodList = ingredientDataRepository.getSeafood()
-            val fruitList = ingredientDataRepository.getFruit()
+            val vegetableList = ingredientRepository.getVegetable()
+            val meatList = ingredientRepository.getMeat()
+            val seafoodList = ingredientRepository.getSeafood()
+            val fruitList = ingredientRepository.getFruit()
             withContext(Dispatchers.Main) {
                 _vegetableList.value = vegetableList
                 _meatList.value = meatList

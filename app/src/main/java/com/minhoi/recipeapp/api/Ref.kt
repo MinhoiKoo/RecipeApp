@@ -13,6 +13,8 @@ class Ref {
         val userRef = database.getReference("User")
         val userRecipeDataRef = database.getReference("UserRecipeData")
         val myRecipeDataRef = database.getReference("MyRecipeData")
+        val ingredientDataRef = database.getReference("Ingredients")
+        val refrigeratorDataRef = database.getReference("Refrigerator")
     }
 
     fun getDate() : String {

@@ -5,16 +5,17 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
+import com.minhoi.recipeapp.ui.ExpirationDateActivity
 import com.minhoi.recipeapp.R
 import com.minhoi.recipeapp.adapter.recyclerview.SelectIngredientAdapter
 import com.minhoi.recipeapp.adapter.viewpager2.ViewpagerFragmentAdapter
 import com.minhoi.recipeapp.databinding.ActivityIngredientSelectBinding
-import com.minhoi.recipeapp.model.IngredientDto
 import com.minhoi.recipeapp.model.SelectedIngredientDto
 import java.util.ArrayList
 
@@ -49,7 +50,7 @@ class IngredientSelectActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@IngredientSelectActivity, LinearLayoutManager.HORIZONTAL, false)
         }
 
-        binding.addIngredientBtn.setOnClickListener {
+        binding.toExpirationBtn.setOnClickListener {
             val item = viewModel.ingredientList.value
             // 선택된 재료 담긴 List
             val selectedItemList = ArrayList<SelectedIngredientDto>()
@@ -60,10 +61,9 @@ class IngredientSelectActivity : AppCompatActivity() {
                         selectedItemList.add(ingredient)
                     }
                     // Intent에 재료 리스트 추가
-                    val intent = Intent()
+                    val intent = Intent(this, ExpirationDateActivity::class.java)
                     intent.putParcelableArrayListExtra("SelectedIngredientList", selectedItemList)
-                    setResult(Activity.RESULT_OK, intent)
-                    finish()
+                    getExpirationDate.launch(intent)
                 }
             }
         }
@@ -74,8 +74,16 @@ class IngredientSelectActivity : AppCompatActivity() {
 
     }
 
-    fun ingredientToString() {
 
+    // 유통기한 정보 담겨있음
+    private val getExpirationDate = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) {
+
+        if (it.resultCode == Activity.RESULT_OK) {
+            val data: Intent? = it.data
+            setResult(Activity.RESULT_OK, data)
+            finish()
+        }
     }
 
 }

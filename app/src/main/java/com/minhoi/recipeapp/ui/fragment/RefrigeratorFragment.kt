@@ -9,32 +9,38 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.minhoi.recipeapp.ui.ingredients.IngredientSelectActivity
 import com.minhoi.recipeapp.R
-import com.minhoi.recipeapp.RecipeListActivity
-import com.minhoi.recipeapp.adapter.recyclerview.SelectIngredientAdapter
+import com.minhoi.recipeapp.ui.RecipeListActivity
+import com.minhoi.recipeapp.util.ViewModelFactory
+import com.minhoi.recipeapp.adapter.recyclerview.ExpirationDateListAdapter
+import com.minhoi.recipeapp.adapter.recyclerview.SearchIngredientListAdapter
 import com.minhoi.recipeapp.databinding.FragmentRefrigeratorBinding
-import com.minhoi.recipeapp.model.SelectedIngredientDto
+import com.minhoi.recipeapp.model.ExpirationDateDto
 import com.minhoi.recipeapp.ui.viewmodel.HomeViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class RefrigeratorFragment : Fragment() {
     private val TAG = RefrigeratorFragment::class.java.simpleName
     // Fragment 전환해도 Data 유지하기 위해 부모 액티비티 lifeCycle 따르는 viewModel로 선언
-    private val viewModel : HomeViewModel by activityViewModels()
+//    private val viewModel : HomeViewModel by activityViewModels()
+    private lateinit var viewModel: HomeViewModel
     private lateinit var binding : FragmentRefrigeratorBinding
-    private lateinit var ingredientAdapter : SelectIngredientAdapter
-    private lateinit var input : EditText
-//    private val array = mutableListOf<String>()
+    private lateinit var ingredientAdapter : ExpirationDateListAdapter
+//    private lateinit var input : EditText
+    private lateinit var inputIngredientAdapter: SearchIngredientListAdapter
+    private val array = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,10 +53,14 @@ class RefrigeratorFragment : Fragment() {
     ): View {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_refrigerator, container, false )
-
-        ingredientAdapter = SelectIngredientAdapter(requireContext()) {
-            //onClickListener
-            viewModel.deleteSelectedIngredient(it as SelectedIngredientDto)
+        viewModel = ViewModelProvider(this, ViewModelFactory(requireActivity().application))
+            .get(HomeViewModel::class.java)
+//        ingredientAdapter = SelectIngredientAdapter(requireContext()) {
+//            //onClickListener
+//            viewModel.deleteSelectedIngredient(it as SelectedIngredientDto)
+//        }
+        ingredientAdapter = ExpirationDateListAdapter(requireContext()) {
+            viewModel.deleteIngredient(it)
         }
 
         val flexboxLayoutManager = FlexboxLayoutManager(requireContext()).apply {
@@ -61,6 +71,7 @@ class RefrigeratorFragment : Fragment() {
             // 정렬 기준
             justifyContent = JustifyContent.FLEX_START
         }
+
 
         binding.ingredientRv.apply {
             adapter = ingredientAdapter
@@ -73,8 +84,7 @@ class RefrigeratorFragment : Fragment() {
             getSelectedContent.launch(intent)
         }
 
-        input = binding.inputIngredient
-        input.addTextChangedListener(inputFormal)
+//        input.addTextChangedListener(inputFormal)
 
         // 재료 추가 후 검색 버튼 누르면 재료 리스트를 Intent에 담아서 전달.
         binding.searchRefriBtn.setOnClickListener {
@@ -121,7 +131,10 @@ class RefrigeratorFragment : Fragment() {
                 binding.selectedLayout.visibility = View.GONE
             }
 
-            ingredientAdapter.setSelectedList(list)
+            ingredientAdapter.setList(list)
+            lifecycleScope.launch(Dispatchers.IO) {
+                viewModel.saveResultListToDatabase(list)
+            }
         }
     }
     private val inputFormal = object : TextWatcher {
@@ -136,10 +149,10 @@ class RefrigeratorFragment : Fragment() {
 
                 // 첫 입력에 공백이 들어가면 사용자가 입력하지 못하게 Input Clear
                 if(ingredient == "") {
-                    input.text.clear()
+//                    input.text.clear()
                 } else {
                     viewModel.addIngredient(ingredient)
-                    input.text.clear()
+//                    input.text.clear()
 //                    array.add(ingredient)
 //                    ingredientAdapter.setIngredients(array)
                 }
@@ -164,9 +177,14 @@ class RefrigeratorFragment : Fragment() {
             val data: Intent? = result.data
             data?.run {
                 // 재료 선택 Activity에서 담은 재료 리스트 (SelectedIngredientDto)
-                val resultList = data.getParcelableArrayListExtra<SelectedIngredientDto>("SelectedIngredientList")
+                val resultList = data.getParcelableArrayListExtra<ExpirationDateDto>("SelectedIngredientList2")
                 resultList?.let {
                     // ViewModel에 선택된 재료 주입
+                    // db에 저장해야함
+
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        viewModel.saveResultListToDatabase(resultList)
+                    }
                     viewModel.setSelectedIngredientList(resultList)
                 }
             }

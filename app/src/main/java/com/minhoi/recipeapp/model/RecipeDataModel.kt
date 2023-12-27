@@ -19,5 +19,7 @@ data class RecipeDataModel(
     val info_CAR : String = "",
     val info_PRO : String = "",
     val info_FAT : String = "",
-    val info_NA : String = ""
-)
+    val info_NA : String = "",
+
+    override val viewType: Int = 1
+) : ItemViewType

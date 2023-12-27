@@ -10,6 +10,6 @@ class GlobalApplication : Application() {
         super.onCreate()
         KakaoSdk.init(this, BuildConfig.KAKAO_API_KEY)
         var keyHash = Utility.getKeyHash(this)
-        Log.i("GlobalApplication", "$keyHash")
+        Log.d("GlobalApplication", "$keyHash")
     }
 }

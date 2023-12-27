@@ -10,7 +10,7 @@ import com.google.firebase.database.ValueEventListener
 import com.minhoi.recipeapp.api.Ref
 import com.minhoi.recipeapp.model.KakaoUserRepository
 import com.minhoi.recipeapp.model.RecipeDataModel
-import com.minhoi.recipeapp.model.RecipeDataRepository
+import com.minhoi.recipeapp.model.RecipeRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -18,7 +18,7 @@ class RcpInfoViewModel : ViewModel() {
 
     private val TAG = RcpInfoViewModel::class.simpleName
     private val kakaoUserRepository = KakaoUserRepository()
-    private val recipeDataRepository = RecipeDataRepository()
+    private val recipeRepository = RecipeRepository()
     private var ref = Ref()
     private var _isBookmarked = MutableLiveData<Boolean>(false)
     val isBookmarked : LiveData<Boolean>
@@ -26,7 +26,7 @@ class RcpInfoViewModel : ViewModel() {
 
 
     suspend fun getRecipe(rcpSeq: String) : RecipeDataModel {
-        return recipeDataRepository.getRecipeInfo(rcpSeq)
+        return recipeRepository.getRecipeInfo(rcpSeq)
     }
 
     suspend fun getUser(): String {

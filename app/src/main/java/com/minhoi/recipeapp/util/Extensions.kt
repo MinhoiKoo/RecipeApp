@@ -15,7 +15,9 @@ fun EditText.textChangesToFlow() : Flow<CharSequence?> {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 // 값 내보내기
-                trySend(s!!)
+                if(s!=null && s != " ") {
+                    trySend(s)
+                }
             }
         }
         addTextChangedListener(listener)

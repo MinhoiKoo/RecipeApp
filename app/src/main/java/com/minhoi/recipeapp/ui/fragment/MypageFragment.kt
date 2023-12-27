@@ -11,10 +11,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.kakao.sdk.user.UserApiClient
 import com.minhoi.recipeapp.ui.viewmodel.MypageViewModel
-import com.minhoi.recipeapp.NicknameChangeDialog
+import com.minhoi.recipeapp.ui.NicknameChangeDialog
 import com.minhoi.recipeapp.R
-import com.minhoi.recipeapp.UserBookmarkListActivity
-import com.minhoi.recipeapp.UserRecipeListActivity
+import com.minhoi.recipeapp.ui.UserBookmarkListActivity
+import com.minhoi.recipeapp.ui.UserRecipeListActivity
 import com.minhoi.recipeapp.databinding.FragmentMypageBinding
 
 class MypageFragment : Fragment() {
@@ -34,8 +34,13 @@ class MypageFragment : Fragment() {
 
         // Inflate the layout for this fragment
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mypage, container, false )
-        viewModel = ViewModelProvider(this).get(MypageViewModel::class.java)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mypage, container, false)
+        viewModel = ViewModelProvider(this)[MypageViewModel::class.java]
+
+        binding.apply {
+            myPageVm = viewModel
+            lifecycleOwner = viewLifecycleOwner
+        }
 
         binding.loginBtn.setOnClickListener {
             viewModel.kakaoLogin()
@@ -66,24 +71,6 @@ class MypageFragment : Fragment() {
 
         }
 
-        viewModel.isLogin.observe(viewLifecycleOwner) {
-            when(it) {
-                true -> {
-                    binding.notLoginLayout.visibility = View.GONE
-                    binding.logined.visibility = View.VISIBLE
-                }
-                else -> {
-                    binding.notLoginLayout.visibility = View.VISIBLE
-                    binding.logined.visibility = View.GONE
-                }
-            }
-        }
-
-
-        viewModel.userNickname.observe(viewLifecycleOwner) {
-            binding.userNickname.text = it
-        }
-
         binding.logOutBtn.setOnClickListener {
             UserApiClient.instance.logout { error ->
                 if (error != null) {
@@ -102,6 +89,26 @@ class MypageFragment : Fragment() {
         }
 
         return binding.root
+
+//        viewModel.isLogin.observe(viewLifecycleOwner) {
+//            when(it) {
+//                true -> {
+//                    binding.notLoginLayout.visibility = View.GONE
+//                    binding.logined.visibility = View.VISIBLE
+//                }
+//                else -> {
+//                    binding.notLoginLayout.visibility = View.VISIBLE
+//                    binding.logined.visibility = View.GONE
+//                }
+//            }
+//        }
+
+
+//        viewModel.userNickname.observe(viewLifecycleOwner) {
+//            binding.userNickname.text = it
+//        }
+
+
     }
 
 }

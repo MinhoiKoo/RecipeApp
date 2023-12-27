@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_margin="20dp"
-            android:hint="레시피 검색"
+            android:hint="재료명, 음식 입력"
             android:background="#E8E9E7"
             android:imeOptions="actionSearch"
             android:inputType="text"
@@ -52,6 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:visibility="gone"
                 app:SpinKit_Color="#999999" />
         </FrameLayout>
 
@@ -62,6 +63,7 @@
             android:layout_marginRight="30dp"
             android:background="#999999"
             android:src="@drawable/filter"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:shapeAppearance="@style/radius50" />

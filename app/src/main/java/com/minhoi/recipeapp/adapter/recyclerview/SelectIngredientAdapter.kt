@@ -21,8 +21,8 @@ class SelectIngredientAdapter(private val context : Context, private val onClick
 
         fun bind(item : IngredientListItem) {
             itemView.setOnClickListener {
-                val selectedIngredientDto = SelectedIngredientDto(item.name, item.imagePath)
-                onClickListener(selectedIngredientDto)
+                val ingredient = IngredientDto(item.name, item.imagePath)
+                onClickListener(ingredient)
             }
             name.text = item.name
             Glide.with(context)
@@ -38,8 +38,8 @@ class SelectIngredientAdapter(private val context : Context, private val onClick
 
         fun bind(item: SelectedIngredientDto) {
             itemView.setOnClickListener {
-                val selectedIngredientDto = SelectedIngredientDto(item.name, item.imagePath)
-                onClickListener(selectedIngredientDto)
+                val selectedIngredient = SelectedIngredientDto(item.name, item.imagePath)
+                onClickListener(selectedIngredient)
             }
             name.text = item.name
             Glide.with(context)

@@ -43,7 +43,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
-                        android:text="새로운 메뉴를 찾고싶으면 위로 스크롤 해보세요!"
+                        android:text="새로운 메뉴를 찾고싶으면 아래로 스와이프 해보세요!"
                         android:textSize="16dp"
                         android:textColor="#000000"/>
 

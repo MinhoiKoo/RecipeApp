@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#1F882F" />
+    <corners android:radius="30dp" /> <!-- 이 값은 둥글게 만들고 싶은 정도를 조절합니다. -->
+</shape>

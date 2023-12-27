@@ -14,7 +14,7 @@ interface MyApi {
     fun getRecipe(
         @Path("startidx") startidx: Int,
         @Path("endidx") endidx: Int
-    ): Call<RcpResponse>
+    ): Response<RcpResponse>
 
     @GET("COOKRCP01/json/{startidx}/{endidx}/RCP_NM={rcpName}")
     suspend fun searchRecipe(

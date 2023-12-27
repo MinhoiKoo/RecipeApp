@@ -1,9 +1,6 @@
 package com.minhoi.recipeapp.ui.fragment
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -15,10 +12,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.minhoi.recipeapp.FilterDialog
+import com.minhoi.recipeapp.ui.FilterDialog
 import com.minhoi.recipeapp.R
-import com.minhoi.recipeapp.RcpInfoActivity
-import com.minhoi.recipeapp.RecipeListActivity
+import com.minhoi.recipeapp.ui.RcpInfoActivity
+import com.minhoi.recipeapp.ui.RecipeListActivity
 import com.minhoi.recipeapp.ui.viewmodel.SearchViewModel
 import com.minhoi.recipeapp.adapter.recyclerview.RecipeListAdapter
 import com.minhoi.recipeapp.adapter.recyclerview.SearchAutoCompleteAdapter
@@ -77,7 +74,7 @@ class SearchFragment : Fragment() {
                     binding.loadingSpinKit.visibility = View.VISIBLE
                     searchJob?.cancel()
                     searchJob = lifecycleScope.launch(Dispatchers.IO) {
-                        viewModel.getRecipeName(query.toString())
+                        val response = viewModel.getRecipeName(query.toString())
                         withContext(Dispatchers.Main) {
                             binding.loadingSpinKit.visibility = View.GONE
                             binding.autoCompleteRv.visibility = View.VISIBLE
@@ -102,13 +99,14 @@ class SearchFragment : Fragment() {
             handled
         }
 
-        searchListAdapter = RecipeListAdapter(requireContext()) {
-            val intent = Intent(requireActivity(), RcpInfoActivity::class.java)
-            intent.apply {
-                putExtra("rcpSeq", it.rcp_SEQ)
-            }
-            startActivity(intent)
-        }
+//        searchListAdapter = RecipeListAdapter(requireContext()) {
+//            it as
+//            val intent = Intent(requireActivity(), RcpInfoActivity::class.java)
+//            intent.apply {
+//                putExtra("rcpSeq", it.rcp_SEQ)
+//            }
+//            startActivity(intent)
+//        }
 
 
 //        viewModel.searchList.observe(viewLifecycleOwner) {

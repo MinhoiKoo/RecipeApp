@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".GlobalApplication"
@@ -16,8 +17,43 @@
         android:theme="@style/Theme.RecipeApp"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
-       <activity
+        <activity
+            android:name=".ui.ExpirationDateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.UserRecipeEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.UserRecipeInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.ingredients.IngredientSelectActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.UserRecipeListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.UserRecipeAddActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.RecipeListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.NicknameChangeDialog"
+            android:exported="false" />
+        <activity
+            android:name=".ui.UserBookmarkListActivity"
+            android:exported="false" />
+        <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
             <intent-filter>
@@ -32,29 +68,18 @@
                     android:scheme="kakaof15b5cf81c28403a6d030e7e307a7894" />
             </intent-filter>
         </activity>
-
-
         <activity
             android:name=".GlobalApplication"
-            android:exported="true" >
-        </activity>
+            android:exported="true" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.FilterDialog"
             android:exported="false" />
         <activity
-            android:name=".FilterDialog"
+            android:name=".ui.RcpInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".RcpInfoActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

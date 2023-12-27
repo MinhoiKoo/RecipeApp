@@ -6,12 +6,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.minhoi.recipeapp.api.MyApi
 import com.minhoi.recipeapp.api.RetrofitInstance
+import com.minhoi.recipeapp.model.RecipeRepository
 import com.minhoi.recipeapp.model.RecipeDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.net.SocketTimeoutException
 
 class SearchViewModel : ViewModel() {
 
+    private val recipeRepository = RecipeRepository()
     private val retrofitInstance = RetrofitInstance.getInstance().create(MyApi::class.java)
 
     private var _mutableSearchList = MutableLiveData<List<RecipeDto>>()
@@ -30,32 +33,40 @@ class SearchViewModel : ViewModel() {
 
 
     suspend fun searchRcp() {
-        val response = retrofitInstance.searchRecipe(1,1000,_mutableSearchInput.value.toString())
-        withContext(Dispatchers.Main) {
-            if(response.isSuccessful) {
-                originaSearchList = response.body()?.COOKRCP01?.row
-                _mutableSearchList.value = originaSearchList.orEmpty()
-                Log.d("List", response.body()?.COOKRCP01?.row.toString())
-            } else { }
-        }
+//        val response = retrofitInstance.searchRecipe(1,1000,_mutableSearchInput.value.toString())
+//        withContext(Dispatchers.Main) {
+//            if(response.isSuccessful) {
+//                originaSearchList = response.body()?.COOKRCP01?.row
+//                _mutableSearchList.value = originaSearchList.orEmpty()
+//                Log.d("List", response.body()?.COOKRCP01?.row.toString())
+//            } else { }
+//        }
+
+        recipeRepository.getRecipeByName(_mutableSearchInput.value.toString())
+
+
     }
 
     suspend fun getRecipeName(name : String) {
 
-        val response = retrofitInstance.searchRecipe(1, 1000, name)
-        withContext(Dispatchers.Main) {
-            if (response.isSuccessful) {
-                Log.d("List", response.body()?.COOKRCP01?.row.toString())
-                val recipeList = response.body()?.COOKRCP01?.row
-                val keyNameList = arrayListOf<Pair<String, String>>()
-                if (recipeList != null) {
-                    for (data in recipeList) {
-                        keyNameList.add(Pair(data.rcp_SEQ, data.rcp_NM))
+        val searchRange = listOf(Pair(1,1000), Pair(1001, 2000), Pair(2001,3000))
+        val keyNameList = arrayListOf<Pair<String, String>>()
+        repeat(3) {
+            val response = retrofitInstance.searchRecipe(searchRange[it].first, searchRange[it].second, name)
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    Log.d("List", response.body()?.COOKRCP01?.row.toString())
+                    val recipeList = response.body()?.COOKRCP01?.row
+                    if (recipeList != null) {
+                        for (data in recipeList) {
+                            keyNameList.add(Pair(data.rcp_SEQ, data.rcp_NM))
+                        }
+                        _mutableAutoCompleteList.value = keyNameList
                     }
-                    _mutableAutoCompleteList.value = keyNameList
                 }
             }
         }
+
     }
 
     fun filter(minKcal: String, maxKcal: String, type: String) {
